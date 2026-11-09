@@ -236,7 +236,9 @@
       "offsetWk": 2,
       "assignees": [
         "m07",
-        "m02"
+        "m02",
+        "m19",
+        "m25"
       ],
       "status": "done",
       "reviewScore": 90,
@@ -294,7 +296,8 @@
       "dueDate": "2026-11-28",
       "offsetWk": 4,
       "assignees": [
-        "m10"
+        "m10",
+        "m16"
       ],
       "status": "in_progress",
       "reviewScore": null,
@@ -314,7 +317,7 @@
       "offsetWk": 4,
       "assignees": [
         "m21",
-        "m16"
+        "m22"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -332,7 +335,8 @@
       "dueDate": "2026-12-12",
       "offsetWk": 6,
       "assignees": [
-        "m22"
+        "m01",
+        "m04"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -350,7 +354,10 @@
       "dueDate": "2026-12-12",
       "offsetWk": 6,
       "assignees": [
-        "m05"
+        "m05",
+        "m11",
+        "m19",
+        "m25"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -369,7 +376,7 @@
       "dueDate": "2026-12-19",
       "offsetWk": 7,
       "assignees": [
-        "m11",
+        "m17",
         "m03"
       ],
       "status": "todo",
@@ -390,7 +397,7 @@
       "offsetWk": 7,
       "assignees": [
         "m06",
-        "m01"
+        "m10"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -409,8 +416,8 @@
       "dueDate": "2026-12-26",
       "offsetWk": 8,
       "assignees": [
-        "m04",
-        "m17"
+        "m16",
+        "m23"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -428,7 +435,8 @@
       "dueDate": "2026-12-26",
       "offsetWk": 8,
       "assignees": [
-        "m27"
+        "m27",
+        "m09"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -447,8 +455,8 @@
       "dueDate": "2027-01-09",
       "offsetWk": 10,
       "assignees": [
-        "m10",
-        "m23"
+        "m22",
+        "m02"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -467,7 +475,7 @@
       "dueDate": "2027-01-23",
       "offsetWk": 12,
       "assignees": [
-        "m16",
+        "m01",
         "m12"
       ],
       "status": "todo",
@@ -486,7 +494,8 @@
       "dueDate": "2027-01-30",
       "offsetWk": 13,
       "assignees": [
-        "m22"
+        "m04",
+        "m10"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -505,7 +514,7 @@
       "dueDate": "2027-02-06",
       "offsetWk": 14,
       "assignees": [
-        "m01",
+        "m16",
         "m18"
       ],
       "status": "todo",
@@ -524,7 +533,8 @@
       "dueDate": "2027-02-13",
       "offsetWk": 15,
       "assignees": [
-        "m04"
+        "m22",
+        "m01"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -542,6 +552,7 @@
       "dueDate": "2027-02-20",
       "offsetWk": 16,
       "assignees": [
+        "m04",
         "m10"
       ],
       "status": "todo",
@@ -561,7 +572,7 @@
       "dueDate": "2027-02-20",
       "offsetWk": 16,
       "assignees": [
-        "m02",
+        "m05",
         "m13"
       ],
       "status": "todo",
@@ -580,7 +591,8 @@
       "dueDate": "2027-02-27",
       "offsetWk": 17,
       "assignees": [
-        "m08"
+        "m08",
+        "m14"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -600,7 +612,7 @@
       "offsetWk": 19,
       "assignees": [
         "m16",
-        "m05"
+        "m11"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -618,7 +630,8 @@
       "dueDate": "2027-03-20",
       "offsetWk": 20,
       "assignees": [
-        "m22"
+        "m22",
+        "m01"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -637,8 +650,8 @@
       "dueDate": "2027-03-27",
       "offsetWk": 21,
       "assignees": [
-        "m01",
-        "m11"
+        "m04",
+        "m17"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -657,8 +670,8 @@
       "dueDate": "2027-04-03",
       "offsetWk": 22,
       "assignees": [
-        "m04",
-        "m17"
+        "m10",
+        "m23"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -676,7 +689,8 @@
       "dueDate": "2027-04-10",
       "offsetWk": 23,
       "assignees": [
-        "m10"
+        "m16",
+        "m22"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -696,7 +710,7 @@
       "offsetWk": 23,
       "assignees": [
         "m24",
-        "m23"
+        "m02"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -715,8 +729,8 @@
       "dueDate": "2027-04-17",
       "offsetWk": 24,
       "assignees": [
-        "m02",
-        "m16"
+        "m05",
+        "m01"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -734,7 +748,8 @@
       "dueDate": "2027-04-24",
       "offsetWk": 25,
       "assignees": [
-        "m14"
+        "m20",
+        "m26"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -753,8 +768,8 @@
       "dueDate": "2027-05-08",
       "offsetWk": 27,
       "assignees": [
-        "m22",
-        "m09"
+        "m04",
+        "m15"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -772,7 +787,8 @@
       "dueDate": "2027-05-08",
       "offsetWk": 27,
       "assignees": [
-        "m03"
+        "m03",
+        "m06"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -791,8 +807,8 @@
       "dueDate": "2027-05-15",
       "offsetWk": 28,
       "assignees": [
-        "m06",
-        "m01"
+        "m12",
+        "m10"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -811,8 +827,8 @@
       "dueDate": "2027-05-22",
       "offsetWk": 29,
       "assignees": [
-        "m05",
-        "m04"
+        "m11",
+        "m16"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -831,8 +847,8 @@
       "dueDate": "2027-05-29",
       "offsetWk": 30,
       "assignees": [
-        "m10",
-        "m11"
+        "m22",
+        "m17"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -850,7 +866,8 @@
       "dueDate": "2027-06-05",
       "offsetWk": 31,
       "assignees": [
-        "m16"
+        "m01",
+        "m04"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -869,8 +886,8 @@
       "dueDate": "2027-06-05",
       "offsetWk": 31,
       "assignees": [
-        "m20",
-        "m15"
+        "m08",
+        "m21"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -888,7 +905,8 @@
       "dueDate": "2027-06-12",
       "offsetWk": 32,
       "assignees": [
-        "m26"
+        "m14",
+        "m20"
       ],
       "status": "todo",
       "reviewScore": null,
@@ -907,212 +925,12 @@
       "dueDate": "2027-06-19",
       "offsetWk": 33,
       "assignees": [
-        "m21",
-        "m17"
+        "m27",
+        "m23"
       ],
       "status": "todo",
       "reviewScore": null,
       "completedAt": null
     }
-  ],
-  "attendance": {
-    "periods": [
-      {
-        "id": "baseline",
-        "name": "Baseline kelas (data ps.xls)",
-        "startDate": null
-      }
-    ],
-    "entries": [
-      {
-        "memberId": "m01",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m02",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m03",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m04",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m05",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m06",
-        "periodId": "baseline",
-        "present": 17.6,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m07",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m08",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m09",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m10",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m11",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m12",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m13",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m14",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m15",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m16",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m17",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m18",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m19",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m20",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m21",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m22",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m23",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m24",
-        "periodId": "baseline",
-        "present": 17.6,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m25",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m26",
-        "periodId": "baseline",
-        "present": 20,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      },
-      {
-        "memberId": "m27",
-        "periodId": "baseline",
-        "present": 17.6,
-        "total": 20,
-        "note": "Kehadiran kelas dari data ps (5).xls"
-      }
-    ]
-  }
+  ]
 }

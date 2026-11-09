@@ -27,7 +27,8 @@ function save() {
 }
 
 // ---------- Konstanta KPI & skala ----------
-const WEIGHTS = { kehadiran: 0.25, penyelesaian: 0.35, ketepatan: 0.2, kualitas: 0.2 };
+// Kehadiran tidak dihitung sesuai permintaan; bobot diredistribusi.
+const WEIGHTS = { penyelesaian: 0.4, ketepatan: 0.3, kualitas: 0.3 };
 const GRADES = [
   [90, "A", "Sangat Baik"],
   [80, "B", "Baik"],
@@ -43,11 +44,6 @@ const PHASES = [
 
 // ---------- Perhitungan KPI ----------
 function computeKpi(memberId) {
-  const att = db.attendance.entries.filter((e) => e.memberId === memberId);
-  const totalDays = att.reduce((s, e) => s + (Number(e.total) || 0), 0);
-  const presentDays = att.reduce((s, e) => s + (Number(e.present) || 0), 0);
-  const attPct = totalDays > 0 ? (presentDays / totalDays) * 100 : 0;
-
   const mine = db.tasks.filter((t) => (t.assignees || []).includes(memberId));
   const totalW = mine.reduce((s, t) => s + t.weight, 0);
   const doneW = mine.filter((t) => t.status === "done").reduce((s, t) => s + t.weight, 0);
@@ -68,7 +64,6 @@ function computeKpi(memberId) {
     : 0;
 
   const score =
-    attPct * WEIGHTS.kehadiran +
     completion * WEIGHTS.penyelesaian +
     ontimePct * WEIGHTS.ketepatan +
     quality * WEIGHTS.kualitas;
@@ -76,7 +71,6 @@ function computeKpi(memberId) {
 
   return {
     memberId,
-    kehadiran: round(attPct),
     penyelesaian: round(completion),
     ketepatan: round(ontimePct),
     kualitas: round(quality),
@@ -84,15 +78,11 @@ function computeKpi(memberId) {
     grade: g[1],
     label: g[2],
     detail: {
-      periode: att.length,
-      totalHari: totalDays,
-      hariHadir: presentDays,
       tugasTotal: mine.length,
       tugasSelesai: done.length,
       tugasProses: mine.filter((t) => t.status === "in_progress").length,
       bobotTotal: totalW,
       bobotSelesai: doneW,
-      bobotProses: wipW,
       kebutuhanSkor: scored.length < done.length, // ada tugas selesai yang belum dinilai
     },
   };
@@ -115,7 +105,6 @@ function dashboardSummary() {
   const totalW = tasks.reduce((s, t) => s + t.weight, 0);
   return {
     kpiRata: round(kpis.reduce((s, k) => s + k.total, 0) / (kpis.length || 1)),
-    kehadiranRata: round(kpis.reduce((s, k) => s + k.kehadiran, 0) / (kpis.length || 1)),
     totalTugas: tasks.length,
     tugasDone: tasks.filter((t) => t.status === "done").length,
     tugasWip: tasks.filter((t) => t.status === "in_progress").length,
@@ -178,7 +167,6 @@ api.put("/members/:id", (req, res) => {
 api.delete("/members/:id", (req, res) => {
   db.members = db.members.filter((m) => m.id !== req.params.id);
   db.tasks.forEach((t) => (t.assignees = (t.assignees || []).filter((a) => a !== req.params.id)));
-  db.attendance.entries = db.attendance.entries.filter((e) => e.memberId !== req.params.id);
   save();
   res.json({ ok: true });
 });
@@ -212,38 +200,6 @@ api.put("/tasks/:id", (req, res) => {
 });
 api.delete("/tasks/:id", (req, res) => {
   db.tasks = db.tasks.filter((t) => t.id !== req.params.id);
-  save();
-  res.json({ ok: true });
-});
-
-// ---kehadiran---
-api.post("/attendance/periods", (req, res) => {
-  const name = (req.body.name || "").trim();
-  if (!name) return res.status(400).json({ error: "nama periode wajib" });
-  const id = "p" + Date.now().toString(36);
-  db.attendance.periods.push({ id, name, startDate: req.body.startDate || null });
-  save();
-  res.json({ ok: true, id });
-});
-api.put("/attendance", (req, res) => {
-  const { memberId, present, total, note } = req.body;
-  if (!memberId) return res.status(400).json({ error: "memberId wajib" });
-  // Entri tanpa periode = periode aktif pertama? disimpan per (periodId,memberId)
-  const periodId = req.body.periodId || (db.attendance.periods[0] || {}).id;
-  let e = db.attendance.entries.find((x) => x.memberId === memberId && x.periodId === periodId);
-  if (!e) {
-    e = { memberId, periodId, present: 0, total: 0, note: "" };
-    db.attendance.entries.push(e);
-  }
-  e.present = Number(present) || 0;
-  e.total = Number(total) || 0;
-  if (note !== undefined) e.note = note;
-  save();
-  res.json({ ok: true });
-});
-api.delete("/attendance/periods/:id", (req, res) => {
-  db.attendance.periods = db.attendance.periods.filter((p) => p.id !== req.params.id);
-  db.attendance.entries = db.attendance.entries.filter((e) => e.periodId !== req.params.id);
   save();
   res.json({ ok: true });
 });

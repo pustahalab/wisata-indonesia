@@ -22,12 +22,13 @@ Data tersimpan di `data/db.json` (otomatis dibuat dari seed saat pertama dijalan
 
 ## Rumus KPI (per anggota)
 
+Kehadiran **tidak dihitung** (permintaan pengguna); bobot diredistribusi ke kinerja pengerjaan:
+
 | Komponen | Bobot | Sumber |
 |---|---|---|
-| Kehadiran | 25% | Akumulasi periode kehadiran (baseline dari `ps (5).xls`) |
-| Penyelesaian tugas | 35% | Bobot (story point) tugas *done* ÷ total tugas yang ditangani |
-| Ketepatan waktu | 20% | Tugas selesai sebelum tenggat ÷ tugas selesai |
-| Kualitas | 20% | Rata-rata skor review (0–100) tugas yang selesai |
+| Penyelesaian tugas | 40% | Bobot (story point) tugas *done* ÷ total bobot tugas yang ditangani |
+| Ketepatan waktu | 30% | Tugas selesai sebelum tenggat ÷ tugas selesai |
+| Kualitas | 30% | Rata-rata skor review (0–100) tugas yang selesai |
 
 Predikat: **A** ≥ 90 (Sangat Baik), **B** ≥ 80 (Baik), **C** ≥ 70 (Cukup), **D** < 70 (Perlu Perbaikan).
 
@@ -51,10 +52,15 @@ kpi-app/
   skor KPI + predikat per orang, klik baris untuk detail pembobotan, filter & pencarian, tambah/ubah anggota.
 - **Tugas Kerja** — 36 tugas hasil breakdown blueprint (Fase 1–4): ubah status inline, input skor kualitas,
   penugasan ganda (PJ lebih dari satu), tenggat dengan penanda telat, tambah tugas baru.
-- **Kehadiran** — multi-periode (baseline kelas + sprint harian/mingguan), grid edit langsung, langsung memengaruhi skor KPI.
+- **Pembagian Tugas** — kartu per anggota berisi daftar tugas yang ditangani, dikelompokkan per disiplin;
+  ringkasan beban (total penugasan 76, rata-rata 2.8 tugas/orang, min 1, max 7).
+  Setiap tugas telah di-assign minimal 2 anggota (peran utama + pendamping dari peran terkait).
+
+- **Pembagian otomatis berpemerat** — round-robin per disiplin + *balancing pass*: anggota yang awalnya belum
+  mendapat tugas disisipkan sebagai pendamping di tugas paling awal yang terkait disiplinnya.
 
 ## Catatan
 
 - Status awal seed sengaja diisi sebagian (2 selesai, 2 dikerjakan) agar dashboard tidak kosong; gunakan
-  **↺ Reset Data** di halaman untuk kembali ke seed, atau tombol reset-status melalui `npm run reset`.
-- Endpoint API utama: `GET /api/state|dashboard|kpi`, CRUD `/api/members`, `/api/tasks`, `/api/attendance`, `POST /api/reset`.
+  **↺ Reset Data** di halaman untuk kembali ke seed.
+- Endpoint API utama: `GET /api/state|dashboard|kpi`, CRUD `/api/members`, `/api/tasks`, `POST /api/reset`.

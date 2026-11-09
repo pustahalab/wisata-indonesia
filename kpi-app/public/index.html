@@ -25,7 +25,7 @@
   <button class="tab active" data-tab="ringkasan">📊 Ringkasan</button>
   <button class="tab" data-tab="tim">👥 Tim & KPI</button>
   <button class="tab" data-tab="tugas">✅ Tugas Kerja</button>
-  <button class="tab" data-tab="kehadiran">🗓️ Kehadiran</button>
+  <button class="tab" data-tab="bagi">📋 Pembagian Tugas</button>
 </nav>
 
 <main>
@@ -34,7 +34,7 @@
     <div class="cards">
       <div class="card"><small>Progress Proyek</small><b id="c-progress">–</b><span>bobot tugas selesai</span></div>
       <div class="card"><small>KPI Tim</small><b id="c-kpi">–</b><span>rata-rata skor KPI</span></div>
-      <div class="card"><small>Kehadiran</small><b id="c-att">–</b><span>rata-rata kehadiran</span></div>
+      <div class="card"><small>Tugas Selesai</small><b id="c-done">–</b><span>seluruh fase roadmap</span></div>
       <div class="card"><small>Tugas Aktif</small><b id="c-wip">–</b><span>sedang dikerjakan</span></div>
     </div>
     <div class="grid2">
@@ -77,15 +77,10 @@
     <div class="box"><table id="tbl-tasks"><thead></thead><tbody></tbody></table></div>
   </section>
 
-  <!-- KEHADIRAN -->
-  <section id="tab-kehadiran" class="panel hidden">
-    <div class="toolbar">
-      <select id="sel-period"></select>
-      <button id="btn-add-period" class="ghost">+ Periode Baru</button>
-      <button id="btn-del-period" class="ghost danger">Hapus periode ini</button>
-    </div>
-    <div class="box"><table id="tbl-att"><thead></thead><tbody></tbody></table></div>
-    <p class="hint">Skor KPI «Kehadiran» (bobot 25%) = akumulasi seluruh periode. Data awal diambil dari lampiran <code>ps (5).xls</code>. Arah kursor ke kolom untuk mengedit.</p>
+  <!-- PEMBAGIAN TUGAS -->
+  <section id="tab-bagi" class="panel hidden">
+    <div class="cards" id="bagi-summary"></div>
+    <div id="bagi-cards"></div>
   </section>
 </main>
 
@@ -94,7 +89,7 @@
   <menu><button id="dlg-cancel" class="ghost">Batal</button><button id="dlg-ok" class="primary">Simpan</button></menu>
 </dialog>
 
-<footer>Sumber data: <code>ps (5).xls</code> (27 anggota tim, Information System) &amp; <code>blueprint_pengembangan_aplikasi_wisata_nusantarago.md</code> (rencana kerja 4 fase). Data tersimpan di <code>kpi-app/data/db.json</code>.</footer>
+<footer>Sumber data: <code>ps (5).xls</code> (27 anggota tim, Information System) &amp; <code>blueprint_pengembangan_aplikasi_wisata_nusantarago.md</code> (rencana kerja 4 fase). Skor KPI = Penyelesaian 40% + Tepat Waktu 30% + Kualitas 30% (kehadiran tidak dihitung). Data tersimpan di <code>kpi-app/data/db.json</code>.</footer>
 
 <script src="app.js"></script>
 </body>

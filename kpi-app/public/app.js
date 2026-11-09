@@ -58,7 +58,7 @@ function renderAll() {
   renderRingkasan();
   renderTim();
   renderTugas();
-  renderKehadiran();
+  renderBagi();
 }
 
 function renderHeader() {
@@ -72,7 +72,7 @@ let statusChart, roleChart;
 function renderRingkasan() {
   $("#c-progress").textContent = dash.progressTotal + "%";
   $("#c-kpi").textContent = dash.kpiRata.toFixed(1);
-  $("#c-att").textContent = dash.kehadiranRata.toFixed(1) + "%";
+  $("#c-done").textContent = `${dash.tugasDone}/${dash.totalTugas}`;
   $("#c-wip").textContent = dash.tugasWip;
 
   // progress per fase
@@ -143,15 +143,14 @@ function renderTim() {
     <tr data-id="${k.id}" style="cursor:pointer" title="Klik untuk detail KPI">
       <td>${avatarHtml(k)}<b>${esc(k.name)}</b><br><small style="color:var(--muted)">${esc(k.campusId)}</small></td>
       <td><span class="role-tag" style="background:${ROLE_COLORS[k.role]}">${esc(db.roleNames[k.role] || k.role)}</span></td>
-      <td>${k.kpi.kehadiran.toFixed(1)}%</td>
       <td>${k.kpi.penyelesaian.toFixed(1)}%<br><small style="color:var(--muted)">${k.kpi.detail.tugasSelesai}/${k.kpi.detail.tugasTotal} tugas</small></td>
       <td>${k.kpi.ketepatan.toFixed(1)}%</td>
       <td>${k.kpi.kualitas ? k.kpi.kualitas.toFixed(1) : "–"}</td>
       <td><div class="score"><div class="bar"><i style="width:${k.kpi.total}%;background:${barColor(k.kpi.total)}"></i></div><b>${k.kpi.total.toFixed(1)}</b></div></td>
       <td>${gradeBadge(k.kpi.grade)}</td>
     </tr>`).join("");
-  $("#tbl-members thead").innerHTML = `<tr><th>Anggota</th><th>Disiplin</th><th>Kehadiran (25%)</th><th>Penyelesaian (35%)</th><th>Tepat Waktu (20%)</th><th>Kualitas (20%)</th><th>Skor KPI</th><th>Predikat</th></tr>`;
-  $("#tbl-members tbody").innerHTML = rows || `<tr><td colspan="8" style="color:var(--muted)">Tidak ada anggota yang cocok.</td></tr>`;
+  $("#tbl-members thead").innerHTML = `<tr><th>Anggota</th><th>Disiplin</th><th>Penyelesaian (40%)</th><th>Tepat Waktu (30%)</th><th>Kualitas (30%)</th><th>Skor KPI</th><th>Predikat</th></tr>`;
+  $("#tbl-members tbody").innerHTML = rows || `<tr><td colspan="7" style="color:var(--muted)">Tidak ada anggota yang cocok.</td></tr>`;
 }
 
 // ---------- tab TUGAS ----------
@@ -185,29 +184,32 @@ function renderTugas() {
   $("#tbl-tasks tbody").innerHTML = rows || `<tr><td colspan="9" style="color:var(--muted)">Tidak ada tugas yang cocok.</td></tr>`;
 }
 
-// ---------- tab KEHADIRAN ----------
-let currentPeriod = null;
+// ---------- tab PEMBAGIAN TUGAS ----------
+function renderBagi() {
+  const acts = db.members.reduce((s, m) => s + db.tasks.filter((t) => (t.assignees || []).includes(m.id)).length, 0);
+  const perMember = db.members.map((m) => ({ m, n: db.tasks.filter((t) => (t.assignees || []).includes(m.id)).length }));
+  const mid = acts / db.members.length;
+  const min = Math.min(...perMember.map((x) => x.n));
+  const max = Math.max(...perMember.map((x) => x.n));
+  $("#bagi-summary").innerHTML = `
+    <div class="card"><small>Total Penugasan</small><b>${acts}</b><span>${db.tasks.length} tugas · dikerjakan ${db.members.length} orang</span></div>
+    <div class="card"><small>Rata-rata per Anggota</small><b>${mid.toFixed(1)}</b><span>tugas per orang</span></div>
+    <div class="card"><small>Beban Terkecil</small><b style="color:${barColor(min * 20)}">${min}</b><span>tugas</span></div>
+    <div class="card"><small>Beban Terbesar</small><b style="color:${barColor(max * 15)}">${max}</b><span>tugas</span></div>`;
 
-function renderKehadiran() {
-  const sel = $("#sel-period");
-  const keep = currentPeriod;
-  sel.innerHTML = db.attendance.periods
-    .map((p) => `<option value="${p.id}" ${p.id === (keep || db.attendance.periods[0]?.id) ? "selected" : ""}>${esc(p.name)}</option>`)
-    .join("");
-  currentPeriod = sel.value;
-
-  const rows = db.members.map((m) => {
-    const e = db.attendance.entries.find((x) => x.memberId === m.id && x.periodId === currentPeriod)
-      || { present: "", total: "", note: "" };
-    return `<tr>
-      <td>${avatarHtml(m)}<b>${esc(m.name)}</b><br><small style="color:var(--muted)">${esc(db.roleNames[m.role] || m.role)}</small></td>
-      <td><input type="number" min="0" data-act="att" data-id="${m.id}" data-f="present" value="${e.present}"></td>
-      <td><input type="number" min="0" data-act="att" data-id="${m.id}" data-f="total" value="${e.total}"></td>
-      <td><input type="text" data-act="att" data-id="${m.id}" data-f="note" value="${esc(e.note || "")}" style="width:100%;background:#0d1524;border:1px solid var(--line);color:var(--txt);padding:4px 6px;border-radius:7px"></td>
-    </tr>`;
+  const roles = Object.keys(db.roleNames);
+  const cards = roles.map((r) => {
+    const rows = db.members.filter((m) => m.role === r).map((m) => {
+      const list = db.tasks
+        .filter((t) => (t.assignees || []).includes(m.id))
+        .map((t) => `<li><span class="pill ${t.status}">${STATUS_LABEL[t.status]}</span><b>${t.code}</b> · F${t.phase} · ${t.weight}sp<br><small style="color:var(--muted)">${esc(t.title)}</small></li>`)
+        .join("");
+      return `<div class="box mcard"><div class="mtop">${avatarHtml(m)}<div><b>${esc(m.name)}</b><br><span class="role-tag" style="background:${ROLE_COLORS[r]}">${esc(db.roleNames[r])}</span></div></div><ul>${list || "<li style='color:var(--muted)'>Belum ditugaskan.</li>"}</ul></div>`;
+    }).join("");
+    return `<h3 class="rolehead" style="border-left:4px solid ${ROLE_COLORS[r]};padding-left:8px">${esc(db.roleNames[r])}</h3>
+      <div class="mcards">${rows}</div>`;
   }).join("");
-  $("#tbl-att thead").innerHTML = `<tr><th>Anggota</th><th>Hadir (hari)</th><th>Total (hari)</th><th>Catatan</th></tr>`;
-  $("#tbl-att tbody").innerHTML = rows;
+  $("#bagi-cards").innerHTML = cards;
 }
 
 // ---------- dialog ----------
@@ -279,25 +281,11 @@ function dialogEditTask(id) {
     });
 }
 
-function dialogAddPeriod() {
-  openDialog(`
-    <h4>Periode Kehadiran Baru</h4>
-    <label>Nama periode (mis. Sprint 1 – Nov minggu 1)</label>
-    <input type="text" id="dp-name">
-    <label>Tanggal mulai</label><input type="date" id="dp-start">`,
-    async () => {
-      const name = $("#dp-name").value.trim();
-      if (!name) throw new Error("Nama periode wajib diisi");
-      await post("/attendance/periods", { name, startDate: $("#dp-start").value || null });
-      await refreshAll();
-    });
-}
-
 function dialogDetailMember(id) {
   const k = kpis.find((x) => x.id === id);
   if (!k) return;
   const kar = k.kpi;
-  const comp = [["Kehadiran", kar.kehadiran, 25], ["Penyelesaian", kar.penyelesaian, 35], ["Tepat Waktu", kar.ketepatan, 20], ["Kualitas", kar.kualitas, 20]];
+  const comp = [["Penyelesaian", kar.penyelesaian, 40], ["Tepat Waktu", kar.ketepatan, 30], ["Kualitas", kar.kualitas, 30]];
   const assigned = db.tasks.filter((t) => (t.assignees || []).includes(id));
   const list = assigned.map((t) => `<li><span class="pill ${t.status}">${STATUS_LABEL[t.status]}</span> <b>${t.code}</b> ${esc(t.title)}</li>`).join("");
   openDialog(`
@@ -351,34 +339,10 @@ function bindOnce() {
     if (b) dialogEditTask(b.dataset.id);
   };
 
-  // kehadiran
-  $("#sel-period").onchange = () => { currentPeriod = $("#sel-period").value; renderKehadiran(); };
-  $("#btn-add-period").onclick = dialogAddPeriod;
-  $("#btn-del-period").onclick = async () => {
-    if (!currentPeriod) return;
-    if (confirm("Hapus periode ini beserta datanya?")) {
-      await del(`/attendance/periods/${currentPeriod}`);
-      currentPeriod = null;
-      await refreshAll();
-    }
-  };
-  $("#tbl-att").onchange = async (e) => {
-    const el = e.target;
-    if (!el.dataset.id || el.dataset.act !== "att") return;
-    const tr = el.closest("tr");
-    const [p, t, n] = tr.querySelectorAll("input");
-    await put("/attendance", {
-      memberId: el.dataset.id, periodId: currentPeriod,
-      present: p.value, total: t.value, note: n.value,
-    });
-    await refreshAll();
-  };
-
   // reset seed
   $("#btn-reset").onclick = async () => {
     if (confirm("Reset seluruh data ke kondisi awal (seed dari file lampiran)?")) {
       await post("/reset");
-      currentPeriod = null;
       await refreshAll();
     }
   };

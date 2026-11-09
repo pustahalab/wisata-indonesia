@@ -2,8 +2,6 @@
 // Sumber: ps (5).xls (daftar tim/kelas) + blueprint_pengembangan_aplikasi_wisata_nusantarago.md
 "use strict";
 
-const ATT_BASE_TOTAL_DAYS = 20; // periode dasar kehadiran dari data kelas
-
 // 27 anggota tim dari file ps (5).xls (Id kampus = Campus ID di file)
 const RAW_MEMBERS = [
   ["202404560008", "ALBERTUS CHANDRA HALIM", 100],
@@ -131,9 +129,6 @@ function buildTasks(members) {
     cursor[role]++;
     return m.id;
   };
-
-  // Status demo awal: sebagian kecil tugas Fase 1 sudah berjalan agar
-  // dashboard tidak kosong; sisanya "todo" untuk diupdate tim.
   const initial = {
     "F1-01": { status: "done", reviewScore: 90 },
     "F1-03": { status: "done", reviewScore: 88 },
@@ -141,14 +136,15 @@ function buildTasks(members) {
     "F1-04": { status: "in_progress" },
   };
 
-  return RAW_TASKS.map(([code, phase, title, roles, weight, offsetWk]) => {
+  const out = RAW_TASKS.map(([code, phase, title, roles, weight, offsetWk]) => {
+    // Setiap tugas diberi minimal 2 anggota: 1 peran utama + 1 pendamping
+    // (dari peran kedua bila ada, atau peran utama yang berbeda orang).
     const assignees = [];
     const p = next(roles[0]);
     if (p) assignees.push(p);
-    if (roles[1]) {
-      const s = next(roles[1]);
-      if (s && s !== p) assignees.push(s);
-    }
+    let second = roles[1] ? next(roles[1]) : null;
+    if (!second || second === p) second = (queue[roles[0]] || []).length > 1 ? next(roles[0]) : null;
+    if (second && second !== p) assignees.push(second);
     const ini = initial[code];
     return {
       id: code.toLowerCase(),
@@ -166,6 +162,32 @@ function buildTasks(members) {
         ini && ini.status === "done" ? addDaysISO(PROJECT_START, offsetWk * 7 - 5) : null,
     };
   });
+
+  // Pemerataan beban: anggota yang belum mendapat tugas disisipkan sebagai
+  // pendamping pada tugas paling awal yang terkait disiplinnya (mis. UI/UX
+  // membantu tugas Frontend/Mobile), sehingga tidak ada anggota kosong.
+  const REL = { uiux: ["frontend", "mobile"], qa: ["backend", "frontend"], data: ["backend", "mobile"], frontend: ["backend"], mobile: ["frontend", "qa"], backend: ["data", "frontend"] };
+  const ofMember = (id) => out.filter((t) => t.assignees.includes(id));
+  for (const m of members) {
+    if (ofMember(m.id).length > 0) continue;
+    const rel = REL[m.role] || [];
+    for (const t of out.sort((a, b) => a.phase - b.phase)) {
+      if (t.assignees.length >= 4) continue;
+      if (t.roles.some((r) => rel.includes(r))) {
+        t.assignees.push(m.id);
+        if (ofMember(m.id).length >= 2) break;
+      }
+    }
+    // fallback: tugas fase terendah apa pun yang belum penuh
+    if (ofMember(m.id).length === 0) {
+      for (const t of out) {
+        if (t.assignees.length >= 4) continue;
+        t.assignees.push(m.id);
+        if (ofMember(m.id).length >= 2) break;
+      }
+    }
+  }
+  return out;
 }
 
 const PROJECT_START = "2026-11-02"; // Senin mulai proyek (dapat diubah di aplikasi)
@@ -176,25 +198,12 @@ function addDaysISO(iso, days) {
   return d.toISOString().slice(0, 10);
 }
 
-function buildAttendance(members) {
-  const period = { id: "baseline", name: "Baseline kelas (data ps.xls)", startDate: null };
-  const entries = members.map((m) => ({
-    memberId: m.id,
-    periodId: "baseline",
-    present: Math.round((ATT_BASE_TOTAL_DAYS * m.attPct) / 100 * 10) / 10,
-    total: ATT_BASE_TOTAL_DAYS,
-    note: "Kehadiran kelas dari data ps (5).xls",
-  }));
-  return { periods: [period], entries };
-}
-
 function buildSeed() {
   const members = buildMembers();
   return {
     settings: { projectName: "NusantaraGo", startDate: PROJECT_START },
     members,
     tasks: buildTasks(members),
-    attendance: buildAttendance(members),
   };
 }
 

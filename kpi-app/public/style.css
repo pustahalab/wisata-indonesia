@@ -73,9 +73,14 @@ dialog input[type=text],dialog input[type=number],dialog input[type=date],dialog
 dialog .chips{display:flex;flex-wrap:wrap;gap:7px;max-height:190px;overflow:auto;background:#0d1524;border:1px solid var(--line);border-radius:10px;padding:10px}
 dialog .chips label{display:flex;gap:6px;margin:0;color:var(--txt);font-size:12.5px;align-items:center}
 dialog menu{display:flex;justify-content:flex-end;gap:10px;margin:18px 0 0;padding:0}
-#member-detail{margin-top:16px}
-.kpibox{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:8px}
+#member-detail{margin-top:16px}.kpibox{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:8px}
 @media(max-width:800px){.kpibox{grid-template-columns:1fr 1fr}}
 .kpibox .kb{background:#0d1524;border:1px solid var(--line);border-radius:12px;padding:12px}
 .kpibox .kb small{color:var(--muted)}
 .kpibox .kb b{display:block;font-size:20px;margin-top:3px}
+.rolehead{margin:18px 0 10px;font-size:13.5px;color:var(--txt)}
+.mcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.mcard ul{list-style:none;margin:10px 0 0;padding:0;font-size:12.5px}
+.mcard ul li{padding:6px 0;border-bottom:1px dashed #1a2336}
+.mcard ul li:last-child{border-bottom:none}
+.mtop{display:flex;align-items:center;gap:9px}
