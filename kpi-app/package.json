@@ -1,0 +1,13 @@
+{
+  "name": "kpi-nusantarago",
+  "version": "1.0.0",
+  "description": "Aplikasi KPI pengembangan aplikasi NusantaraGo (tim Information System 27 orang)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "reset": "node -e \"const {buildSeed}=require('./lib/seed');const fs=require('fs');fs.mkdirSync('data',{recursive:true});fs.writeFileSync('data/db.json',JSON.stringify(buildSeed(),null,2));console.log('Data di-reset.')\""
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

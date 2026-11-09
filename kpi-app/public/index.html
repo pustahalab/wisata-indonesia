@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KPI Pengembangan NusantaraGo</title>
+<link rel="stylesheet" href="style.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <h1>🏝️ KPI Pengembangan <span>NusantaraGo</span></h1>
+    <p id="subtitle">Super-App Pariwisata Nasional Indonesia — KPI pengerjaan & rencana kerja blueprint</p>
+  </div>
+  <div class="hstat">
+    <div class="hstat-item"><small>Progress Proyek</small><b id="h-progress">–</b></div>
+    <div class="hstat-item"><small>KPI Rata-rata Tim</small><b id="h-kpi">–</b></div>
+    <div class="hstat-item"><small>Tugas Selesai</small><b id="h-done">–</b></div>
+    <button id="btn-reset" class="ghost" title="Kembalikan seluruh data ke kondisi awal seed">↺ Reset Data</button>
+  </div>
+</header>
+
+<nav>
+  <button class="tab active" data-tab="ringkasan">📊 Ringkasan</button>
+  <button class="tab" data-tab="tim">👥 Tim & KPI</button>
+  <button class="tab" data-tab="tugas">✅ Tugas Kerja</button>
+  <button class="tab" data-tab="kehadiran">🗓️ Kehadiran</button>
+</nav>
+
+<main>
+  <!-- RINGKASAN -->
+  <section id="tab-ringkasan" class="panel">
+    <div class="cards">
+      <div class="card"><small>Progress Proyek</small><b id="c-progress">–</b><span>bobot tugas selesai</span></div>
+      <div class="card"><small>KPI Tim</small><b id="c-kpi">–</b><span>rata-rata skor KPI</span></div>
+      <div class="card"><small>Kehadiran</small><b id="c-att">–</b><span>rata-rata kehadiran</span></div>
+      <div class="card"><small>Tugas Aktif</small><b id="c-wip">–</b><span>sedang dikerjakan</span></div>
+    </div>
+    <div class="grid2">
+      <div class="box"><h3>Progress per Fase (Roadmap Blueprint)</h3><div id="phasebars"></div></div>
+      <div class="box"><h3>Status Tugas</h3><canvas id="chartStatus" height="220"></canvas></div>
+    </div>
+    <div class="grid2">
+      <div class="box"><h3>KPI Rata-rata per Disiplin</h3><canvas id="chartRole" height="220"></canvas></div>
+      <div class="box"><h3>Peringkat KPI (Top 8)</h3><div id="toplist" class="toplist"></div></div>
+    </div>
+  </section>
+
+  <!-- TIM -->
+  <section id="tab-tim" class="panel hidden">
+    <div class="toolbar">
+      <select id="f-role"><option value="">Semua Disiplin</option></select>
+      <select id="f-grade"><option value="">Semua Predikat</option><option>A</option><option>B</option><option>C</option><option>D</option></select>
+      <input id="f-q" placeholder="Cari nama / ID…" />
+      <button id="btn-add-member" class="ghost">+ Anggota</button>
+    </div>
+    <div class="box"><table id="tbl-members"><thead></thead><tbody></tbody></table></div>
+    <div id="member-detail" class="hidden"></div>
+  </section>
+
+  <!-- TUGAS -->
+  <section id="tab-tugas" class="panel hidden">
+    <div class="toolbar">
+      <select id="f-phase">
+        <option value="">Semua Fase</option><option value="1">Fase 1 – Fondasi & Direktori</option>
+        <option value="2">Fase 2 – Portal Mitra & Paket</option><option value="3">Fase 3 – Transportasi & Akomodasi</option>
+        <option value="4">Fase 4 – Cerdas, Uji & Peluncuran</option>
+      </select>
+      <select id="f-status">
+        <option value="">Semua Status</option><option value="todo">Belum</option>
+        <option value="in_progress">Dikerjakan</option><option value="review">Review</option><option value="done">Selesai</option>
+      </select>
+      <select id="f-member"><option value="">Semua Penanggung Jawab</option></select>
+      <button id="btn-add-task" class="ghost">+ Tugas</button>
+    </div>
+    <div class="box"><table id="tbl-tasks"><thead></thead><tbody></tbody></table></div>
+  </section>
+
+  <!-- KEHADIRAN -->
+  <section id="tab-kehadiran" class="panel hidden">
+    <div class="toolbar">
+      <select id="sel-period"></select>
+      <button id="btn-add-period" class="ghost">+ Periode Baru</button>
+      <button id="btn-del-period" class="ghost danger">Hapus periode ini</button>
+    </div>
+    <div class="box"><table id="tbl-att"><thead></thead><tbody></tbody></table></div>
+    <p class="hint">Skor KPI «Kehadiran» (bobot 25%) = akumulasi seluruh periode. Data awal diambil dari lampiran <code>ps (5).xls</code>. Arah kursor ke kolom untuk mengedit.</p>
+  </section>
+</main>
+
+<dialog id="dlg">
+  <div id="dlg-body"></div>
+  <menu><button id="dlg-cancel" class="ghost">Batal</button><button id="dlg-ok" class="primary">Simpan</button></menu>
+</dialog>
+
+<footer>Sumber data: <code>ps (5).xls</code> (27 anggota tim, Information System) &amp; <code>blueprint_pengembangan_aplikasi_wisata_nusantarago.md</code> (rencana kerja 4 fase). Data tersimpan di <code>kpi-app/data/db.json</code>.</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

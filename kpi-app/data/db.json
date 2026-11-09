@@ -1,0 +1,1118 @@
+{
+  "settings": {
+    "projectName": "NusantaraGo",
+    "startDate": "2026-11-02"
+  },
+  "members": [
+    {
+      "id": "m01",
+      "campusId": "202404560008",
+      "name": "Albertus Chandra Halim",
+      "role": "backend",
+      "studentId": "S001",
+      "attPct": 100
+    },
+    {
+      "id": "m02",
+      "campusId": "202404560040",
+      "name": "Aloysia Carla Putri Haryadi",
+      "role": "frontend",
+      "studentId": "S002",
+      "attPct": 100
+    },
+    {
+      "id": "m03",
+      "campusId": "202404560037",
+      "name": "Anastasya Geovani Manurung",
+      "role": "mobile",
+      "studentId": "S003",
+      "attPct": 100
+    },
+    {
+      "id": "m04",
+      "campusId": "202404560045",
+      "name": "Bintang Neera",
+      "role": "backend",
+      "studentId": "S004",
+      "attPct": 100
+    },
+    {
+      "id": "m05",
+      "campusId": "202404560021",
+      "name": "Brigid Pauline Ratu Patty Diaz",
+      "role": "frontend",
+      "studentId": "S005",
+      "attPct": 100
+    },
+    {
+      "id": "m06",
+      "campusId": "202204560032",
+      "name": "Caesar Gattaca",
+      "role": "mobile",
+      "studentId": "S006",
+      "attPct": 88
+    },
+    {
+      "id": "m07",
+      "campusId": "202404560019",
+      "name": "Cornelius Dicho Dharmawan",
+      "role": "uiux",
+      "studentId": "S007",
+      "attPct": 100
+    },
+    {
+      "id": "m08",
+      "campusId": "202404560005",
+      "name": "Edward Antonio Herlambang Hutauruk",
+      "role": "qa",
+      "studentId": "S008",
+      "attPct": 100
+    },
+    {
+      "id": "m09",
+      "campusId": "202404560009",
+      "name": "Ezekiel Matheo Barus",
+      "role": "data",
+      "studentId": "S009",
+      "attPct": 100
+    },
+    {
+      "id": "m10",
+      "campusId": "202404560029",
+      "name": "Frans Nicholas Rafael",
+      "role": "backend",
+      "studentId": "S010",
+      "attPct": 100
+    },
+    {
+      "id": "m11",
+      "campusId": "202404560020",
+      "name": "Gabriella Lavigne Pink",
+      "role": "frontend",
+      "studentId": "S011",
+      "attPct": 100
+    },
+    {
+      "id": "m12",
+      "campusId": "202404560049",
+      "name": "George Blaciano Kunemara Putra",
+      "role": "mobile",
+      "studentId": "S012",
+      "attPct": 100
+    },
+    {
+      "id": "m13",
+      "campusId": "202404560052",
+      "name": "Hesekiel Andhika Nainggolan",
+      "role": "uiux",
+      "studentId": "S013",
+      "attPct": 100
+    },
+    {
+      "id": "m14",
+      "campusId": "202404560039",
+      "name": "Imanuel Julival Lumban Gaol",
+      "role": "qa",
+      "studentId": "S014",
+      "attPct": 100
+    },
+    {
+      "id": "m15",
+      "campusId": "202404560050",
+      "name": "Jessica Hillary Hutahaean",
+      "role": "data",
+      "studentId": "S015",
+      "attPct": 100
+    },
+    {
+      "id": "m16",
+      "campusId": "202404560023",
+      "name": "Jo Suk Sin",
+      "role": "backend",
+      "studentId": "S016",
+      "attPct": 100
+    },
+    {
+      "id": "m17",
+      "campusId": "202404560035",
+      "name": "Joel Oktavianus",
+      "role": "frontend",
+      "studentId": "S017",
+      "attPct": 100
+    },
+    {
+      "id": "m18",
+      "campusId": "202404560027",
+      "name": "Josue Freitas Da Costa",
+      "role": "mobile",
+      "studentId": "S018",
+      "attPct": 100
+    },
+    {
+      "id": "m19",
+      "campusId": "202404560033",
+      "name": "Linda Wati Purba",
+      "role": "uiux",
+      "studentId": "S019",
+      "attPct": 100
+    },
+    {
+      "id": "m20",
+      "campusId": "202404560001",
+      "name": "Michael Devon Eka Putra",
+      "role": "qa",
+      "studentId": "S020",
+      "attPct": 100
+    },
+    {
+      "id": "m21",
+      "campusId": "202404560028",
+      "name": "Oda Kartika Nuringtyasanti",
+      "role": "data",
+      "studentId": "S021",
+      "attPct": 100
+    },
+    {
+      "id": "m22",
+      "campusId": "202404560036",
+      "name": "Raden Roro Anindya Anggitoputri",
+      "role": "backend",
+      "studentId": "S022",
+      "attPct": 100
+    },
+    {
+      "id": "m23",
+      "campusId": "202404560054",
+      "name": "Rafael Elano Prasetya",
+      "role": "frontend",
+      "studentId": "S023",
+      "attPct": 100
+    },
+    {
+      "id": "m24",
+      "campusId": "202204560029",
+      "name": "Syrillya Chantika Valentina Sitohang",
+      "role": "mobile",
+      "studentId": "S024",
+      "attPct": 88
+    },
+    {
+      "id": "m25",
+      "campusId": "202404560017",
+      "name": "Theodomiro Fidelio Tomasoa",
+      "role": "uiux",
+      "studentId": "S025",
+      "attPct": 100
+    },
+    {
+      "id": "m26",
+      "campusId": "202404560025",
+      "name": "Vicentius Elang Krisnanto",
+      "role": "qa",
+      "studentId": "S026",
+      "attPct": 100
+    },
+    {
+      "id": "m27",
+      "campusId": "202404560051",
+      "name": "Yosep Hermawan",
+      "role": "data",
+      "studentId": "S027",
+      "attPct": 88
+    }
+  ],
+  "tasks": [
+    {
+      "id": "f1-01",
+      "code": "F1-01",
+      "phase": 1,
+      "title": "Rancang UI/UX (Figma): wireframe & design system",
+      "roles": [
+        "uiux",
+        "frontend"
+      ],
+      "weight": 8,
+      "dueDate": "2026-11-14",
+      "offsetWk": 2,
+      "assignees": [
+        "m07",
+        "m02"
+      ],
+      "status": "done",
+      "reviewScore": 90,
+      "completedAt": "2026-11-11"
+    },
+    {
+      "id": "f1-02",
+      "code": "F1-02",
+      "phase": 1,
+      "title": "Setup repo, CI/CD & struktur Modular Monolith",
+      "roles": [
+        "data",
+        "backend"
+      ],
+      "weight": 5,
+      "dueDate": "2026-11-14",
+      "offsetWk": 2,
+      "assignees": [
+        "m09",
+        "m01"
+      ],
+      "status": "in_progress",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f1-03",
+      "code": "F1-03",
+      "phase": 1,
+      "title": "Desain arsitektur & skema database (PostgreSQL + PostGIS)",
+      "roles": [
+        "backend",
+        "data"
+      ],
+      "weight": 8,
+      "dueDate": "2026-11-21",
+      "offsetWk": 3,
+      "assignees": [
+        "m04",
+        "m15"
+      ],
+      "status": "done",
+      "reviewScore": 88,
+      "completedAt": "2026-11-18"
+    },
+    {
+      "id": "f1-04",
+      "code": "F1-04",
+      "phase": 1,
+      "title": "API dasar & autentikasi (role tourist/partner/guide/admin)",
+      "roles": [
+        "backend"
+      ],
+      "weight": 8,
+      "dueDate": "2026-11-28",
+      "offsetWk": 4,
+      "assignees": [
+        "m10"
+      ],
+      "status": "in_progress",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f1-05",
+      "code": "F1-05",
+      "phase": 1,
+      "title": "Setup Redis & index pencarian (Elasticsearch)",
+      "roles": [
+        "data",
+        "backend"
+      ],
+      "weight": 5,
+      "dueDate": "2026-11-28",
+      "offsetWk": 4,
+      "assignees": [
+        "m21",
+        "m16"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f1-06",
+      "code": "F1-06",
+      "phase": 1,
+      "title": "Pencarian geospasial & filter multi-dimensi direktori",
+      "roles": [
+        "backend"
+      ],
+      "weight": 13,
+      "dueDate": "2026-12-12",
+      "offsetWk": 6,
+      "assignees": [
+        "m22"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f1-07",
+      "code": "F1-07",
+      "phase": 1,
+      "title": "Halaman detail destinasi komprehensif (web)",
+      "roles": [
+        "frontend"
+      ],
+      "weight": 8,
+      "dueDate": "2026-12-12",
+      "offsetWk": 6,
+      "assignees": [
+        "m05"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f1-08",
+      "code": "F1-08",
+      "phase": 1,
+      "title": "Peta interaktif + clustering pin (web & mobile)",
+      "roles": [
+        "frontend",
+        "mobile"
+      ],
+      "weight": 8,
+      "dueDate": "2026-12-19",
+      "offsetWk": 7,
+      "assignees": [
+        "m11",
+        "m03"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f1-09",
+      "code": "F1-09",
+      "phase": 1,
+      "title": "Alur kontributor publik pendaftaran destinasi (geotag & poin)",
+      "roles": [
+        "mobile",
+        "backend"
+      ],
+      "weight": 8,
+      "dueDate": "2026-12-19",
+      "offsetWk": 7,
+      "assignees": [
+        "m06",
+        "m01"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f1-10",
+      "code": "F1-10",
+      "phase": 1,
+      "title": "Dashboard kurasi admin & moderasi berjenjang (dedup Haversine)",
+      "roles": [
+        "backend",
+        "frontend"
+      ],
+      "weight": 13,
+      "dueDate": "2026-12-26",
+      "offsetWk": 8,
+      "assignees": [
+        "m04",
+        "m17"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f1-11",
+      "code": "F1-11",
+      "phase": 1,
+      "title": "Data seeding destinasi utama 38 provinsi",
+      "roles": [
+        "data"
+      ],
+      "weight": 5,
+      "dueDate": "2026-12-26",
+      "offsetWk": 8,
+      "assignees": [
+        "m27"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f2-01",
+      "code": "F2-01",
+      "phase": 2,
+      "title": "Dashboard mitra & onboarding KYC/KYB",
+      "roles": [
+        "backend",
+        "frontend"
+      ],
+      "weight": 13,
+      "dueDate": "2027-01-09",
+      "offsetWk": 10,
+      "assignees": [
+        "m10",
+        "m23"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f2-02",
+      "code": "F2-02",
+      "phase": 2,
+      "title": "Tour Package Builder (open/private trip, itinerary harian)",
+      "roles": [
+        "backend",
+        "mobile"
+      ],
+      "weight": 13,
+      "dueDate": "2027-01-23",
+      "offsetWk": 12,
+      "assignees": [
+        "m16",
+        "m12"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f2-03",
+      "code": "F2-03",
+      "phase": 2,
+      "title": "Dynamic pricing bertingkat & kuota per tanggal",
+      "roles": [
+        "backend"
+      ],
+      "weight": 8,
+      "dueDate": "2027-01-30",
+      "offsetWk": 13,
+      "assignees": [
+        "m22"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f2-04",
+      "code": "F2-04",
+      "phase": 2,
+      "title": "E-Ticketing & QR code tiket masuk",
+      "roles": [
+        "backend",
+        "mobile"
+      ],
+      "weight": 8,
+      "dueDate": "2027-02-06",
+      "offsetWk": 14,
+      "assignees": [
+        "m01",
+        "m18"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f2-05",
+      "code": "F2-05",
+      "phase": 2,
+      "title": "Integrasi Payment Gateway (Midtrans/Xendit + webhook)",
+      "roles": [
+        "backend"
+      ],
+      "weight": 13,
+      "dueDate": "2027-02-13",
+      "offsetWk": 15,
+      "assignees": [
+        "m04"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f2-06",
+      "code": "F2-06",
+      "phase": 2,
+      "title": "Escrow ledger & split payment ke mitra",
+      "roles": [
+        "backend"
+      ],
+      "weight": 8,
+      "dueDate": "2027-02-20",
+      "offsetWk": 16,
+      "assignees": [
+        "m10"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f2-07",
+      "code": "F2-07",
+      "phase": 2,
+      "title": "UI pembuatan & pencarian paket wisata",
+      "roles": [
+        "frontend",
+        "uiux"
+      ],
+      "weight": 8,
+      "dueDate": "2027-02-20",
+      "offsetWk": 16,
+      "assignees": [
+        "m02",
+        "m13"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f2-08",
+      "code": "F2-08",
+      "phase": 2,
+      "title": "QA regresi modul mitra & transaksi",
+      "roles": [
+        "qa"
+      ],
+      "weight": 5,
+      "dueDate": "2027-02-27",
+      "offsetWk": 17,
+      "assignees": [
+        "m08"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f3-01",
+      "code": "F3-01",
+      "phase": 3,
+      "title": "Extranet akomodasi lokal (PMS sederhana & kalender kamar)",
+      "roles": [
+        "backend",
+        "frontend"
+      ],
+      "weight": 13,
+      "dueDate": "2027-03-13",
+      "offsetWk": 19,
+      "assignees": [
+        "m16",
+        "m05"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f3-02",
+      "code": "F3-02",
+      "phase": 3,
+      "title": "Integrasi API hotel komersial (agregator perhotelan)",
+      "roles": [
+        "backend"
+      ],
+      "weight": 8,
+      "dueDate": "2027-03-20",
+      "offsetWk": 20,
+      "assignees": [
+        "m22"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f3-03",
+      "code": "F3-03",
+      "phase": 3,
+      "title": "Radius mapping penginapan sekitar destinasi",
+      "roles": [
+        "backend",
+        "frontend"
+      ],
+      "weight": 5,
+      "dueDate": "2027-03-27",
+      "offsetWk": 21,
+      "assignees": [
+        "m01",
+        "m11"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f3-04",
+      "code": "F3-04",
+      "phase": 3,
+      "title": "Marketplace transportasi lokal (rental, kapal, jeep)",
+      "roles": [
+        "backend",
+        "frontend"
+      ],
+      "weight": 13,
+      "dueDate": "2027-04-03",
+      "offsetWk": 22,
+      "assignees": [
+        "m04",
+        "m17"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f3-05",
+      "code": "F3-05",
+      "phase": 3,
+      "title": "Agregator transportasi antarkota (KAI, Pelni, bus AKAP)",
+      "roles": [
+        "backend"
+      ],
+      "weight": 13,
+      "dueDate": "2027-04-10",
+      "offsetWk": 23,
+      "assignees": [
+        "m10"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f3-06",
+      "code": "F3-06",
+      "phase": 3,
+      "title": "Estimasi rute multi-moda (first-mile to last-mile)",
+      "roles": [
+        "mobile",
+        "frontend"
+      ],
+      "weight": 8,
+      "dueDate": "2027-04-10",
+      "offsetWk": 23,
+      "assignees": [
+        "m24",
+        "m23"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f3-07",
+      "code": "F3-07",
+      "phase": 3,
+      "title": "Custom bundling cart: destinasi + hotel + transport",
+      "roles": [
+        "frontend",
+        "backend"
+      ],
+      "weight": 13,
+      "dueDate": "2027-04-17",
+      "offsetWk": 24,
+      "assignees": [
+        "m02",
+        "m16"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f3-08",
+      "code": "F3-08",
+      "phase": 3,
+      "title": "QA regresi modul transportasi & akomodasi",
+      "roles": [
+        "qa"
+      ],
+      "weight": 5,
+      "dueDate": "2027-04-24",
+      "offsetWk": 25,
+      "assignees": [
+        "m14"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f4-01",
+      "code": "F4-01",
+      "phase": 4,
+      "title": "AI Smart Itinerary Planner",
+      "roles": [
+        "backend",
+        "data"
+      ],
+      "weight": 13,
+      "dueDate": "2027-05-08",
+      "offsetWk": 27,
+      "assignees": [
+        "m22",
+        "m09"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f4-02",
+      "code": "F4-02",
+      "phase": 4,
+      "title": "Mode peta offline per wilayah (blank spot)",
+      "roles": [
+        "mobile"
+      ],
+      "weight": 8,
+      "dueDate": "2027-05-08",
+      "offsetWk": 27,
+      "assignees": [
+        "m03"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f4-03",
+      "code": "F4-03",
+      "phase": 4,
+      "title": "Fitur SOS darurat & notifikasi BMKG/BNPB",
+      "roles": [
+        "mobile",
+        "backend"
+      ],
+      "weight": 8,
+      "dueDate": "2027-05-15",
+      "offsetWk": 28,
+      "assignees": [
+        "m06",
+        "m01"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f4-04",
+      "code": "F4-04",
+      "phase": 4,
+      "title": "Direktori kuliner, UMKM & kalender event budaya",
+      "roles": [
+        "frontend",
+        "backend"
+      ],
+      "weight": 8,
+      "dueDate": "2027-05-22",
+      "offsetWk": 29,
+      "assignees": [
+        "m05",
+        "m04"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f4-05",
+      "code": "F4-05",
+      "phase": 4,
+      "title": "Sistem ulasan & rating destinasi",
+      "roles": [
+        "backend",
+        "frontend"
+      ],
+      "weight": 8,
+      "dueDate": "2027-05-29",
+      "offsetWk": 30,
+      "assignees": [
+        "m10",
+        "m11"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f4-06",
+      "code": "F4-06",
+      "phase": 4,
+      "title": "Sistem komisi & program afiliasi",
+      "roles": [
+        "backend"
+      ],
+      "weight": 5,
+      "dueDate": "2027-06-05",
+      "offsetWk": 31,
+      "assignees": [
+        "m16"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f4-07",
+      "code": "F4-07",
+      "phase": 4,
+      "title": "Load testing & penetration testing",
+      "roles": [
+        "qa",
+        "data"
+      ],
+      "weight": 8,
+      "dueDate": "2027-06-05",
+      "offsetWk": 31,
+      "assignees": [
+        "m20",
+        "m15"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f4-08",
+      "code": "F4-08",
+      "phase": 4,
+      "title": "Beta testing desa wisata percontohan & perbaikan",
+      "roles": [
+        "qa"
+      ],
+      "weight": 5,
+      "dueDate": "2027-06-12",
+      "offsetWk": 32,
+      "assignees": [
+        "m26"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "f4-09",
+      "code": "F4-09",
+      "phase": 4,
+      "title": "Rilis Play Store, App Store & Web",
+      "roles": [
+        "data",
+        "frontend"
+      ],
+      "weight": 5,
+      "dueDate": "2027-06-19",
+      "offsetWk": 33,
+      "assignees": [
+        "m21",
+        "m17"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    }
+  ],
+  "attendance": {
+    "periods": [
+      {
+        "id": "baseline",
+        "name": "Baseline kelas (data ps.xls)",
+        "startDate": null
+      }
+    ],
+    "entries": [
+      {
+        "memberId": "m01",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m02",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m03",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m04",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m05",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m06",
+        "periodId": "baseline",
+        "present": 17.6,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m07",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m08",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m09",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m10",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m11",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m12",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m13",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m14",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m15",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m16",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m17",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m18",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m19",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m20",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m21",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m22",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m23",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m24",
+        "periodId": "baseline",
+        "present": 17.6,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m25",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m26",
+        "periodId": "baseline",
+        "present": 20,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      },
+      {
+        "memberId": "m27",
+        "periodId": "baseline",
+        "present": 17.6,
+        "total": 20,
+        "note": "Kehadiran kelas dari data ps (5).xls"
+      }
+    ]
+  }
+}
