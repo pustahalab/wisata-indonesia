@@ -11,9 +11,10 @@ let dash = null;    // ringkasan dashboard
 let kpis = null;    // daftar KPI + anggota
 const charts = {};
 
-const ROLE_COLORS = {
-  backend: "#38bdf8", frontend: "#2dd4bf", mobile: "#a78bfa",
-  uiux: "#fbbf24", qa: "#f87171", data: "#34d399",
+const KEL_COLORS = ["#2dd4bf", "#38bdf8", "#a78bfa", "#fbbf24", "#f87171"];
+const colorKel = (kelId) => {
+  const n = parseInt((kelId || "k1").replace(/\D/g, "")) || 1;
+  return KEL_COLORS[((n - 1) % KEL_COLORS.length + KEL_COLORS.length) % KEL_COLORS.length];
 };
 const AVG_COLORS = { done: "#34d399", in_progress: "#fbbf24", review: "#a78bfa", todo: "#475569" };
 const STATUS_LABEL = { todo: "Belum", in_progress: "Dikerjakan", review: "Review", done: "Selesai" };
@@ -95,13 +96,13 @@ function renderRingkasan() {
     options: { plugins: { legend: { labels: { color: "#a5b4cc" } } }, cutout: "62%" },
   });
 
-  // bar KPI per disiplin
-  const labels = dash.perRole.map((r) => shortRole(r.role));
+  // bar KPI per kelompok
+  const labels = dash.perKelompok.map((r) => "Squad " + r.id.replace("k", ""));
   const ctx2 = $("#chartRole");
   if (roleChart) roleChart.destroy();
   roleChart = new Chart(ctx2, {
     type: "bar",
-    data: { labels, datasets: [{ label: "KPI rata-rata", data: dash.perRole.map((r) => r.kpiRata), backgroundColor: dash.perRole.map((r) => ROLE_COLORS[r.role]), borderRadius: 6 }] },
+    data: { labels, datasets: [{ label: "KPI rata-rata", data: dash.perKelompok.map((r) => r.kpiRata), backgroundColor: dash.perKelompok.map((r) => colorKel(r.id)), borderRadius: 6 }] },
     options: { plugins: { legend: { display: false } }, scales: { y: { min: 0, max: 100, ticks: { color: "#8ea0b8" }, grid: { color: "#223048" } }, x: { ticks: { color: "#8ea0b8" } } } },
   });
 
@@ -109,47 +110,44 @@ function renderRingkasan() {
   $("#toplist").innerHTML = dash.leaderboard.map((k, i) => {
     const m = member(k.memberId);
     return `<div class="toprow"><span class="rank">${i + 1}.</span>${avatarHtml(m)}
-      <span style="flex:1">${esc(m.name)}</span>${gradeBadge(k.grade)}
+      <span style="flex:1">${esc(m.name)}<br><small style="color:var(--muted)">${esc((db.kelompoks.find((x) => x.id === m.kelompokId) || { name: "" }).name)}${m.isLead ? " ⭐" : ""}</small></span>${gradeBadge(k.grade)}
       <b style="width:46px;text-align:right;color:${barColor(k.total)}">${k.total}</b></div>`;
   }).join("");
 }
 
-function shortRole(r) {
-  return { backend: "Backend", frontend: "Frontend", mobile: "Mobile", uiux: "UI/UX", qa: "QA", data: "Data/DevOps" }[r] || r;
-}
-const ROLE_NAMES_MAP = () => db.roleNames;
+const kelOf = (id) => db.kelompoks.find((k) => k.id === id) || { name: "-", short: "-", lead: "" };
+const shortRole = (kelId) => "Squad " + String(kelId).replace("k", "");
 
 // ---------- tab TIM ----------
 function memberFiltered() {
-  const role = $("#f-role").value, grade = $("#f-grade").value, q = $("#f-q").value.toLowerCase();
+  const kel = $("#f-role").value, grade = $("#f-grade").value, q = $("#f-q").value.toLowerCase();
   return kpis.filter((k) =>
-    (!role || k.role === role) && (!grade || k.kpi.grade === grade) &&
+    (!kel || k.kelompokId === kel) && (!grade || k.kpi.grade === grade) &&
     (!q || k.name.toLowerCase().includes(q) || k.campusId.includes(q)));
 }
 
 function renderTim() {
   const selRole = $("#f-role");
   if (selRole.options.length <= 1) {
-    selRole.innerHTML = `<option value="">Semua Disiplin</option>` +
-      Object.keys(db.roleNames).map((r) => `<option value="${r}">${db.roleNames[r]}</option>`).join("");
-  }
+    selRole.innerHTML = `<option value="">Semua Squad</option>` +
+      db.kelompoks.map((k) => `<option value="${k.id}">${esc(k.name)} — Lead: ${esc(k.lead)}</option>`).join("");  }
   const selM = $("#f-member");
   if (selM.options.length <= 1) {
     selM.innerHTML = `<option value="">Semua Penanggung Jawab</option>` +
-      db.members.map((m) => `<option value="${m.id}">${esc(m.name)}</option>`).join("");
+      db.members.map((m) => `<option value="${m.id}">${esc(m.name)} (${shortRole(m.kelompokId)})</option>`).join("");
   }
 
   const rows = memberFiltered().map((k) => `
     <tr data-id="${k.id}" style="cursor:pointer" title="Klik untuk detail KPI">
-      <td>${avatarHtml(k)}<b>${esc(k.name)}</b><br><small style="color:var(--muted)">${esc(k.campusId)}</small></td>
-      <td><span class="role-tag" style="background:${ROLE_COLORS[k.role]}">${esc(db.roleNames[k.role] || k.role)}</span></td>
+      <td>${avatarHtml(k)}<b>${esc(k.name)}</b>${k.isLead ? ' <span class="g-badge g-A" style="font-size:10px;padding:2px 6px">⭐ Lead</span>' : ""}<br><small style="color:var(--muted)">${esc(k.campusId)}</small></td>
+      <td><span class="role-tag" style="background:${colorKel(k.kelompokId)}">${esc(kelOf(k.kelompokId).short)}</span></td>
       <td>${k.kpi.penyelesaian.toFixed(1)}%<br><small style="color:var(--muted)">${k.kpi.detail.tugasSelesai}/${k.kpi.detail.tugasTotal} tugas</small></td>
       <td>${k.kpi.ketepatan.toFixed(1)}%</td>
       <td>${k.kpi.kualitas ? k.kpi.kualitas.toFixed(1) : "–"}</td>
       <td><div class="score"><div class="bar"><i style="width:${k.kpi.total}%;background:${barColor(k.kpi.total)}"></i></div><b>${k.kpi.total.toFixed(1)}</b></div></td>
       <td>${gradeBadge(k.kpi.grade)}</td>
     </tr>`).join("");
-  $("#tbl-members thead").innerHTML = `<tr><th>Anggota</th><th>Disiplin</th><th>Penyelesaian (40%)</th><th>Tepat Waktu (30%)</th><th>Kualitas (30%)</th><th>Skor KPI</th><th>Predikat</th></tr>`;
+  $("#tbl-members thead").innerHTML = `<tr><th>Anggota</th><th>Squad</th><th>Penyelesaian (40%)</th><th>Tepat Waktu (30%)</th><th>Kualitas (30%)</th><th>Skor KPI</th><th>Predikat</th></tr>`;
   $("#tbl-members tbody").innerHTML = rows || `<tr><td colspan="7" style="color:var(--muted)">Tidak ada anggota yang cocok.</td></tr>`;
 }
 
@@ -167,7 +165,7 @@ function renderTugas() {
     const overdue = t.status !== "done" && t.dueDate && t.dueDate < new Date().toISOString().slice(0, 10);
     const names = (t.assignees || []).map((a) => memberName(a));
     return `<tr>
-      <td><b>${t.code}</b><br><small style="color:var(--muted)">${(t.roles || []).map(shortRole).join("+")}</small></td>
+      <td><b>${t.code}</b><br><span class="role-tag" style="background:${colorKel(t.kelompokId)}">${esc(kelOf(t.kelompokId).short)}</span></td>
       <td>${esc(t.title)}</td>
       <td>F${t.phase}</td>
       <td><small>${esc(names.join(", ")) || "–"}</small></td>
@@ -197,16 +195,19 @@ function renderBagi() {
     <div class="card"><small>Beban Terkecil</small><b style="color:${barColor(min * 20)}">${min}</b><span>tugas</span></div>
     <div class="card"><small>Beban Terbesar</small><b style="color:${barColor(max * 15)}">${max}</b><span>tugas</span></div>`;
 
-  const roles = Object.keys(db.roleNames);
-  const cards = roles.map((r) => {
-    const rows = db.members.filter((m) => m.role === r).map((m) => {
-      const list = db.tasks
-        .filter((t) => (t.assignees || []).includes(m.id))
-        .map((t) => `<li><span class="pill ${t.status}">${STATUS_LABEL[t.status]}</span><b>${t.code}</b> · F${t.phase} · ${t.weight}sp<br><small style="color:var(--muted)">${esc(t.title)}</small></li>`)
-        .join("");
-      return `<div class="box mcard"><div class="mtop">${avatarHtml(m)}<div><b>${esc(m.name)}</b><br><span class="role-tag" style="background:${ROLE_COLORS[r]}">${esc(db.roleNames[r])}</span></div></div><ul>${list || "<li style='color:var(--muted)'>Belum ditugaskan.</li>"}</ul></div>`;
-    }).join("");
-    return `<h3 class="rolehead" style="border-left:4px solid ${ROLE_COLORS[r]};padding-left:8px">${esc(db.roleNames[r])}</h3>
+  const cards = db.kelompoks.map((k) => {
+    const rows = db.members
+      .filter((m) => m.kelompokId === k.id)
+      .sort((a, b) => Number(b.isLead) - Number(a.isLead) || a.name.localeCompare(b.name))
+      .map((m) => {
+        const list = db.tasks
+          .filter((t) => (t.assignees || []).includes(m.id))
+          .map((t) => `<li><span class="pill ${t.status}">${STATUS_LABEL[t.status]}</span><b>${t.code}</b> · F${t.phase} · ${t.weight}sp<br><small style="color:var(--muted)">${esc(t.title)}</small></li>`)
+          .join("");
+        return `<div class="box mcard"><div class="mtop">${avatarHtml(m)}<div><b>${esc(m.name)}${m.isLead ? " ⭐" : ""}</b><br><span class="role-tag" style="background:${colorKel(k.id)}">${esc(k.name)}${m.isLead ? " — Lead" : ""}</span></div></div><ul>${list || "<li style='color:var(--muted)'>Belum ditugaskan.</li>"}</ul></div>`;
+      }).join("");
+    const subtasks = db.tasks.filter((t) => t.kelompokId === k.id);
+    return `<h3 class="rolehead" style="border-left:4px solid ${colorKel(k.id)};padding-left:8px">${esc(k.name)} <small style="color:var(--muted)">Lead: ${esc(k.lead)} · ${subtasks.length} tugas</small></h3>
       <div class="mcards">${rows}</div>`;
   }).join("");
   $("#bagi-cards").innerHTML = cards;
@@ -226,16 +227,17 @@ $("#dlg-ok").onclick = async () => {
 };
 
 function dialogAddMember() {
-  const optRole = Object.entries(db.roleNames).map(([k, v]) => `<option value="${k}">${v}</option>`).join("");
+  const optKel = db.kelompoks.map((k) => `<option value="${k.id}">${esc(k.name)}</option>`).join("");
   openDialog(`
     <h4>Tambah Anggota Tim</h4>
     <label>Nama lengkap</label><input type="text" id="dm-name">
     <label>ID kampus</label><input type="text" id="dm-campus">
-    <label>Disiplin</label><select id="dm-role">${optRole}</select>`,
+    <label>Squad</label><select id="dm-kel">${optKel}</select>
+    <label style="display:flex;gap:6px;align-items:center;margin-top:12px;color:var(--txt)"><input type="checkbox" id="dm-lead" style="width:auto"> Tandai sebagai Lead</label>`,
     async () => {
       const name = $("#dm-name").value.trim();
       if (!name) throw new Error("Nama wajib diisi");
-      await post("/members", { name, campusId: $("#dm-campus").value, role: $("#dm-role").value });
+      await post("/members", { name, campusId: $("#dm-campus").value, kelompokId: $("#dm-kel").value, isLead: $("#dm-lead").checked });
       await refreshAll();
     });
 }
@@ -267,7 +269,7 @@ function dialogEditTask(id) {
   if (!t) return;
   const chips = db.members.map((m) => `
     <label><input type="checkbox" value="${m.id}" ${(t.assignees || []).includes(m.id) ? "checked" : ""}>
-      ${avatarHtml(m)} ${esc(m.name)} <small style="color:var(--muted)">(${shortRole(m.role)})</small></label>`).join("");
+      ${avatarHtml(m)} ${esc(m.name)}${m.isLead ? " ⭐" : ""} <small style="color:var(--muted)">${esc(kelOf(m.kelompokId).name)}</small></label>`).join("");
   openDialog(`
     <h4>${t.code} — ${esc(t.title)}</h4>
     <label>Penanggung jawab (bisa lebih dari satu)</label>
@@ -290,7 +292,7 @@ function dialogDetailMember(id) {
   const list = assigned.map((t) => `<li><span class="pill ${t.status}">${STATUS_LABEL[t.status]}</span> <b>${t.code}</b> ${esc(t.title)}</li>`).join("");
   openDialog(`
     <h4>${esc(k.name)} — KPI Detail</h4>
-    <p style="margin:0;color:var(--muted);font-size:13px">${esc(db.roleNames[k.role] || k.role)} · ID ${esc(k.campusId)}</p>
+    <p style="margin:0;color:var(--muted);font-size:13px">${esc(kelOf(k.kelompokId).name)}${k.isLead ? " ⭐ Lead" : ""} · ID ${esc(k.campusId)}</p>
     <div class="kpibox">
       ${comp.map(([n, v, w]) => `<div class="kb"><small>${n} (bobot ${w}%)</small><b style="color:${barColor(v)}">${v.toFixed(1)}</b></div>`).join("")}
       <div class="kb"><small>Total KPI</small><b style="color:${barColor(kar.total)}">${kar.total} ${gradeBadge(kar.grade)}</b></div>
