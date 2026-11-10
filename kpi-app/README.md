@@ -1,66 +1,33 @@
-# Aplikasi KPI Pengembangan NusantaraGo
+# KPI Dashboard - Proyek NusantaraGo (27 Mahasiswa / 5 Squad)
 
-Aplikasi KPI untuk mengukur pengerjaan aplikasi **NusantaraGo** oleh tim **Information System (27 anggota)**
-berdasarkan dua dokumen terlampir:
+Dashboard pemantauan kinerja, kehadiran, dan progres tugas pengembangan aplikasi **NusantaraGo** untuk 27 mahasiswa Sistem Informasi, terbagi ke dalam **5 Squad** sesuai acuan `team.xlsx` (Sheet: *Sistem Pendukung Keputusan*) dan dibimbing oleh **Product Owner: Denny J.C. Sihombing**.
 
-| Sumber | Isi |
-|---|---|
-| `../ps (5).xls` | Daftar 27 anggota tim (ID kampus) + persentase kehadiran kelas |
-| `../blueprint_pengembangan_aplikasi_wisata_nusantarago.md` | Rencana kerja: 6 modul fitur, tech stack, roadmap 4 fase (8 bulan) |
+---
 
-## Menjalankan
+## 👥 5 Squad Resmi & Kepemimpinan
 
-```bash
+* **Squad 1: Direktori Wisata, GIS & Crowdsourcing**  
+  *Lead:* **Oda Kartika Nuringtyasanti** (202404560028)  
+  *Anggota:* Linda Wati Purba, Raden Roro Anindya Anggitoputri, Anastasya Geovani Manurung, Cornelius Dicho Dharmawan.
+* **Squad 2: Mitra Pengelola (KYC), Legalitas & E-Ticketing**  
+  *Lead:* **Gabriella Lavigne Pink** (202404560020)  
+  *Anggota:* Edward Antonio Herlambang Hutauruk, Brigid Pauline Ratu Patty Diaz, Jo Suk Sin, Aloysia Carla Putri Haryadi.
+* **Squad 3: Tour Package Builder & Custom Trip Bundling**  
+  *Lead:* **Jessica Hillary Hutahaean** (202404560050)  
+  *Anggota:* Joel Oktavianus, Bintang Neera, Vicentius Elang Krisnanto, Albertus Chandra Halim.
+* **Squad 4: Transportasi Multi-Moda & Extranet Akomodasi**  
+  *Lead:* **Hesekiel Andhika Nainggolan** (202404560052)  
+  *Anggota:* Josue Freitas Da Costa, Syrillya Chantika Valentina Sitohang, Frans Nicholas Rafael, Theodomiro Fidelio Tomasoa, Caesar Gattaca, Yosep Hermawan.
+* **Squad 5: Core Infrastructure, Escrow Payment & AI Services**  
+  *Lead:* **George Blaciano Kunemara Putra** (202404560049)  
+  *Anggota:* Rafael Elano Prasetya, Ezekiel Matheo Barus, Michael Devon Eka Putra, Imanuel Julival Lumban Gaol.
+
+---
+
+## 🚀 Cara Menjalankan Aplikasi KPI
+
+```powershell
 cd kpi-app
-npm install
 npm start
-# buka http://localhost:3000
 ```
-
-Data tersimpan di `data/db.json` (otomatis dibuat dari seed saat pertama dijalankan).
-`npm run reset` mengembalikan data ke kondisi seed awal.
-
-## Rumus KPI (per anggota)
-
-Kehadiran **tidak dihitung** (permintaan pengguna); bobot diredistribusi ke kinerja pengerjaan:
-
-| Komponen | Bobot | Sumber |
-|---|---|---|
-| Penyelesaian tugas | 40% | Bobot (story point) tugas *done* ÷ total bobot tugas yang ditangani |
-| Ketepatan waktu | 30% | Tugas selesai sebelum tenggat ÷ tugas selesai |
-| Kualitas | 30% | Rata-rata skor review (0–100) tugas yang selesai |
-
-Predikat: **A** ≥ 90 (Sangat Baik), **B** ≥ 80 (Baik), **C** ≥ 70 (Cukup), **D** < 70 (Perlu Perbaikan).
-
-## Struktur
-
-```
-kpi-app/
-├── server.js          # Express: REST API + perhitungan KPI + serve frontend
-├── lib/seed.js        # Data seed: 27 anggota, pembagian peran otomatis, 36 tugas dari blueprint
-├── data/db.json       # Penyimpanan data (JSON file)
-└── public/            # Frontend (SPA vanilla JS + Chart.js)
-    ├── index.html
-    ├── app.js
-    └── style.css
-```
-
-## Fitur
-
-- **Ringkasan** — progress proyek, progress per fase roadmap, donut status tugas, KPI per disiplin, leaderboard Top 8.
-- **Tim & KPI** — 27 anggota dengan disiplin (Backend 5, Frontend 5, Mobile 5, UI/UX 4, QA 4, Data/DevOps 4),
-  skor KPI + predikat per orang, klik baris untuk detail pembobotan, filter & pencarian, tambah/ubah anggota.
-- **Tugas Kerja** — 36 tugas hasil breakdown blueprint (Fase 1–4): ubah status inline, input skor kualitas,
-  penugasan ganda (PJ lebih dari satu), tenggat dengan penanda telat, tambah tugas baru.
-- **Pembagian Tugas** — kartu per anggota berisi daftar tugas yang ditangani, dikelompokkan per disiplin;
-  ringkasan beban (total penugasan 76, rata-rata 2.8 tugas/orang, min 1, max 7).
-  Setiap tugas telah di-assign minimal 2 anggota (peran utama + pendamping dari peran terkait).
-
-- **Pembagian otomatis berpemerat** — round-robin per disiplin + *balancing pass*: anggota yang awalnya belum
-  mendapat tugas disisipkan sebagai pendamping di tugas paling awal yang terkait disiplinnya.
-
-## Catatan
-
-- Status awal seed sengaja diisi sebagian (2 selesai, 2 dikerjakan) agar dashboard tidak kosong; gunakan
-  **↺ Reset Data** di halaman untuk kembali ke seed.
-- Endpoint API utama: `GET /api/state|dashboard|kpi`, CRUD `/api/members`, `/api/tasks`, `POST /api/reset`.
+Buka peramban di `http://localhost:3000`.
