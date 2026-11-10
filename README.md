@@ -9,7 +9,7 @@ Repositori resmi untuk pengembangan ekosistem **NusantaraGo**, aplikasi direktor
 Proyek ini dikembangkan menggunakan kerangka kerja **Agile Scrum (Scrum of Scrums / LeSS)** yang melibatkan **27 mahasiswa Sistem Informasi** di bawah arahan langsung **Product Owner**. Pembagian tim dan kepemimpinan mengacu resmi pada berkas `team.xlsx` (*Sheet: Sistem Pendukung Keputusan*).
 
 * **Product Owner:** Denny J.C. Sihombing
-* **Scrum Master:** Agentic Scrum Master
+* **Scrum Master:** Denny J.C. Sihombing
 * **Tanggal Mulai Kick-Off (Sprint 1):** 10 November 2026
 * **Tenggat Rilis Penuh (Hard Deadline):** **22 Desember 2026** (Total 6 Minggu / 6 Weekly Sprints)
 
