@@ -1,7 +1,7 @@
 # Panduan Integrasi Slack dengan Repositori GitHub & Ekosistem NusantaraGo
 **Repositori:** [pustahalab/wisata-indonesia](https://github.com/pustahalab/wisata-indonesia)  
 **Product Owner:** Denny J.C. Sihombing  
-**Scrum Master:** Agentic Scrum Master  
+**Scrum Master:** Denny J.C. Sihombing  
 
 ---
 

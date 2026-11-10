@@ -1,7 +1,7 @@
 # 👥 Struktur Organisasi & Pembagian Resmi 5 Squad
 **Proyek:** Ekosistem Super-App Pariwisata Nasional Indonesia (NusantaraGo)  
 **Product Owner:** **Denny J.C. Sihombing**  
-**Scrum Master:** Agentic Scrum Master  
+**Scrum Master:** Denny J.C. Sihombing  
 **Acuan Pembagian:** Berkas `team.xlsx` (*Sheet: Sistem Pendukung Keputusan*)  
 **Target Rilis Penuh:** **22 Desember 2026** (6 Minggu Akselerasi)
 
