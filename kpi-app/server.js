@@ -27,7 +27,7 @@ function save() {
 }
 
 // ---------- Konstanta KPI & skala ----------
-// Kehadiran tidak dihitung sesuai permintaan; bobot diredistribusi.
+// Kehadiran tidak dihitung; bobot diredistribusi.
 const WEIGHTS = { penyelesaian: 0.4, ketepatan: 0.3, kualitas: 0.3 };
 const GRADES = [
   [90, "A", "Sangat Baik"],
@@ -35,12 +35,19 @@ const GRADES = [
   [70, "C", "Cukup"],
   [0, "D", "Perlu Perbaikan"],
 ];
-const PHASES = [
-  { n: 1, name: "Fondasi & Direktori Wisata", months: "Bulan 1–2" },
-  { n: 2, name: "Portal Mitra & Paket Wisata", months: "Bulan 3–4" },
-  { n: 3, name: "Transportasi & Akomodasi", months: "Bulan 5–6" },
-  { n: 4, name: "Fitur Cerdas, Uji & Peluncuran", months: "Bulan 7–8" },
+// 6 Sprint mingguan dari docs/roadmap_pengembangan_nusantarago_deadline_22_desember_2026.md
+const SPRINTS = [
+  { n: 1, name: "Fondasi Monorepo, PostGIS & Desain Sistem", start: "2026-11-10", end: "2026-11-17", eval: "17 Nov: Demo autentikasi & persetujuan desain" },
+  { n: 2, name: "Core Directory, GIS Radius & Crowdsourcing", start: "2026-11-17", end: "2026-11-24", eval: "24 Nov: Demo pencarian geospasial & crowdsourcing" },
+  { n: 3, name: "Onboarding Mitra KYC & E-Ticketing", start: "2026-11-24", end: "2026-12-01", eval: "1 Des: Uji registrasi mitra & scan QR tiket" },
+  { n: 4, name: "Tour Package Builder & Payment Gateway (Escrow)", start: "2026-12-01", end: "2026-12-08", eval: "8 Des: Demo checkout QRIS sandbox & webhook escrow" },
+  { n: 5, name: "Transport Multi-Moda, Homestay & Inventory Lock", start: "2026-12-08", end: "2026-12-15", eval: "15 Des: Demo custom bundling & pencegahan overbooking" },
+  { n: 6, name: "AI Itinerary, Load Test, UAT & Handover", start: "2026-12-15", end: "2026-12-22", eval: "22 Des: Rilis final & handover ke PO" },
 ];
+function activeSprint() {
+  const today = new Date().toISOString().slice(0, 10);
+  return SPRINTS.find((s) => today >= s.start && today < s.end) || (today < SPRINTS[0].start ? SPRINTS[0] : SPRINTS[SPRINTS.length - 1]);
+}
 
 // ---------- Perhitungan KPI ----------
 function computeKpi(memberId) {
@@ -95,23 +102,38 @@ function round(x) {
 function dashboardSummary() {
   const kpis = db.members.map((m) => computeKpi(m.id));
   const tasks = db.tasks;
-  const byPhase = PHASES.map((p) => {
+  const perSprint = SPRINTS.map((p) => {
     const list = tasks.filter((t) => t.phase === p.n);
     const w = list.reduce((s, t) => s + t.weight, 0);
     const d = list.filter((t) => t.status === "done").reduce((s, t) => s + t.weight, 0);
-    const ip = list.filter((t) => t.status === "in_progress").reduce((s, t) => s + t.weight, 0);
-    return { phase: p.n, name: p.name, months: p.months, progress: w ? round((d / w) * 100) : 0, totalTasks: list.length, doneTasks: list.filter((t) => t.status === "done").length, wipTasks: list.filter((t) => t.status === "in_progress").length };
+    const ip = list.filter((t) => t.status === "in_progress" || t.status === "review").reduce((s, t) => s + t.weight, 0);
+    return {
+      phase: p.n,
+      name: p.name,
+      start: p.start,
+      end: p.end,
+      eval: p.eval,
+      progress: w ? round((d / w) * 100) : 0,
+      ontrack: w ? round(((d + ip * 0.5) / w) * 100) : 0,
+      totalTasks: list.length,
+      doneTasks: list.filter((t) => t.status === "done").length,
+      wipTasks: list.filter((t) => t.status !== "done" && t.status !== "todo").length,
+    };
   });
   const totalW = tasks.reduce((s, t) => s + t.weight, 0);
   return {
     kpiRata: round(kpis.reduce((s, k) => s + k.total, 0) / (kpis.length || 1)),
+    activeSprint: activeSprint().n,
+    activeSprintName: activeSprint().name,
+    activeSprintEnd: activeSprint().end,
+    targetDate: "2026-12-22",
     totalTugas: tasks.length,
     tugasDone: tasks.filter((t) => t.status === "done").length,
     tugasWip: tasks.filter((t) => t.status === "in_progress").length,
     tugasTodo: tasks.filter((t) => t.status === "todo").length,
     tugasReview: tasks.filter((t) => t.status === "review").length,
     progressTotal: totalW ? round((tasks.filter((t) => t.status === "done").reduce((s, t) => s + t.weight, 0) / totalW) * 100) : 0,
-    perPhase: byPhase,
+    perPhase: perSprint,
     perKelompok: rollupKelompok(kpis),
     leaderboard: [...kpis].sort((a, b) => b.total - a.total).slice(0, 8),
   };
@@ -155,7 +177,7 @@ app.use(express.static(path.join(__dirname, "public")));
 const api = express.Router();
 
 api.get("/state", (req, res) =>
-  res.json({ ...db, phaseDefs: PHASES, weights: WEIGHTS })
+  res.json({ ...db, phaseDefs: SPRINTS, weights: WEIGHTS })
 );
 api.get("/dashboard", (req, res) => res.json(dashboardSummary()));
 api.get("/kpi", (req, res) => res.json(kpiAll()));
@@ -187,21 +209,27 @@ api.delete("/members/:id", (req, res) => {
 // ---tugas---
 api.post("/tasks", (req, res) => {
   const { title, phase, weight = 5, dueDate = null } = req.body;
-  if (!title || !phase) return res.status(400).json({ error: "judul & fase wajib" });
+  if (!title || !phase) return res.status(400).json({ error: "judul & sprint wajib" });
   const phaseN = Number(phase);
-  const count = db.tasks.filter((t) => t.phase === phaseN).length;
-  const code = `F${phaseN}-${String(count + 1).padStart(2, "0")}`;
+  const sprintDef = SPRINTS.find((s) => s.n === phaseN);
+  if (!sprintDef) return res.status(400).json({ error: "sprint tidak ditemukan" });
+  const nextNo = Math.max(0, ...db.tasks.map((t) => Number(String(t.code).replace(/\D/g, "")) || 0)) + 1;
+  const code = "#" + nextNo;
   const id = "t" + Date.now().toString(36);
-  // otomatis diberi kelompok berikutnya (round-robin) + 2 anggotanya
-  const kelN = db.tasks.length % db.kelompoks.length;
-  const kel = db.kelompoks[kelN];
+  // otomatis diberi ke squad yang paling sedikit tanggungan + 2 anggotanya
+  const kel = [...db.kelompoks].sort(
+    (a, b) =>
+      db.tasks.filter((t) => t.kelompokId === a.id).length -
+      db.tasks.filter((t) => t.kelompokId === b.id).length
+  )[0];
   const roster = db.members.filter((m) => m.kelompokId === kel.id);
+  const nKel = db.tasks.filter((t) => t.kelompokId === kel.id).length;
   const pjs = [];
   if (roster.length) {
-    pjs.push(roster[db.tasks.filter((t) => t.kelompokId === kel.id).length % roster.length].id);
-    if (roster.length > 1) pjs.push(roster[(db.tasks.filter((t) => t.kelompokId === kel.id).length + 1) % roster.length].id);
+    pjs.push(roster[nKel % roster.length].id);
+    if (roster.length > 1) pjs.push(roster[(nKel + 1) % roster.length].id);
   }
-  db.tasks.push({ id, code, phase: phaseN, title, weight: Number(weight) || 5, dueDate, kelompokId: kel.id, assignees: pjs, status: "todo", reviewScore: null, completedAt: null });
+  db.tasks.push({ id, code, phase: phaseN, title, weight: Number(weight) || 5, dueDate: dueDate || sprintDef.end, kelompokId: kel.id, assignees: pjs, status: "todo", reviewScore: null, completedAt: null });
   save();
   res.json({ ok: true, id });
 });
