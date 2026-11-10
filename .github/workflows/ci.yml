@@ -26,3 +26,16 @@ jobs:
           test -d apps/admin-partner
           test -d services/api-core
           echo "Structure verification passed!"
+
+      - name: Notify Slack (Optional via Webhook)
+        if: always() && env.SLACK_WEBHOOK != ''
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          STATUS="${{ job.status }}"
+          COLOR="danger"
+          if [ "$STATUS" = "success" ]; then
+            COLOR="good"
+          fi
+          PAYLOAD="{\"attachments\":[{\"color\":\"$COLOR\",\"title\":\"NusantaraGo CI Build: $STATUS\",\"text\":\"Branch: ${{ github.ref_name }}\nCommit: ${{ github.sha }}\nActor: ${{ github.actor }}\",\"footer\":\"NusantaraGo CI Pipeline\"}]}"
+          curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$SLACK_WEBHOOK"
