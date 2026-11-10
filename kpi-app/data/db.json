@@ -1,118 +1,195 @@
 {
-  "settings": {
-    "projectName": "NusantaraGo",
-    "startDate": "2026-11-02"
+  "meta": {
+    "project": "NusantaraGo (Super-App Pariwisata Indonesia)",
+    "productOwner": "Denny J.C. Sihombing",
+    "startDate": "2026-11-10",
+    "totalMembers": 27,
+    "totalSquads": 5,
+    "squads": [
+      {
+        "id": "squad-1",
+        "name": "Squad 1: Direktori Wisata, GIS & Crowdsourcing",
+        "leadName": "ODA KARTIKA NURINGTYASANTI",
+        "focus": "Modul 1 (Direktori 38 Provinsi, PostGIS) & Modul 2 (Pendaftaran Publik & Geotagging EXIF)"
+      },
+      {
+        "id": "squad-2",
+        "name": "Squad 2: Mitra Pengelola (KYC), Legalitas & E-Ticketing",
+        "leadName": "GABRIELLA LAVIGNE PINK",
+        "focus": "Modul 2 (Klaim Mitra Resmi, Validasi KYC) & Modul 5.1/6 (E-Ticketing & QR Code Scanner)"
+      },
+      {
+        "id": "squad-3",
+        "name": "Squad 3: Tour Package Builder & Custom Trip Bundling",
+        "leadName": "JESSICA HILLARY HUTAHAEAN",
+        "focus": "Modul 3 (Manajemen Paket Wisata, Open/Private Trip, Dynamic Pricing & Custom Bundling)"
+      },
+      {
+        "id": "squad-4",
+        "name": "Squad 4: Transportasi Multi-Moda & Extranet Akomodasi",
+        "leadName": "HESEKIEL ANDHIKA NAINGGOLAN",
+        "focus": "Modul 4 (Transportasi Antarkota API, Last-Mile Rental) & Modul 5 (Extranet Homestay & Kalender Kamar)"
+      },
+      {
+        "id": "squad-5",
+        "name": "Squad 5: Core Infrastructure, Escrow Payment & AI Services",
+        "leadName": "GEORGE BLACIANO KUNEMARA PUTRA",
+        "focus": "Modul 6 (AI Smart Itinerary Gemini, SOS Darurat) & Core Engine (Payment Gateway, Escrow, Redis Redlock)"
+      }
+    ]
   },
   "members": [
     {
       "id": "m01",
-      "campusId": "202404560008",
-      "name": "Albertus Chandra Halim",
-      "role": "backend",
+      "campusId": "202404560033",
+      "name": "Linda Wati Purba",
+      "role": "qa",
+      "squadId": "squad-1",
+      "squadName": "Squad 1: Direktori Wisata, GIS & Crowdsourcing",
+      "isLead": false,
       "studentId": "S001",
       "attPct": 100
     },
     {
       "id": "m02",
-      "campusId": "202404560040",
-      "name": "Aloysia Carla Putri Haryadi",
+      "campusId": "202404560036",
+      "name": "Raden Roro Anindya Anggitoputri",
       "role": "frontend",
+      "squadId": "squad-1",
+      "squadName": "Squad 1: Direktori Wisata, GIS & Crowdsourcing",
+      "isLead": false,
       "studentId": "S002",
       "attPct": 100
     },
     {
       "id": "m03",
-      "campusId": "202404560037",
-      "name": "Anastasya Geovani Manurung",
-      "role": "mobile",
+      "campusId": "202404560028",
+      "name": "Oda Kartika Nuringtyasanti",
+      "role": "backend",
+      "squadId": "squad-1",
+      "squadName": "Squad 1: Direktori Wisata, GIS & Crowdsourcing",
+      "isLead": true,
       "studentId": "S003",
       "attPct": 100
     },
     {
       "id": "m04",
-      "campusId": "202404560045",
-      "name": "Bintang Neera",
-      "role": "backend",
+      "campusId": "202404560037",
+      "name": "Anastasya Geovani Manurung",
+      "role": "mobile",
+      "squadId": "squad-1",
+      "squadName": "Squad 1: Direktori Wisata, GIS & Crowdsourcing",
+      "isLead": false,
       "studentId": "S004",
       "attPct": 100
     },
     {
       "id": "m05",
-      "campusId": "202404560021",
-      "name": "Brigid Pauline Ratu Patty Diaz",
-      "role": "frontend",
+      "campusId": "202404560019",
+      "name": "Cornelius Dicho Dharmawan",
+      "role": "data",
+      "squadId": "squad-1",
+      "squadName": "Squad 1: Direktori Wisata, GIS & Crowdsourcing",
+      "isLead": false,
       "studentId": "S005",
       "attPct": 100
     },
     {
       "id": "m06",
-      "campusId": "202204560032",
-      "name": "Caesar Gattaca",
-      "role": "mobile",
+      "campusId": "202404560005",
+      "name": "Edward Antonio Herlambang Hutauruk",
+      "role": "frontend",
+      "squadId": "squad-2",
+      "squadName": "Squad 2: Mitra Pengelola (KYC), Legalitas & E-Ticketing",
+      "isLead": false,
       "studentId": "S006",
-      "attPct": 88
+      "attPct": 100
     },
     {
       "id": "m07",
-      "campusId": "202404560019",
-      "name": "Cornelius Dicho Dharmawan",
+      "campusId": "202404560020",
+      "name": "Gabriella Lavigne Pink",
       "role": "uiux",
+      "squadId": "squad-2",
+      "squadName": "Squad 2: Mitra Pengelola (KYC), Legalitas & E-Ticketing",
+      "isLead": true,
       "studentId": "S007",
       "attPct": 100
     },
     {
       "id": "m08",
-      "campusId": "202404560005",
-      "name": "Edward Antonio Herlambang Hutauruk",
-      "role": "qa",
+      "campusId": "202404560021",
+      "name": "Brigid Pauline Ratu Patty Diaz",
+      "role": "frontend",
+      "squadId": "squad-2",
+      "squadName": "Squad 2: Mitra Pengelola (KYC), Legalitas & E-Ticketing",
+      "isLead": false,
       "studentId": "S008",
       "attPct": 100
     },
     {
       "id": "m09",
-      "campusId": "202404560009",
-      "name": "Ezekiel Matheo Barus",
-      "role": "data",
+      "campusId": "202404560023",
+      "name": "Jo Suk Sin",
+      "role": "backend",
+      "squadId": "squad-2",
+      "squadName": "Squad 2: Mitra Pengelola (KYC), Legalitas & E-Ticketing",
+      "isLead": false,
       "studentId": "S009",
       "attPct": 100
     },
     {
       "id": "m10",
-      "campusId": "202404560029",
-      "name": "Frans Nicholas Rafael",
-      "role": "backend",
+      "campusId": "202404560040",
+      "name": "Aloysia Carla Putri Haryadi",
+      "role": "mobile",
+      "squadId": "squad-2",
+      "squadName": "Squad 2: Mitra Pengelola (KYC), Legalitas & E-Ticketing",
+      "isLead": false,
       "studentId": "S010",
       "attPct": 100
     },
     {
       "id": "m11",
-      "campusId": "202404560020",
-      "name": "Gabriella Lavigne Pink",
-      "role": "frontend",
+      "campusId": "202404560035",
+      "name": "Joel Oktavianus",
+      "role": "backend",
+      "squadId": "squad-3",
+      "squadName": "Squad 3: Tour Package Builder & Custom Trip Bundling",
+      "isLead": false,
       "studentId": "S011",
       "attPct": 100
     },
     {
       "id": "m12",
-      "campusId": "202404560049",
-      "name": "George Blaciano Kunemara Putra",
-      "role": "mobile",
+      "campusId": "202404560045",
+      "name": "Bintang Neera",
+      "role": "frontend",
+      "squadId": "squad-3",
+      "squadName": "Squad 3: Tour Package Builder & Custom Trip Bundling",
+      "isLead": false,
       "studentId": "S012",
       "attPct": 100
     },
     {
       "id": "m13",
-      "campusId": "202404560052",
-      "name": "Hesekiel Andhika Nainggolan",
-      "role": "uiux",
+      "campusId": "202404560025",
+      "name": "Vicentius Elang Krisnanto",
+      "role": "mobile",
+      "squadId": "squad-3",
+      "squadName": "Squad 3: Tour Package Builder & Custom Trip Bundling",
+      "isLead": false,
       "studentId": "S013",
       "attPct": 100
     },
     {
       "id": "m14",
-      "campusId": "202404560039",
-      "name": "Imanuel Julival Lumban Gaol",
+      "campusId": "202404560008",
+      "name": "Albertus Chandra Halim",
       "role": "qa",
+      "squadId": "squad-3",
+      "squadName": "Squad 3: Tour Package Builder & Custom Trip Bundling",
+      "isLead": false,
       "studentId": "S014",
       "attPct": 100
     },
@@ -120,110 +197,149 @@
       "id": "m15",
       "campusId": "202404560050",
       "name": "Jessica Hillary Hutahaean",
-      "role": "data",
+      "role": "uiux",
+      "squadId": "squad-3",
+      "squadName": "Squad 3: Tour Package Builder & Custom Trip Bundling",
+      "isLead": true,
       "studentId": "S015",
       "attPct": 100
     },
     {
       "id": "m16",
-      "campusId": "202404560023",
-      "name": "Jo Suk Sin",
+      "campusId": "202404560052",
+      "name": "Hesekiel Andhika Nainggolan",
       "role": "backend",
+      "squadId": "squad-4",
+      "squadName": "Squad 4: Transportasi Multi-Moda & Extranet Akomodasi",
+      "isLead": true,
       "studentId": "S016",
       "attPct": 100
     },
     {
       "id": "m17",
-      "campusId": "202404560035",
-      "name": "Joel Oktavianus",
+      "campusId": "202404560027",
+      "name": "Josue Freitas Da Costa",
       "role": "frontend",
+      "squadId": "squad-4",
+      "squadName": "Squad 4: Transportasi Multi-Moda & Extranet Akomodasi",
+      "isLead": false,
       "studentId": "S017",
       "attPct": 100
     },
     {
       "id": "m18",
-      "campusId": "202404560027",
-      "name": "Josue Freitas Da Costa",
-      "role": "mobile",
+      "campusId": "202204560029",
+      "name": "Syrillya Chantika Valentina Sitohang",
+      "role": "backend",
+      "squadId": "squad-4",
+      "squadName": "Squad 4: Transportasi Multi-Moda & Extranet Akomodasi",
+      "isLead": false,
       "studentId": "S018",
-      "attPct": 100
+      "attPct": 88
     },
     {
       "id": "m19",
-      "campusId": "202404560033",
-      "name": "Linda Wati Purba",
-      "role": "uiux",
+      "campusId": "202404560029",
+      "name": "Frans Nicholas Rafael",
+      "role": "mobile",
+      "squadId": "squad-4",
+      "squadName": "Squad 4: Transportasi Multi-Moda & Extranet Akomodasi",
+      "isLead": false,
       "studentId": "S019",
       "attPct": 100
     },
     {
       "id": "m20",
-      "campusId": "202404560001",
-      "name": "Michael Devon Eka Putra",
-      "role": "qa",
+      "campusId": "202404560017",
+      "name": "Theodomiro Fidelio Tomasoa",
+      "role": "data",
+      "squadId": "squad-4",
+      "squadName": "Squad 4: Transportasi Multi-Moda & Extranet Akomodasi",
+      "isLead": false,
       "studentId": "S020",
       "attPct": 100
     },
     {
       "id": "m21",
-      "campusId": "202404560028",
-      "name": "Oda Kartika Nuringtyasanti",
-      "role": "data",
+      "campusId": "202204560032",
+      "name": "Caesar Gattaca",
+      "role": "backend",
+      "squadId": "squad-4",
+      "squadName": "Squad 4: Transportasi Multi-Moda & Extranet Akomodasi",
+      "isLead": false,
       "studentId": "S021",
-      "attPct": 100
+      "attPct": 88
     },
     {
       "id": "m22",
-      "campusId": "202404560036",
-      "name": "Raden Roro Anindya Anggitoputri",
-      "role": "backend",
+      "campusId": "202404560051",
+      "name": "Yosep Hermawan",
+      "role": "qa",
+      "squadId": "squad-4",
+      "squadName": "Squad 4: Transportasi Multi-Moda & Extranet Akomodasi",
+      "isLead": false,
       "studentId": "S022",
-      "attPct": 100
+      "attPct": 88
     },
     {
       "id": "m23",
       "campusId": "202404560054",
       "name": "Rafael Elano Prasetya",
-      "role": "frontend",
+      "role": "backend",
+      "squadId": "squad-5",
+      "squadName": "Squad 5: Core Infrastructure, Escrow Payment & AI Services",
+      "isLead": false,
       "studentId": "S023",
       "attPct": 100
     },
     {
       "id": "m24",
-      "campusId": "202204560029",
-      "name": "Syrillya Chantika Valentina Sitohang",
-      "role": "mobile",
+      "campusId": "202404560009",
+      "name": "Ezekiel Matheo Barus",
+      "role": "backend",
+      "squadId": "squad-5",
+      "squadName": "Squad 5: Core Infrastructure, Escrow Payment & AI Services",
+      "isLead": false,
       "studentId": "S024",
-      "attPct": 88
+      "attPct": 100
     },
     {
       "id": "m25",
-      "campusId": "202404560017",
-      "name": "Theodomiro Fidelio Tomasoa",
-      "role": "uiux",
+      "campusId": "202404560001",
+      "name": "Michael Devon Eka Putra",
+      "role": "data",
+      "squadId": "squad-5",
+      "squadName": "Squad 5: Core Infrastructure, Escrow Payment & AI Services",
+      "isLead": false,
       "studentId": "S025",
       "attPct": 100
     },
     {
       "id": "m26",
-      "campusId": "202404560025",
-      "name": "Vicentius Elang Krisnanto",
-      "role": "qa",
+      "campusId": "202404560039",
+      "name": "Imanuel Julival Lumban Gaol",
+      "role": "mobile",
+      "squadId": "squad-5",
+      "squadName": "Squad 5: Core Infrastructure, Escrow Payment & AI Services",
+      "isLead": false,
       "studentId": "S026",
       "attPct": 100
     },
     {
       "id": "m27",
-      "campusId": "202404560051",
-      "name": "Yosep Hermawan",
-      "role": "data",
+      "campusId": "202404560049",
+      "name": "George Blaciano Kunemara Putra",
+      "role": "uiux",
+      "squadId": "squad-5",
+      "squadName": "Squad 5: Core Infrastructure, Escrow Payment & AI Services",
+      "isLead": true,
       "studentId": "S027",
-      "attPct": 88
+      "attPct": 100
     }
   ],
   "tasks": [
     {
-      "id": "f1-01",
+      "id": "t01",
       "code": "F1-01",
       "phase": 1,
       "title": "Rancang UI/UX (Figma): wireframe & design system",
@@ -231,473 +347,396 @@
         "uiux",
         "frontend"
       ],
-      "weight": 8,
-      "dueDate": "2026-11-14",
-      "offsetWk": 2,
-      "assignees": [
-        "m07",
-        "m02",
-        "m19",
-        "m25"
-      ],
-      "status": "done",
-      "reviewScore": 90,
-      "completedAt": "2026-11-11"
+      "storyPoints": 8,
+      "dueDate": "2026-11-24",
+      "squadId": "squad-1",
+      "assigneeId": "m02",
+      "assigneeName": "Raden Roro Anindya Anggitoputri",
+      "status": "in_progress",
+      "progress": 25
     },
     {
-      "id": "f1-02",
+      "id": "t02",
       "code": "F1-02",
       "phase": 1,
-      "title": "Setup repo, CI/CD & struktur Modular Monolith",
+      "title": "Setup repo monorepo, CI/CD GitHub Actions & Docker",
       "roles": [
         "data",
         "backend"
       ],
-      "weight": 5,
-      "dueDate": "2026-11-14",
-      "offsetWk": 2,
-      "assignees": [
-        "m09",
-        "m01"
-      ],
+      "storyPoints": 5,
+      "dueDate": "2026-11-24",
+      "squadId": "squad-5",
+      "assigneeId": "m24",
+      "assigneeName": "Ezekiel Matheo Barus",
       "status": "in_progress",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 25
     },
     {
-      "id": "f1-03",
+      "id": "t03",
       "code": "F1-03",
       "phase": 1,
-      "title": "Desain arsitektur & skema database (PostgreSQL + PostGIS)",
+      "title": "Desain arsitektur database (PostgreSQL + PostGIS)",
       "roles": [
         "backend",
         "data"
       ],
-      "weight": 8,
-      "dueDate": "2026-11-21",
-      "offsetWk": 3,
-      "assignees": [
-        "m04",
-        "m15"
-      ],
-      "status": "done",
-      "reviewScore": 88,
-      "completedAt": "2026-11-18"
+      "storyPoints": 8,
+      "dueDate": "2026-12-01",
+      "squadId": "squad-1",
+      "assigneeId": "m03",
+      "assigneeName": "Oda Kartika Nuringtyasanti",
+      "status": "in_progress",
+      "progress": 25
     },
     {
-      "id": "f1-04",
+      "id": "t04",
       "code": "F1-04",
       "phase": 1,
-      "title": "API dasar & autentikasi (role tourist/partner/guide/admin)",
+      "title": "API autentikasi JWT & Role Base Access Control",
       "roles": [
         "backend"
       ],
-      "weight": 8,
-      "dueDate": "2026-11-28",
-      "offsetWk": 4,
-      "assignees": [
-        "m10",
-        "m16"
-      ],
+      "storyPoints": 8,
+      "dueDate": "2026-12-08",
+      "squadId": "squad-5",
+      "assigneeId": "m24",
+      "assigneeName": "Ezekiel Matheo Barus",
       "status": "in_progress",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 25
     },
     {
-      "id": "f1-05",
+      "id": "t05",
       "code": "F1-05",
       "phase": 1,
-      "title": "Setup Redis & index pencarian (Elasticsearch)",
+      "title": "Setup Redis & index pencarian Elasticsearch",
       "roles": [
         "data",
         "backend"
       ],
-      "weight": 5,
-      "dueDate": "2026-11-28",
-      "offsetWk": 4,
-      "assignees": [
-        "m21",
-        "m22"
-      ],
-      "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "storyPoints": 5,
+      "dueDate": "2026-12-08",
+      "squadId": "squad-1",
+      "assigneeId": "m03",
+      "assigneeName": "Oda Kartika Nuringtyasanti",
+      "status": "in_progress",
+      "progress": 25
     },
     {
-      "id": "f1-06",
+      "id": "t06",
       "code": "F1-06",
       "phase": 1,
-      "title": "Pencarian geospasial & filter multi-dimensi direktori",
+      "title": "Pencarian geospasial ST_DWithin & filter multi-dimensi",
       "roles": [
         "backend"
       ],
-      "weight": 13,
-      "dueDate": "2026-12-12",
-      "offsetWk": 6,
-      "assignees": [
-        "m01",
-        "m04"
-      ],
+      "storyPoints": 13,
+      "dueDate": "2026-12-22",
+      "squadId": "squad-1",
+      "assigneeId": "m03",
+      "assigneeName": "Oda Kartika Nuringtyasanti",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f1-07",
+      "id": "t07",
       "code": "F1-07",
       "phase": 1,
-      "title": "Halaman detail destinasi komprehensif (web)",
+      "title": "Halaman detail destinasi komprehensif (Next.js)",
       "roles": [
         "frontend"
       ],
-      "weight": 8,
-      "dueDate": "2026-12-12",
-      "offsetWk": 6,
-      "assignees": [
-        "m05",
-        "m11",
-        "m19",
-        "m25"
-      ],
+      "storyPoints": 8,
+      "dueDate": "2026-12-22",
+      "squadId": "squad-1",
+      "assigneeId": "m02",
+      "assigneeName": "Raden Roro Anindya Anggitoputri",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f1-08",
+      "id": "t08",
       "code": "F1-08",
       "phase": 1,
-      "title": "Peta interaktif + clustering pin (web & mobile)",
+      "title": "Peta interaktif + clustering pin (Flutter & Next.js)",
       "roles": [
         "frontend",
         "mobile"
       ],
-      "weight": 8,
-      "dueDate": "2026-12-19",
-      "offsetWk": 7,
-      "assignees": [
-        "m17",
-        "m03"
-      ],
+      "storyPoints": 8,
+      "dueDate": "2026-12-29",
+      "squadId": "squad-1",
+      "assigneeId": "m04",
+      "assigneeName": "Anastasya Geovani Manurung",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f1-09",
+      "id": "t09",
       "code": "F1-09",
       "phase": 1,
-      "title": "Alur kontributor publik pendaftaran destinasi (geotag & poin)",
+      "title": "Alur kontributor publik destinasi baru (geotag EXIF)",
       "roles": [
         "mobile",
         "backend"
       ],
-      "weight": 8,
-      "dueDate": "2026-12-19",
-      "offsetWk": 7,
-      "assignees": [
-        "m06",
-        "m10"
-      ],
+      "storyPoints": 8,
+      "dueDate": "2026-12-29",
+      "squadId": "squad-1",
+      "assigneeId": "m03",
+      "assigneeName": "Oda Kartika Nuringtyasanti",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f1-10",
+      "id": "t10",
       "code": "F1-10",
       "phase": 1,
-      "title": "Dashboard kurasi admin & moderasi berjenjang (dedup Haversine)",
+      "title": "Dashboard kurasi admin & moderasi Haversine 500m",
       "roles": [
         "backend",
         "frontend"
       ],
-      "weight": 13,
-      "dueDate": "2026-12-26",
-      "offsetWk": 8,
-      "assignees": [
-        "m16",
-        "m23"
-      ],
+      "storyPoints": 13,
+      "dueDate": "2027-01-05",
+      "squadId": "squad-2",
+      "assigneeId": "m06",
+      "assigneeName": "Edward Antonio Herlambang Hutauruk",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f1-11",
+      "id": "t11",
       "code": "F1-11",
       "phase": 1,
-      "title": "Data seeding destinasi utama 38 provinsi",
+      "title": "Data seeding destinasi utama 38 provinsi di Indonesia",
       "roles": [
         "data"
       ],
-      "weight": 5,
-      "dueDate": "2026-12-26",
-      "offsetWk": 8,
-      "assignees": [
-        "m27",
-        "m09"
-      ],
+      "storyPoints": 5,
+      "dueDate": "2027-01-05",
+      "squadId": "squad-1",
+      "assigneeId": "m05",
+      "assigneeName": "Cornelius Dicho Dharmawan",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f2-01",
+      "id": "t12",
       "code": "F2-01",
       "phase": 2,
-      "title": "Dashboard mitra & onboarding KYC/KYB",
+      "title": "Dashboard mitra & onboarding KYC/KYB legalitas",
       "roles": [
         "backend",
         "frontend"
       ],
-      "weight": 13,
-      "dueDate": "2027-01-09",
-      "offsetWk": 10,
-      "assignees": [
-        "m22",
-        "m02"
-      ],
+      "storyPoints": 13,
+      "dueDate": "2027-01-19",
+      "squadId": "squad-2",
+      "assigneeId": "m09",
+      "assigneeName": "Jo Suk Sin",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f2-02",
+      "id": "t13",
       "code": "F2-02",
       "phase": 2,
-      "title": "Tour Package Builder (open/private trip, itinerary harian)",
+      "title": "Tour Package Builder (open/private trip, itinerary JSONB)",
       "roles": [
         "backend",
         "mobile"
       ],
-      "weight": 13,
-      "dueDate": "2027-01-23",
-      "offsetWk": 12,
-      "assignees": [
-        "m01",
-        "m12"
-      ],
+      "storyPoints": 13,
+      "dueDate": "2027-02-02",
+      "squadId": "squad-3",
+      "assigneeId": "m11",
+      "assigneeName": "Joel Oktavianus",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f2-03",
+      "id": "t14",
       "code": "F2-03",
       "phase": 2,
-      "title": "Dynamic pricing bertingkat & kuota per tanggal",
+      "title": "Dynamic tiering pricing & kuota per tanggal",
       "roles": [
         "backend"
       ],
-      "weight": 8,
-      "dueDate": "2027-01-30",
-      "offsetWk": 13,
-      "assignees": [
-        "m04",
-        "m10"
-      ],
+      "storyPoints": 8,
+      "dueDate": "2027-02-09",
+      "squadId": "squad-3",
+      "assigneeId": "m11",
+      "assigneeName": "Joel Oktavianus",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f2-04",
+      "id": "t15",
       "code": "F2-04",
       "phase": 2,
-      "title": "E-Ticketing & QR code tiket masuk",
+      "title": "E-Ticketing & generator QR code tiket terenkripsi",
       "roles": [
         "backend",
         "mobile"
       ],
-      "weight": 8,
-      "dueDate": "2027-02-06",
-      "offsetWk": 14,
-      "assignees": [
-        "m16",
-        "m18"
-      ],
+      "storyPoints": 8,
+      "dueDate": "2027-02-16",
+      "squadId": "squad-2",
+      "assigneeId": "m09",
+      "assigneeName": "Jo Suk Sin",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f2-05",
+      "id": "t16",
       "code": "F2-05",
       "phase": 2,
-      "title": "Integrasi Payment Gateway (Midtrans/Xendit + webhook)",
+      "title": "Integrasi Payment Gateway Midtrans/Xendit (QRIS/VA/E-Wallet)",
       "roles": [
         "backend"
       ],
-      "weight": 13,
-      "dueDate": "2027-02-13",
-      "offsetWk": 15,
-      "assignees": [
-        "m22",
-        "m01"
-      ],
+      "storyPoints": 13,
+      "dueDate": "2027-02-23",
+      "squadId": "squad-5",
+      "assigneeId": "m24",
+      "assigneeName": "Ezekiel Matheo Barus",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f2-06",
+      "id": "t17",
       "code": "F2-06",
       "phase": 2,
-      "title": "Escrow ledger & split payment ke mitra",
+      "title": "Escrow ledger penampungan dana & split payout mitra",
       "roles": [
         "backend"
       ],
-      "weight": 8,
-      "dueDate": "2027-02-20",
-      "offsetWk": 16,
-      "assignees": [
-        "m04",
-        "m10"
-      ],
+      "storyPoints": 8,
+      "dueDate": "2027-03-02",
+      "squadId": "squad-5",
+      "assigneeId": "m23",
+      "assigneeName": "Rafael Elano Prasetya",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f2-07",
+      "id": "t18",
       "code": "F2-07",
       "phase": 2,
-      "title": "UI pembuatan & pencarian paket wisata",
+      "title": "Aplikasi mobile scanner tiket untuk petugas gerbang",
       "roles": [
-        "frontend",
-        "uiux"
+        "mobile"
       ],
-      "weight": 8,
-      "dueDate": "2027-02-20",
-      "offsetWk": 16,
-      "assignees": [
-        "m05",
-        "m13"
-      ],
+      "storyPoints": 8,
+      "dueDate": "2027-03-02",
+      "squadId": "squad-2",
+      "assigneeId": "m10",
+      "assigneeName": "Aloysia Carla Putri Haryadi",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f2-08",
+      "id": "t19",
       "code": "F2-08",
       "phase": 2,
-      "title": "QA regresi modul mitra & transaksi",
+      "title": "QA regresi modul tiket & transaksi",
       "roles": [
         "qa"
       ],
-      "weight": 5,
-      "dueDate": "2027-02-27",
-      "offsetWk": 17,
-      "assignees": [
-        "m08",
-        "m14"
-      ],
+      "storyPoints": 5,
+      "dueDate": "2027-03-09",
+      "squadId": "squad-2",
+      "assigneeId": "m09",
+      "assigneeName": "Jo Suk Sin",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f3-01",
+      "id": "t20",
       "code": "F3-01",
       "phase": 3,
-      "title": "Extranet akomodasi lokal (PMS sederhana & kalender kamar)",
+      "title": "Extranet akomodasi lokal (homestay & kalender kamar)",
       "roles": [
         "backend",
         "frontend"
       ],
-      "weight": 13,
-      "dueDate": "2027-03-13",
-      "offsetWk": 19,
-      "assignees": [
-        "m16",
-        "m11"
-      ],
+      "storyPoints": 13,
+      "dueDate": "2027-03-23",
+      "squadId": "squad-4",
+      "assigneeId": "m21",
+      "assigneeName": "Caesar Gattaca",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f3-02",
+      "id": "t21",
       "code": "F3-02",
       "phase": 3,
-      "title": "Integrasi API hotel komersial (agregator perhotelan)",
+      "title": "Integrasi API hotel komersial & agregator",
       "roles": [
         "backend"
       ],
-      "weight": 8,
-      "dueDate": "2027-03-20",
-      "offsetWk": 20,
-      "assignees": [
-        "m22",
-        "m01"
-      ],
+      "storyPoints": 8,
+      "dueDate": "2027-03-30",
+      "squadId": "squad-4",
+      "assigneeId": "m21",
+      "assigneeName": "Caesar Gattaca",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f3-03",
+      "id": "t22",
       "code": "F3-03",
       "phase": 3,
-      "title": "Radius mapping penginapan sekitar destinasi",
+      "title": "Radius mapping penginapan sekitar destinasi wisata",
       "roles": [
         "backend",
         "frontend"
       ],
-      "weight": 5,
-      "dueDate": "2027-03-27",
-      "offsetWk": 21,
-      "assignees": [
-        "m04",
-        "m17"
-      ],
+      "storyPoints": 5,
+      "dueDate": "2027-04-06",
+      "squadId": "squad-4",
+      "assigneeId": "m17",
+      "assigneeName": "Josue Freitas Da Costa",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f3-04",
+      "id": "t23",
       "code": "F3-04",
       "phase": 3,
-      "title": "Marketplace transportasi lokal (rental, kapal, jeep)",
+      "title": "Marketplace transportasi lokal (rental mobil, kapal, jip)",
       "roles": [
         "backend",
         "frontend"
       ],
-      "weight": 13,
-      "dueDate": "2027-04-03",
-      "offsetWk": 22,
-      "assignees": [
-        "m10",
-        "m23"
-      ],
+      "storyPoints": 13,
+      "dueDate": "2027-04-13",
+      "squadId": "squad-4",
+      "assigneeId": "m18",
+      "assigneeName": "Syrillya Chantika Valentina Sitohang",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f3-05",
+      "id": "t24",
       "code": "F3-05",
       "phase": 3,
       "title": "Agregator transportasi antarkota (KAI, Pelni, bus AKAP)",
       "roles": [
         "backend"
       ],
-      "weight": 13,
-      "dueDate": "2027-04-10",
-      "offsetWk": 23,
-      "assignees": [
-        "m16",
-        "m22"
-      ],
+      "storyPoints": 13,
+      "dueDate": "2027-04-20",
+      "squadId": "squad-4",
+      "assigneeId": "m21",
+      "assigneeName": "Caesar Gattaca",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f3-06",
+      "id": "t25",
       "code": "F3-06",
       "phase": 3,
       "title": "Estimasi rute multi-moda (first-mile to last-mile)",
@@ -705,19 +744,16 @@
         "mobile",
         "frontend"
       ],
-      "weight": 8,
-      "dueDate": "2027-04-10",
-      "offsetWk": 23,
-      "assignees": [
-        "m24",
-        "m02"
-      ],
+      "storyPoints": 8,
+      "dueDate": "2027-04-20",
+      "squadId": "squad-4",
+      "assigneeId": "m17",
+      "assigneeName": "Josue Freitas Da Costa",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f3-07",
+      "id": "t26",
       "code": "F3-07",
       "phase": 3,
       "title": "Custom bundling cart: destinasi + hotel + transport",
@@ -725,212 +761,195 @@
         "frontend",
         "backend"
       ],
-      "weight": 13,
-      "dueDate": "2027-04-17",
-      "offsetWk": 24,
-      "assignees": [
-        "m05",
-        "m01"
-      ],
+      "storyPoints": 13,
+      "dueDate": "2027-04-27",
+      "squadId": "squad-3",
+      "assigneeId": "m12",
+      "assigneeName": "Bintang Neera",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f3-08",
+      "id": "t27",
       "code": "F3-08",
+      "phase": 3,
+      "title": "Inventory locking 15 menit dengan Redis Redlock",
+      "roles": [
+        "backend"
+      ],
+      "storyPoints": 8,
+      "dueDate": "2027-04-27",
+      "squadId": "squad-5",
+      "assigneeId": "m23",
+      "assigneeName": "Rafael Elano Prasetya",
+      "status": "todo",
+      "progress": 0
+    },
+    {
+      "id": "t28",
+      "code": "F3-09",
       "phase": 3,
       "title": "QA regresi modul transportasi & akomodasi",
       "roles": [
         "qa"
       ],
-      "weight": 5,
-      "dueDate": "2027-04-24",
-      "offsetWk": 25,
-      "assignees": [
-        "m20",
-        "m26"
-      ],
+      "storyPoints": 5,
+      "dueDate": "2027-05-04",
+      "squadId": "squad-4",
+      "assigneeId": "m22",
+      "assigneeName": "Yosep Hermawan",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f4-01",
+      "id": "t29",
       "code": "F4-01",
       "phase": 4,
-      "title": "AI Smart Itinerary Planner",
+      "title": "AI Smart Itinerary Planner (Gemini API)",
       "roles": [
         "backend",
         "data"
       ],
-      "weight": 13,
-      "dueDate": "2027-05-08",
-      "offsetWk": 27,
-      "assignees": [
-        "m04",
-        "m15"
-      ],
+      "storyPoints": 13,
+      "dueDate": "2027-05-18",
+      "squadId": "squad-5",
+      "assigneeId": "m24",
+      "assigneeName": "Ezekiel Matheo Barus",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f4-02",
+      "id": "t30",
       "code": "F4-02",
       "phase": 4,
       "title": "Mode peta offline per wilayah (blank spot)",
       "roles": [
         "mobile"
       ],
-      "weight": 8,
-      "dueDate": "2027-05-08",
-      "offsetWk": 27,
-      "assignees": [
-        "m03",
-        "m06"
-      ],
+      "storyPoints": 8,
+      "dueDate": "2027-05-18",
+      "squadId": "squad-1",
+      "assigneeId": "m04",
+      "assigneeName": "Anastasya Geovani Manurung",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f4-03",
+      "id": "t31",
       "code": "F4-03",
       "phase": 4,
-      "title": "Fitur SOS darurat & notifikasi BMKG/BNPB",
+      "title": "Fitur SOS darurat geolokasi & integrasi BMKG/SAR",
       "roles": [
         "mobile",
         "backend"
       ],
-      "weight": 8,
-      "dueDate": "2027-05-15",
-      "offsetWk": 28,
-      "assignees": [
-        "m12",
-        "m10"
-      ],
+      "storyPoints": 8,
+      "dueDate": "2027-05-25",
+      "squadId": "squad-5",
+      "assigneeId": "m23",
+      "assigneeName": "Rafael Elano Prasetya",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f4-04",
+      "id": "t32",
       "code": "F4-04",
       "phase": 4,
-      "title": "Direktori kuliner, UMKM & kalender event budaya",
+      "title": "Direktori kuliner khas, UMKM & event budaya",
       "roles": [
         "frontend",
         "backend"
       ],
-      "weight": 8,
-      "dueDate": "2027-05-22",
-      "offsetWk": 29,
-      "assignees": [
-        "m11",
-        "m16"
-      ],
+      "storyPoints": 8,
+      "dueDate": "2027-06-01",
+      "squadId": "squad-4",
+      "assigneeId": "m21",
+      "assigneeName": "Caesar Gattaca",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f4-05",
+      "id": "t33",
       "code": "F4-05",
       "phase": 4,
-      "title": "Sistem ulasan & rating destinasi",
+      "title": "Sistem ulasan & rating pengunjung terverifikasi",
       "roles": [
         "backend",
         "frontend"
       ],
-      "weight": 8,
-      "dueDate": "2027-05-29",
-      "offsetWk": 30,
-      "assignees": [
-        "m22",
-        "m17"
-      ],
+      "storyPoints": 8,
+      "dueDate": "2027-06-08",
+      "squadId": "squad-2",
+      "assigneeId": "m09",
+      "assigneeName": "Jo Suk Sin",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f4-06",
+      "id": "t34",
       "code": "F4-06",
       "phase": 4,
-      "title": "Sistem komisi & program afiliasi",
-      "roles": [
-        "backend"
-      ],
-      "weight": 5,
-      "dueDate": "2027-06-05",
-      "offsetWk": 31,
-      "assignees": [
-        "m01",
-        "m04"
-      ],
-      "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
-    },
-    {
-      "id": "f4-07",
-      "code": "F4-07",
-      "phase": 4,
-      "title": "Load testing & penetration testing",
+      "title": "Load testing (K6) skenario concurrency peak season",
       "roles": [
         "qa",
         "data"
       ],
-      "weight": 8,
-      "dueDate": "2027-06-05",
-      "offsetWk": 31,
-      "assignees": [
-        "m08",
-        "m21"
-      ],
+      "storyPoints": 8,
+      "dueDate": "2027-06-15",
+      "squadId": "squad-5",
+      "assigneeId": "m25",
+      "assigneeName": "Michael Devon Eka Putra",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f4-08",
+      "id": "t35",
+      "code": "F4-07",
+      "phase": 4,
+      "title": "Security audit dokumen KYC & penetration testing",
+      "roles": [
+        "backend"
+      ],
+      "storyPoints": 8,
+      "dueDate": "2027-06-15",
+      "squadId": "squad-5",
+      "assigneeId": "m23",
+      "assigneeName": "Rafael Elano Prasetya",
+      "status": "todo",
+      "progress": 0
+    },
+    {
+      "id": "t36",
       "code": "F4-08",
       "phase": 4,
-      "title": "Beta testing desa wisata percontohan & perbaikan",
+      "title": "User Acceptance Testing (UAT) bersama mitra & PO Denny J.C. Sihombing",
       "roles": [
         "qa"
       ],
-      "weight": 5,
-      "dueDate": "2027-06-12",
-      "offsetWk": 32,
-      "assignees": [
-        "m14",
-        "m20"
-      ],
+      "storyPoints": 5,
+      "dueDate": "2027-06-22",
+      "squadId": "squad-3",
+      "assigneeId": "m14",
+      "assigneeName": "Albertus Chandra Halim",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     },
     {
-      "id": "f4-09",
+      "id": "t37",
       "code": "F4-09",
       "phase": 4,
-      "title": "Rilis Play Store, App Store & Web",
+      "title": "Final Demo & Serah Terima Rilis ke Product Owner",
       "roles": [
         "data",
         "frontend"
       ],
-      "weight": 5,
-      "dueDate": "2027-06-19",
-      "offsetWk": 33,
-      "assignees": [
-        "m27",
-        "m23"
-      ],
+      "storyPoints": 5,
+      "dueDate": "2027-06-29",
+      "squadId": "squad-5",
+      "assigneeId": "m25",
+      "assigneeName": "Michael Devon Eka Putra",
       "status": "todo",
-      "reviewScore": null,
-      "completedAt": null
+      "progress": 0
     }
   ]
 }
