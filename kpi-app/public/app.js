@@ -66,7 +66,7 @@ function renderHeader() {
   $("#h-progress").textContent = dash.progressTotal + "%";
   $("#h-kpi").textContent = dash.kpiRata.toFixed(1);
   $("#h-done").textContent = `${dash.tugasDone}/${dash.totalTugas}`;
-  $("#subtitle").textContent = `${db.settings.projectName} — KPI pengerjaan tim (${db.members.length} anggota) & rencana kerja blueprint 4 fase`;
+  $("#subtitle").textContent = `${db.settings.projectName} — KPI ${db.members.length} anggota (5 squad) · Sprint ${dash.activeSprint}/6 berjalan: ${dash.activeSprintName} · Target rilis ${dash.targetDate}`;
 }
 
 let statusChart, roleChart;
@@ -75,11 +75,13 @@ function renderRingkasan() {
   $("#c-kpi").textContent = dash.kpiRata.toFixed(1);
   $("#c-done").textContent = `${dash.tugasDone}/${dash.totalTugas}`;
   $("#c-wip").textContent = dash.tugasWip;
+  $("#c-sprint").textContent = "Sprint " + dash.activeSprint + "/6";
+  $("#c-sprint-name").textContent = dash.activeSprintName;
 
-  // progress per fase
+  // progress per sprint (roadmap 6 minggu)
   $("#phasebars").innerHTML = dash.perPhase.map((p) => `
     <div class="phasebar">
-      <div class="lbl"><b>Fase ${p.phase}: ${esc(p.name)}</b><small>${p.months} · ${p.doneTasks}/${p.totalTasks} tugas</small></div>
+      <div class="lbl"><b>Sprint ${p.phase}: ${esc(p.name)}</b><small>${p.start.slice(5)} s.d. ${p.end.slice(5)} · ${p.doneTasks}/${p.totalTasks} issue</small></div>
       <div class="bar"><i style="width:${p.progress}%;background:${barColor(p.progress)}"></i></div>
     </div>`).join("");
 
@@ -167,7 +169,7 @@ function renderTugas() {
     return `<tr>
       <td><b>${t.code}</b><br><span class="role-tag" style="background:${colorKel(t.kelompokId)}">${esc(kelOf(t.kelompokId).short)}</span></td>
       <td>${esc(t.title)}</td>
-      <td>F${t.phase}</td>
+      <td>Sprint ${t.phase}</td>
       <td><small>${esc(names.join(", ")) || "–"}</small></td>
       <td style="text-align:center">${t.weight}</td>
       <td style="color:${overdue ? "var(--bad)" : "inherit"}">${tgl}${overdue ? " ⚠" : ""}</td>
@@ -178,7 +180,7 @@ function renderTugas() {
       <td><button class="ghost" data-act="edit" data-id="${t.id}">✎</button></td>
     </tr>`;
   }).join("");
-  $("#tbl-tasks thead").innerHTML = `<tr><th>Kode</th><th>Tugas</th><th>Fase</th><th>PJ</th><th>Bobot</th><th>Tenggat</th><th>Status</th><th>Skor Kualitas</th><th></th></tr>`;
+  $("#tbl-tasks thead").innerHTML = `<tr><th>Issue</th><th>Tugas</th><th>Sprint</th><th>PJ</th><th>Bobot</th><th>Tenggat</th><th>Status</th><th>Skor Kualitas</th><th></th></tr>`;
   $("#tbl-tasks tbody").innerHTML = rows || `<tr><td colspan="9" style="color:var(--muted)">Tidak ada tugas yang cocok.</td></tr>`;
 }
 
@@ -243,22 +245,21 @@ function dialogAddMember() {
 }
 
 function dialogAddTask() {
-  const optPhase = [1, 2, 3, 4].map((n) => {
+  const optPhase = [1, 2, 3, 4, 5, 6].map((n) => {
     const p = db.phaseDefs.find((x) => x.n === n);
-    return `<option value="${n}">Fase ${n} — ${p.name}</option>`;
+    return `<option value="${n}">Sprint ${n} — ${p.name} (${p.start.slice(5)}–${p.end.slice(5)})</option>`;
   }).join("");
-  const today = new Date().toISOString().slice(0, 10);
   openDialog(`
     <h4>Tambah Tugas</h4>
     <label>Judul tugas</label><input type="text" id="dt-title">
-    <label>Fase</label><select id="dt-phase">${optPhase}</select>
+    <label>Sprint</label><select id="dt-phase">${optPhase}</select>
     <label>Bobot (story point)</label><input type="number" id="dt-weight" value="5" min="1">
-    <label>Tenggat</label><input type="date" id="dt-due" value="${today}">`,
+    <p style="font-size:12px;color:var(--muted);margin:6px 0 0">Squad pj &amp; tenggat sprint diisi otomatis.</p>`,
     async () => {
       const title = $("#dt-title").value.trim();
       if (!title) throw new Error("Judul wajib diisi");
       await post("/tasks", {
-        title, phase: $("#dt-phase").value, weight: $("#dt-weight").value, dueDate: $("#dt-due").value || null,
+        title, phase: $("#dt-phase").value, weight: $("#dt-weight").value,
       });
       await refreshAll();
     });

@@ -1,810 +1,877 @@
 {
-  "meta": {
-    "project": "NusantaraGo (Super-App Pariwisata Indonesia)",
-    "productOwner": "Denny J.C. Sihombing",
+  "settings": {
+    "projectName": "NusantaraGo",
     "startDate": "2026-11-10",
-    "deadlineDate": "2026-12-22",
-    "totalMembers": 27,
-    "totalSquads": 5,
-    "squads": [
-      {
-        "id": "squad-1",
-        "name": "Squad 1: Direktori Wisata, GIS & Crowdsourcing",
-        "leadName": "ODA KARTIKA NURINGTYASANTI",
-        "focus": "Modul 1 (Direktori 38 Provinsi, PostGIS) & Modul 2 (Pendaftaran Publik & Geotagging EXIF)"
-      },
-      {
-        "id": "squad-2",
-        "name": "Squad 2: Mitra Pengelola (KYC), Legalitas & E-Ticketing",
-        "leadName": "GABRIELLA LAVIGNE PINK",
-        "focus": "Modul 2 (Klaim Mitra Resmi, Validasi KYC) & Modul 5.1/6 (E-Ticketing & QR Code Scanner)"
-      },
-      {
-        "id": "squad-3",
-        "name": "Squad 3: Tour Package Builder & Custom Trip Bundling",
-        "leadName": "JESSICA HILLARY HUTAHAEAN",
-        "focus": "Modul 3 (Manajemen Paket Wisata, Open/Private Trip, Dynamic Pricing & Custom Bundling)"
-      },
-      {
-        "id": "squad-4",
-        "name": "Squad 4: Transportasi Multi-Moda & Extranet Akomodasi",
-        "leadName": "HESEKIEL ANDHIKA NAINGGOLAN",
-        "focus": "Modul 4 (Transportasi Antarkota API, Last-Mile Rental) & Modul 5 (Extranet Homestay & Kalender Kamar)"
-      },
-      {
-        "id": "squad-5",
-        "name": "Squad 5: Core Infrastructure, Escrow Payment & AI Services",
-        "leadName": "GEORGE BLACIANO KUNEMARA PUTRA",
-        "focus": "Modul 6 (AI Smart Itinerary Gemini, SOS Darurat) & Core Engine (Payment Gateway, Escrow, Redis Redlock)"
-      }
-    ]
+    "targetDate": "2026-12-22"
   },
+  "kelompoks": [
+    {
+      "id": "k1",
+      "name": "Squad 1: Direktori Wisata, GIS & Crowdsourcing",
+      "short": "Squad 1",
+      "lead": "Oda Kartika Nuringtyasanti",
+      "memberCount": 5
+    },
+    {
+      "id": "k2",
+      "name": "Squad 2: Mitra Pengelola (KYC), Legalitas & E-Ticketing",
+      "short": "Squad 2",
+      "lead": "Gabriella Lavigne Pink",
+      "memberCount": 5
+    },
+    {
+      "id": "k3",
+      "name": "Squad 3: Tour Package Builder & Custom Trip Bundling",
+      "short": "Squad 3",
+      "lead": "Jessica Hillary Hutahaean",
+      "memberCount": 5
+    },
+    {
+      "id": "k4",
+      "name": "Squad 4: Transportasi Multi-Moda & Extranet Akomodasi",
+      "short": "Squad 4",
+      "lead": "Hesekiel Andhika Nainggolan",
+      "memberCount": 7
+    },
+    {
+      "id": "k5",
+      "name": "Squad 5: Core Infrastructure, Escrow Payment & AI Services",
+      "short": "Squad 5",
+      "lead": "George Blaciano Kunemara Putra",
+      "memberCount": 5
+    }
+  ],
   "members": [
     {
       "id": "m01",
-      "campusId": "202404560033",
-      "name": "Linda Wati Purba",
-      "role": "qa",
-      "squadId": "squad-1",
-      "squadName": "Squad 1: Direktori Wisata, GIS & Crowdsourcing",
-      "isLead": false,
-      "studentId": "S001",
-      "attPct": 100
+      "campusId": "202404560028",
+      "name": "Oda Kartika Nuringtyasanti",
+      "kelompokId": "k1",
+      "isLead": true
     },
     {
       "id": "m02",
-      "campusId": "202404560036",
-      "name": "Raden Roro Anindya Anggitoputri",
-      "role": "frontend",
-      "squadId": "squad-1",
-      "squadName": "Squad 1: Direktori Wisata, GIS & Crowdsourcing",
-      "isLead": false,
-      "studentId": "S002",
-      "attPct": 100
+      "campusId": "202404560033",
+      "name": "Linda Wati Purba",
+      "kelompokId": "k1",
+      "isLead": false
     },
     {
       "id": "m03",
-      "campusId": "202404560028",
-      "name": "Oda Kartika Nuringtyasanti",
-      "role": "backend",
-      "squadId": "squad-1",
-      "squadName": "Squad 1: Direktori Wisata, GIS & Crowdsourcing",
-      "isLead": true,
-      "studentId": "S003",
-      "attPct": 100
+      "campusId": "202404560036",
+      "name": "Raden Roro Anindya Anggitoputri",
+      "kelompokId": "k1",
+      "isLead": false
     },
     {
       "id": "m04",
       "campusId": "202404560037",
       "name": "Anastasya Geovani Manurung",
-      "role": "mobile",
-      "squadId": "squad-1",
-      "squadName": "Squad 1: Direktori Wisata, GIS & Crowdsourcing",
-      "isLead": false,
-      "studentId": "S004",
-      "attPct": 100
+      "kelompokId": "k1",
+      "isLead": false
     },
     {
       "id": "m05",
       "campusId": "202404560019",
       "name": "Cornelius Dicho Dharmawan",
-      "role": "data",
-      "squadId": "squad-1",
-      "squadName": "Squad 1: Direktori Wisata, GIS & Crowdsourcing",
-      "isLead": false,
-      "studentId": "S005",
-      "attPct": 100
+      "kelompokId": "k1",
+      "isLead": false
     },
     {
       "id": "m06",
-      "campusId": "202404560005",
-      "name": "Edward Antonio Herlambang Hutauruk",
-      "role": "frontend",
-      "squadId": "squad-2",
-      "squadName": "Squad 2: Mitra Pengelola (KYC), Legalitas & E-Ticketing",
-      "isLead": false,
-      "studentId": "S006",
-      "attPct": 100
+      "campusId": "202404560020",
+      "name": "Gabriella Lavigne Pink",
+      "kelompokId": "k2",
+      "isLead": true
     },
     {
       "id": "m07",
-      "campusId": "202404560020",
-      "name": "Gabriella Lavigne Pink",
-      "role": "uiux",
-      "squadId": "squad-2",
-      "squadName": "Squad 2: Mitra Pengelola (KYC), Legalitas & E-Ticketing",
-      "isLead": true,
-      "studentId": "S007",
-      "attPct": 100
+      "campusId": "202404560005",
+      "name": "Edward Antonio Herlambang Hutauruk",
+      "kelompokId": "k2",
+      "isLead": false
     },
     {
       "id": "m08",
       "campusId": "202404560021",
       "name": "Brigid Pauline Ratu Patty Diaz",
-      "role": "frontend",
-      "squadId": "squad-2",
-      "squadName": "Squad 2: Mitra Pengelola (KYC), Legalitas & E-Ticketing",
-      "isLead": false,
-      "studentId": "S008",
-      "attPct": 100
+      "kelompokId": "k2",
+      "isLead": false
     },
     {
       "id": "m09",
       "campusId": "202404560023",
       "name": "Jo Suk Sin",
-      "role": "backend",
-      "squadId": "squad-2",
-      "squadName": "Squad 2: Mitra Pengelola (KYC), Legalitas & E-Ticketing",
-      "isLead": false,
-      "studentId": "S009",
-      "attPct": 100
+      "kelompokId": "k2",
+      "isLead": false
     },
     {
       "id": "m10",
       "campusId": "202404560040",
       "name": "Aloysia Carla Putri Haryadi",
-      "role": "mobile",
-      "squadId": "squad-2",
-      "squadName": "Squad 2: Mitra Pengelola (KYC), Legalitas & E-Ticketing",
-      "isLead": false,
-      "studentId": "S010",
-      "attPct": 100
+      "kelompokId": "k2",
+      "isLead": false
     },
     {
       "id": "m11",
-      "campusId": "202404560035",
-      "name": "Joel Oktavianus",
-      "role": "backend",
-      "squadId": "squad-3",
-      "squadName": "Squad 3: Tour Package Builder & Custom Trip Bundling",
-      "isLead": false,
-      "studentId": "S011",
-      "attPct": 100
+      "campusId": "202404560050",
+      "name": "Jessica Hillary Hutahaean",
+      "kelompokId": "k3",
+      "isLead": true
     },
     {
       "id": "m12",
-      "campusId": "202404560045",
-      "name": "Bintang Neera",
-      "role": "frontend",
-      "squadId": "squad-3",
-      "squadName": "Squad 3: Tour Package Builder & Custom Trip Bundling",
-      "isLead": false,
-      "studentId": "S012",
-      "attPct": 100
+      "campusId": "202404560035",
+      "name": "Joel Oktavianus",
+      "kelompokId": "k3",
+      "isLead": false
     },
     {
       "id": "m13",
-      "campusId": "202404560025",
-      "name": "Vicentius Elang Krisnanto",
-      "role": "mobile",
-      "squadId": "squad-3",
-      "squadName": "Squad 3: Tour Package Builder & Custom Trip Bundling",
-      "isLead": false,
-      "studentId": "S013",
-      "attPct": 100
+      "campusId": "202404560045",
+      "name": "Bintang Neera",
+      "kelompokId": "k3",
+      "isLead": false
     },
     {
       "id": "m14",
-      "campusId": "202404560008",
-      "name": "Albertus Chandra Halim",
-      "role": "qa",
-      "squadId": "squad-3",
-      "squadName": "Squad 3: Tour Package Builder & Custom Trip Bundling",
-      "isLead": false,
-      "studentId": "S014",
-      "attPct": 100
+      "campusId": "202404560025",
+      "name": "Vicentius Elang Krisnanto",
+      "kelompokId": "k3",
+      "isLead": false
     },
     {
       "id": "m15",
-      "campusId": "202404560050",
-      "name": "Jessica Hillary Hutahaean",
-      "role": "uiux",
-      "squadId": "squad-3",
-      "squadName": "Squad 3: Tour Package Builder & Custom Trip Bundling",
-      "isLead": true,
-      "studentId": "S015",
-      "attPct": 100
+      "campusId": "202404560008",
+      "name": "Albertus Chandra Halim",
+      "kelompokId": "k3",
+      "isLead": false
     },
     {
       "id": "m16",
       "campusId": "202404560052",
       "name": "Hesekiel Andhika Nainggolan",
-      "role": "backend",
-      "squadId": "squad-4",
-      "squadName": "Squad 4: Transportasi Multi-Moda & Extranet Akomodasi",
-      "isLead": true,
-      "studentId": "S016",
-      "attPct": 100
+      "kelompokId": "k4",
+      "isLead": true
     },
     {
       "id": "m17",
       "campusId": "202404560027",
       "name": "Josue Freitas Da Costa",
-      "role": "frontend",
-      "squadId": "squad-4",
-      "squadName": "Squad 4: Transportasi Multi-Moda & Extranet Akomodasi",
-      "isLead": false,
-      "studentId": "S017",
-      "attPct": 100
+      "kelompokId": "k4",
+      "isLead": false
     },
     {
       "id": "m18",
       "campusId": "202204560029",
       "name": "Syrillya Chantika Valentina Sitohang",
-      "role": "backend",
-      "squadId": "squad-4",
-      "squadName": "Squad 4: Transportasi Multi-Moda & Extranet Akomodasi",
-      "isLead": false,
-      "studentId": "S018",
-      "attPct": 88
+      "kelompokId": "k4",
+      "isLead": false
     },
     {
       "id": "m19",
       "campusId": "202404560029",
       "name": "Frans Nicholas Rafael",
-      "role": "mobile",
-      "squadId": "squad-4",
-      "squadName": "Squad 4: Transportasi Multi-Moda & Extranet Akomodasi",
-      "isLead": false,
-      "studentId": "S019",
-      "attPct": 100
+      "kelompokId": "k4",
+      "isLead": false
     },
     {
       "id": "m20",
       "campusId": "202404560017",
       "name": "Theodomiro Fidelio Tomasoa",
-      "role": "data",
-      "squadId": "squad-4",
-      "squadName": "Squad 4: Transportasi Multi-Moda & Extranet Akomodasi",
-      "isLead": false,
-      "studentId": "S020",
-      "attPct": 100
+      "kelompokId": "k4",
+      "isLead": false
     },
     {
       "id": "m21",
       "campusId": "202204560032",
       "name": "Caesar Gattaca",
-      "role": "backend",
-      "squadId": "squad-4",
-      "squadName": "Squad 4: Transportasi Multi-Moda & Extranet Akomodasi",
-      "isLead": false,
-      "studentId": "S021",
-      "attPct": 88
+      "kelompokId": "k4",
+      "isLead": false
     },
     {
       "id": "m22",
       "campusId": "202404560051",
       "name": "Yosep Hermawan",
-      "role": "qa",
-      "squadId": "squad-4",
-      "squadName": "Squad 4: Transportasi Multi-Moda & Extranet Akomodasi",
-      "isLead": false,
-      "studentId": "S022",
-      "attPct": 88
+      "kelompokId": "k4",
+      "isLead": false
     },
     {
       "id": "m23",
-      "campusId": "202404560054",
-      "name": "Rafael Elano Prasetya",
-      "role": "backend",
-      "squadId": "squad-5",
-      "squadName": "Squad 5: Core Infrastructure, Escrow Payment & AI Services",
-      "isLead": false,
-      "studentId": "S023",
-      "attPct": 100
+      "campusId": "202404560049",
+      "name": "George Blaciano Kunemara Putra",
+      "kelompokId": "k5",
+      "isLead": true
     },
     {
       "id": "m24",
-      "campusId": "202404560009",
-      "name": "Ezekiel Matheo Barus",
-      "role": "backend",
-      "squadId": "squad-5",
-      "squadName": "Squad 5: Core Infrastructure, Escrow Payment & AI Services",
-      "isLead": false,
-      "studentId": "S024",
-      "attPct": 100
+      "campusId": "202404560054",
+      "name": "Rafael Elano Prasetya",
+      "kelompokId": "k5",
+      "isLead": false
     },
     {
       "id": "m25",
-      "campusId": "202404560001",
-      "name": "Michael Devon Eka Putra",
-      "role": "data",
-      "squadId": "squad-5",
-      "squadName": "Squad 5: Core Infrastructure, Escrow Payment & AI Services",
-      "isLead": false,
-      "studentId": "S025",
-      "attPct": 100
+      "campusId": "202404560009",
+      "name": "Ezekiel Matheo Barus",
+      "kelompokId": "k5",
+      "isLead": false
     },
     {
       "id": "m26",
-      "campusId": "202404560039",
-      "name": "Imanuel Julival Lumban Gaol",
-      "role": "mobile",
-      "squadId": "squad-5",
-      "squadName": "Squad 5: Core Infrastructure, Escrow Payment & AI Services",
-      "isLead": false,
-      "studentId": "S026",
-      "attPct": 100
+      "campusId": "202404560001",
+      "name": "Michael Devon Eka Putra",
+      "kelompokId": "k5",
+      "isLead": false
     },
     {
       "id": "m27",
-      "campusId": "202404560049",
-      "name": "George Blaciano Kunemara Putra",
-      "role": "uiux",
-      "squadId": "squad-5",
-      "squadName": "Squad 5: Core Infrastructure, Escrow Payment & AI Services",
-      "isLead": true,
-      "studentId": "S027",
-      "attPct": 100
+      "campusId": "202404560039",
+      "name": "Imanuel Julival Lumban Gaol",
+      "kelompokId": "k5",
+      "isLead": false
     }
   ],
   "tasks": [
     {
-      "id": "t01",
-      "code": "S1-01",
+      "id": "i01",
+      "code": "#1",
       "phase": 1,
-      "title": "Rancang UI/UX (Figma): wireframe & design system direktori",
-      "roles": [
-        "uiux",
-        "frontend"
-      ],
-      "storyPoints": 8,
+      "title": "Issue #1: DDL skema spasial destinations PostGIS, indeks GIST & wireframe UI direktori",
+      "weight": 8,
       "dueDate": "2026-11-17",
-      "squadId": "squad-1",
-      "assigneeId": "m02",
-      "assigneeName": "Raden Roro Anindya Anggitoputri",
+      "kelompokId": "k1",
+      "assignees": [
+        "m01",
+        "m02"
+      ],
       "status": "in_progress",
-      "progress": 25
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t02",
-      "code": "S1-02",
+      "id": "i02",
+      "code": "#2",
       "phase": 1,
-      "title": "Setup monorepo GitHub, CI/CD Actions & JWT Auth",
-      "roles": [
-        "backend",
-        "data"
-      ],
-      "storyPoints": 8,
+      "title": "Issue #2: Wireflow KYC mitra & skema tabel partners dan destination_tickets",
+      "weight": 8,
       "dueDate": "2026-11-17",
-      "squadId": "squad-5",
-      "assigneeId": "m24",
-      "assigneeName": "Ezekiel Matheo Barus",
+      "kelompokId": "k2",
+      "assignees": [
+        "m06",
+        "m07"
+      ],
       "status": "in_progress",
-      "progress": 25
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t03",
-      "code": "S1-03",
+      "id": "i03",
+      "code": "#3",
       "phase": 1,
-      "title": "Desain arsitektur database (PostgreSQL + PostGIS)",
-      "roles": [
-        "backend",
-        "data"
-      ],
-      "storyPoints": 8,
+      "title": "Issue #3: Desain relasi tour_packages dan package_items",
+      "weight": 8,
       "dueDate": "2026-11-17",
-      "squadId": "squad-1",
-      "assigneeId": "m03",
-      "assigneeName": "Oda Kartika Nuringtyasanti",
+      "kelompokId": "k3",
+      "assignees": [
+        "m11",
+        "m12"
+      ],
       "status": "in_progress",
-      "progress": 25
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t04",
-      "code": "S1-04",
+      "id": "i04",
+      "code": "#4",
       "phase": 1,
-      "title": "Wireflow registrasi KYC mitra & skema tabel kemitraan",
-      "roles": [
-        "uiux",
-        "backend"
-      ],
-      "storyPoints": 5,
+      "title": "Issue #4: Skema accommodations & transport_services, inisialisasi Google Maps SDK",
+      "weight": 8,
       "dueDate": "2026-11-17",
-      "squadId": "squad-2",
-      "assigneeId": "m09",
-      "assigneeName": "Jo Suk Sin",
+      "kelompokId": "k4",
+      "assignees": [
+        "m16",
+        "m17"
+      ],
       "status": "in_progress",
-      "progress": 25
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t05",
-      "code": "S1-05",
+      "id": "i05",
+      "code": "#5",
       "phase": 1,
-      "title": "Skema relasi tour packages & integrasi Google Maps Platform",
-      "roles": [
-        "backend"
-      ],
-      "storyPoints": 5,
+      "title": "Issue #5: Setup monorepo GitHub, CI/CD GitHub Actions, JWT & RBAC auth service",
+      "weight": 13,
       "dueDate": "2026-11-17",
-      "squadId": "squad-3",
-      "assigneeId": "m11",
-      "assigneeName": "Joel Oktavianus",
+      "kelompokId": "k5",
+      "assignees": [
+        "m23",
+        "m24"
+      ],
       "status": "in_progress",
-      "progress": 25
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t06",
-      "code": "S2-01",
+      "id": "i06",
+      "code": "#6",
       "phase": 2,
-      "title": "Pencarian geospasial PostGIS ST_DWithin & filter multi-dimensi",
-      "roles": [
-        "backend"
-      ],
-      "storyPoints": 8,
+      "title": "Issue #6: Endpoint PostGIS ST_DWithin, klaster pin peta & ekstraksi geotag EXIF",
+      "weight": 13,
       "dueDate": "2026-11-24",
-      "squadId": "squad-1",
-      "assigneeId": "m03",
-      "assigneeName": "Oda Kartika Nuringtyasanti",
+      "kelompokId": "k1",
+      "assignees": [
+        "m03",
+        "m04"
+      ],
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t07",
-      "code": "S2-02",
+      "id": "i07",
+      "code": "#7",
       "phase": 2,
-      "title": "Peta interaktif + clustering pin (Flutter & Next.js)",
-      "roles": [
-        "frontend",
-        "mobile"
-      ],
-      "storyPoints": 8,
+      "title": "Issue #7: Algoritma deteksi duplikasi lokasi Haversine 500m & antrean kurasi admin",
+      "weight": 8,
       "dueDate": "2026-11-24",
-      "squadId": "squad-1",
-      "assigneeId": "m02",
-      "assigneeName": "Raden Roro Anindya Anggitoputri",
+      "kelompokId": "k2",
+      "assignees": [
+        "m08",
+        "m09"
+      ],
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t08",
-      "code": "S2-03",
+      "id": "i08",
+      "code": "#8",
       "phase": 2,
-      "title": "Alur kontributor publik & ekstraksi geotag EXIF foto",
-      "roles": [
-        "mobile",
-        "backend"
-      ],
-      "storyPoints": 8,
+      "title": "Issue #8: Komponen UI katalog paket wisata & detail timeline jadwal harian",
+      "weight": 8,
       "dueDate": "2026-11-24",
-      "squadId": "squad-1",
-      "assigneeId": "m04",
-      "assigneeName": "Anastasya Geovani Manurung",
+      "kelompokId": "k3",
+      "assignees": [
+        "m13",
+        "m14"
+      ],
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t09",
-      "code": "S2-04",
+      "id": "i09",
+      "code": "#9",
       "phase": 2,
-      "title": "Algoritma deteksi duplikasi lokasi Haversine 500m & antrean kurasi",
-      "roles": [
-        "backend",
-        "frontend"
-      ],
-      "storyPoints": 5,
+      "title": "Issue #9: Halaman detail fasilitas destinasi & integrasi prakiraan cuaca BMKG",
+      "weight": 8,
       "dueDate": "2026-11-24",
-      "squadId": "squad-2",
-      "assigneeId": "m09",
-      "assigneeName": "Jo Suk Sin",
+      "kelompokId": "k4",
+      "assignees": [
+        "m18",
+        "m19"
+      ],
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t10",
-      "code": "S2-05",
+      "id": "i10",
+      "code": "#10",
       "phase": 2,
-      "title": "Halaman detail destinasi & integrasi cuaca BMKG",
-      "roles": [
-        "frontend"
-      ],
-      "storyPoints": 5,
+      "title": "Issue #10: Pengindeksan Elasticsearch & worker kompresi gambar WebP (BullMQ)",
+      "weight": 8,
       "dueDate": "2026-11-24",
-      "squadId": "squad-4",
-      "assigneeId": "m17",
-      "assigneeName": "Josue Freitas Da Costa",
+      "kelompokId": "k5",
+      "assignees": [
+        "m25",
+        "m26"
+      ],
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t11",
-      "code": "S2-06",
-      "phase": 2,
-      "title": "Pengindeksan Elasticsearch & kompresi WebP (BullMQ)",
-      "roles": [
-        "data",
-        "backend"
-      ],
-      "storyPoints": 8,
-      "dueDate": "2026-11-24",
-      "squadId": "squad-5",
-      "assigneeId": "m24",
-      "assigneeName": "Ezekiel Matheo Barus",
-      "status": "todo",
-      "progress": 0
-    },
-    {
-      "id": "t12",
-      "code": "S3-01",
+      "id": "i11",
+      "code": "#11",
       "phase": 3,
-      "title": "Portal registrasi mitra (upload KTP/NIB/SK) & validasi admin",
-      "roles": [
-        "backend",
-        "frontend"
-      ],
-      "storyPoints": 8,
+      "title": "Issue #11: Katalog destinasi terverifikasi dengan filter kategori 38 provinsi",
+      "weight": 8,
       "dueDate": "2026-12-01",
-      "squadId": "squad-2",
-      "assigneeId": "m09",
-      "assigneeName": "Jo Suk Sin",
+      "kelompokId": "k1",
+      "assignees": [
+        "m05",
+        "m01"
+      ],
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t13",
-      "code": "S3-02",
+      "id": "i12",
+      "code": "#12",
       "phase": 3,
-      "title": "Manajemen kuota tiket harian & tarif WNI/WNA",
-      "roles": [
-        "backend"
-      ],
-      "storyPoints": 5,
+      "title": "Issue #12: Portal registrasi mitra (upload KTP/NIB/SK) & dashboard verifikasi admin",
+      "weight": 13,
       "dueDate": "2026-12-01",
-      "squadId": "squad-4",
-      "assigneeId": "m16",
-      "assigneeName": "Hesekiel Andhika Nainggolan",
+      "kelompokId": "k2",
+      "assignees": [
+        "m10",
+        "m06"
+      ],
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t14",
-      "code": "S3-03",
+      "id": "i13",
+      "code": "#13",
       "phase": 3,
-      "title": "Generator QR code tiket terenkripsi & mobile scanner app gerbang",
-      "roles": [
-        "mobile",
-        "backend"
-      ],
-      "storyPoints": 8,
+      "title": "Issue #13: Prototipe wizard Tour Package Builder (open/private trip)",
+      "weight": 8,
       "dueDate": "2026-12-01",
-      "squadId": "squad-5",
-      "assigneeId": "m24",
-      "assigneeName": "Ezekiel Matheo Barus",
+      "kelompokId": "k3",
+      "assignees": [
+        "m15",
+        "m11"
+      ],
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t15",
-      "code": "S3-04",
+      "id": "i14",
+      "code": "#14",
       "phase": 3,
-      "title": "Prototipe wizard tour package builder",
-      "roles": [
-        "frontend",
-        "backend"
-      ],
-      "storyPoints": 5,
+      "title": "Issue #14: Modul manajemen kuota tiket harian (WNI/WNA, Weekday/Weekend)",
+      "weight": 8,
       "dueDate": "2026-12-01",
-      "squadId": "squad-3",
-      "assigneeId": "m11",
-      "assigneeName": "Joel Oktavianus",
+      "kelompokId": "k4",
+      "assignees": [
+        "m20",
+        "m21"
+      ],
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t16",
-      "code": "S4-01",
+      "id": "i15",
+      "code": "#15",
+      "phase": 3,
+      "title": "Issue #15: Generator QR code e-tiket terenkripsi HMAC & scanner validasi gerbang",
+      "weight": 13,
+      "dueDate": "2026-12-01",
+      "kelompokId": "k5",
+      "assignees": [
+        "m27",
+        "m23"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "i16",
+      "code": "#16",
       "phase": 4,
-      "title": "Tour Package Builder lengkap (JSONB itinerary & pax tiering)",
-      "roles": [
-        "backend",
-        "mobile"
-      ],
-      "storyPoints": 8,
+      "title": "Issue #16: Integrasi filter paket wisata ke halaman pencarian utama direktori",
+      "weight": 8,
       "dueDate": "2026-12-08",
-      "squadId": "squad-3",
-      "assigneeId": "m13",
-      "assigneeName": "Vicentius Elang Krisnanto",
+      "kelompokId": "k1",
+      "assignees": [
+        "m02",
+        "m03"
+      ],
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t17",
-      "code": "S4-02",
+      "id": "i17",
+      "code": "#17",
       "phase": 4,
-      "title": "Integrasi Payment Gateway Midtrans/Xendit (QRIS, VA, E-Wallet)",
-      "roles": [
-        "backend"
-      ],
-      "storyPoints": 8,
+      "title": "Issue #17: Sistem kuota rombongan tur & konfirmasi booking tiket masuk",
+      "weight": 8,
       "dueDate": "2026-12-08",
-      "squadId": "squad-5",
-      "assigneeId": "m23",
-      "assigneeName": "Rafael Elano Prasetya",
+      "kelompokId": "k2",
+      "assignees": [
+        "m07",
+        "m08"
+      ],
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t18",
-      "code": "S4-03",
+      "id": "i18",
+      "code": "#18",
       "phase": 4,
-      "title": "Pencatatan escrow ledger penampungan dana & payout webhook",
-      "roles": [
-        "backend"
-      ],
-      "storyPoints": 8,
+      "title": "Issue #18: Tour Package Builder Engine lengkap (JSONB itinerary & dynamic pax tiering)",
+      "weight": 13,
       "dueDate": "2026-12-08",
-      "squadId": "squad-5",
-      "assigneeId": "m24",
-      "assigneeName": "Ezekiel Matheo Barus",
+      "kelompokId": "k3",
+      "assignees": [
+        "m12",
+        "m13"
+      ],
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t19",
-      "code": "S4-04",
+      "id": "i19",
+      "code": "#19",
       "phase": 4,
-      "title": "Relasi package items ke penginapan dan armada rental",
-      "roles": [
-        "backend"
-      ],
-      "storyPoints": 5,
+      "title": "Issue #19: Integrasi relasi package_items ke penginapan & transportasi",
+      "weight": 8,
       "dueDate": "2026-12-08",
-      "squadId": "squad-4",
-      "assigneeId": "m16",
-      "assigneeName": "Hesekiel Andhika Nainggolan",
+      "kelompokId": "k4",
+      "assignees": [
+        "m22",
+        "m16"
+      ],
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t20",
-      "code": "S5-01",
+      "id": "i20",
+      "code": "#20",
+      "phase": 4,
+      "title": "Issue #20: Integrasi Payment Gateway Midtrans/Xendit & skema escrow_ledgers",
+      "weight": 13,
+      "dueDate": "2026-12-08",
+      "kelompokId": "k5",
+      "assignees": [
+        "m24",
+        "m25"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "i21",
+      "code": "#21",
       "phase": 5,
-      "title": "Extranet homestay (kalender kamar & tarif) & rental lokal",
-      "roles": [
-        "backend",
-        "frontend"
-      ],
-      "storyPoints": 8,
+      "title": "Issue #21: Radius mapping penginapan & transportasi terdekat destinasi",
+      "weight": 8,
       "dueDate": "2026-12-15",
-      "squadId": "squad-4",
-      "assigneeId": "m21",
-      "assigneeName": "Caesar Gattaca",
+      "kelompokId": "k1",
+      "assignees": [
+        "m04",
+        "m05"
+      ],
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t21",
-      "code": "S5-02",
+      "id": "i22",
+      "code": "#22",
       "phase": 5,
-      "title": "Kalkulator estimasi rute multi-moda (first to last mile)",
-      "roles": [
-        "mobile",
-        "frontend"
-      ],
-      "storyPoints": 5,
+      "title": "Issue #22: Otomatisasi payout escrow pasca scan tiket",
+      "weight": 13,
       "dueDate": "2026-12-15",
-      "squadId": "squad-4",
-      "assigneeId": "m17",
-      "assigneeName": "Josue Freitas Da Costa",
+      "kelompokId": "k2",
+      "assignees": [
+        "m09",
+        "m10"
+      ],
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t22",
-      "code": "S5-03",
+      "id": "i23",
+      "code": "#23",
       "phase": 5,
-      "title": "Custom trip bundling cart: destinasi + hotel + transport",
-      "roles": [
-        "frontend",
-        "backend"
-      ],
-      "storyPoints": 8,
+      "title": "Issue #23: Bundling paket wisata dengan homestay",
+      "weight": 8,
       "dueDate": "2026-12-15",
-      "squadId": "squad-3",
-      "assigneeId": "m12",
-      "assigneeName": "Bintang Neera",
+      "kelompokId": "k3",
+      "assignees": [
+        "m14",
+        "m15"
+      ],
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t23",
-      "code": "S5-04",
+      "id": "i24",
+      "code": "#24",
       "phase": 5,
-      "title": "Inventory locking 15 menit dengan Redis Redlock",
-      "roles": [
-        "backend"
-      ],
-      "storyPoints": 8,
+      "title": "Issue #24: Extranet homestay (kalender ketersediaan kamar)",
+      "weight": 13,
       "dueDate": "2026-12-15",
-      "squadId": "squad-5",
-      "assigneeId": "m23",
-      "assigneeName": "Rafael Elano Prasetya",
+      "kelompokId": "k4",
+      "assignees": [
+        "m17",
+        "m18"
+      ],
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t24",
-      "code": "S6-01",
-      "phase": 6,
-      "title": "AI Smart Itinerary Planner (Gemini API)",
-      "roles": [
-        "backend",
-        "data"
+      "id": "i25",
+      "code": "#25",
+      "phase": 5,
+      "title": "Issue #25: Pencatatan bagi hasil komisi platform",
+      "weight": 5,
+      "dueDate": "2026-12-15",
+      "kelompokId": "k5",
+      "assignees": [
+        "m26",
+        "m27"
       ],
-      "storyPoints": 8,
-      "dueDate": "2026-12-22",
-      "squadId": "squad-5",
-      "assigneeId": "m25",
-      "assigneeName": "Michael Devon Eka Putra",
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t25",
-      "code": "S6-02",
-      "phase": 6,
-      "title": "Fitur SOS darurat geolokasi & integrasi BMKG/SAR",
-      "roles": [
-        "mobile",
-        "backend"
+      "id": "i26",
+      "code": "#26",
+      "phase": 5,
+      "title": "Issue #26: Mobile custom trip cart UI",
+      "weight": 8,
+      "dueDate": "2026-12-15",
+      "kelompokId": "k1",
+      "assignees": [
+        "m01",
+        "m02"
       ],
-      "storyPoints": 8,
-      "dueDate": "2026-12-22",
-      "squadId": "squad-5",
-      "assigneeId": "m23",
-      "assigneeName": "Rafael Elano Prasetya",
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t26",
-      "code": "S6-03",
-      "phase": 6,
-      "title": "Mode peta offline per wilayah (blank spot)",
-      "roles": [
-        "mobile"
+      "id": "i27",
+      "code": "#27",
+      "phase": 5,
+      "title": "Issue #27: Validasi checkout multi-mitra atomik",
+      "weight": 8,
+      "dueDate": "2026-12-15",
+      "kelompokId": "k2",
+      "assignees": [
+        "m06",
+        "m07"
       ],
-      "storyPoints": 5,
-      "dueDate": "2026-12-22",
-      "squadId": "squad-1",
-      "assigneeId": "m04",
-      "assigneeName": "Anastasya Geovani Manurung",
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t27",
-      "code": "S6-04",
-      "phase": 6,
-      "title": "Load testing K6 (2.000 VUs) & audit keamanan KYC",
-      "roles": [
-        "qa",
-        "data"
+      "id": "i28",
+      "code": "#28",
+      "phase": 5,
+      "title": "Issue #28: Mesin rekomendasi paket kustom",
+      "weight": 8,
+      "dueDate": "2026-12-15",
+      "kelompokId": "k3",
+      "assignees": [
+        "m11",
+        "m12"
       ],
-      "storyPoints": 8,
-      "dueDate": "2026-12-22",
-      "squadId": "squad-5",
-      "assigneeId": "m25",
-      "assigneeName": "Michael Devon Eka Putra",
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
     },
     {
-      "id": "t28",
-      "code": "S6-05",
-      "phase": 6,
-      "title": "User Acceptance Testing (UAT) & Handover resmi ke PO Denny J.C. Sihombing",
-      "roles": [
-        "qa",
-        "frontend"
+      "id": "i29",
+      "code": "#29",
+      "phase": 5,
+      "title": "Issue #29: Kalkulator estimasi rute multi-moda",
+      "weight": 8,
+      "dueDate": "2026-12-15",
+      "kelompokId": "k4",
+      "assignees": [
+        "m19",
+        "m20"
       ],
-      "storyPoints": 5,
-      "dueDate": "2026-12-22",
-      "squadId": "squad-3",
-      "assigneeId": "m14",
-      "assigneeName": "Albertus Chandra Halim",
       "status": "todo",
-      "progress": 0
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "i30",
+      "code": "#30",
+      "phase": 5,
+      "title": "Issue #30: Inventory Locking 15 menit (Redis Redlock)",
+      "weight": 13,
+      "dueDate": "2026-12-15",
+      "kelompokId": "k5",
+      "assignees": [
+        "m23",
+        "m24"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "i31",
+      "code": "#31",
+      "phase": 6,
+      "title": "Issue #31: Offline map caching (blank spot)",
+      "weight": 8,
+      "dueDate": "2026-12-22",
+      "kelompokId": "k1",
+      "assignees": [
+        "m03",
+        "m04"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "i32",
+      "code": "#32",
+      "phase": 6,
+      "title": "Issue #32: Sistem review terverifikasi & gamifikasi poin",
+      "weight": 8,
+      "dueDate": "2026-12-22",
+      "kelompokId": "k2",
+      "assignees": [
+        "m08",
+        "m09"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "i33",
+      "code": "#33",
+      "phase": 6,
+      "title": "Issue #33: Integrasi paket tur ke output AI",
+      "weight": 8,
+      "dueDate": "2026-12-22",
+      "kelompokId": "k3",
+      "assignees": [
+        "m13",
+        "m14"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "i34",
+      "code": "#34",
+      "phase": 6,
+      "title": "Issue #34: Direktori UMKM & kalender event budaya",
+      "weight": 8,
+      "dueDate": "2026-12-22",
+      "kelompokId": "k4",
+      "assignees": [
+        "m21",
+        "m22"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "i35",
+      "code": "#35",
+      "phase": 6,
+      "title": "Issue #35: Generator AI Itinerary (Gemini API)",
+      "weight": 13,
+      "dueDate": "2026-12-22",
+      "kelompokId": "k5",
+      "assignees": [
+        "m25",
+        "m26"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "i36",
+      "code": "#36",
+      "phase": 6,
+      "title": "Issue #36: Optimasi performa LCP Frontend < 2 detik",
+      "weight": 8,
+      "dueDate": "2026-12-22",
+      "kelompokId": "k1",
+      "assignees": [
+        "m05",
+        "m01"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "i37",
+      "code": "#37",
+      "phase": 6,
+      "title": "Issue #37: UAT modul mitra & tiket",
+      "weight": 5,
+      "dueDate": "2026-12-22",
+      "kelompokId": "k2",
+      "assignees": [
+        "m10",
+        "m06"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "i38",
+      "code": "#38",
+      "phase": 6,
+      "title": "Issue #38: UAT pemesanan paket wisata kustom",
+      "weight": 5,
+      "dueDate": "2026-12-22",
+      "kelompokId": "k3",
+      "assignees": [
+        "m15",
+        "m11"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "i39",
+      "code": "#39",
+      "phase": 6,
+      "title": "Issue #39: UAT modul akomodasi & transportasi",
+      "weight": 5,
+      "dueDate": "2026-12-22",
+      "kelompokId": "k4",
+      "assignees": [
+        "m16",
+        "m17"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
+    },
+    {
+      "id": "i40",
+      "code": "#40",
+      "phase": 6,
+      "title": "Issue #40: SOS BMKG/SAR, Load Testing K6, security audit & handover resmi ke PO",
+      "weight": 13,
+      "dueDate": "2026-12-22",
+      "kelompokId": "k5",
+      "assignees": [
+        "m27",
+        "m23"
+      ],
+      "status": "todo",
+      "reviewScore": null,
+      "completedAt": null
     }
   ]
 }

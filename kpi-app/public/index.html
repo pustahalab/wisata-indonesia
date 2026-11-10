@@ -32,13 +32,14 @@
   <!-- RINGKASAN -->
   <section id="tab-ringkasan" class="panel">
     <div class="cards">
-      <div class="card"><small>Progress Proyek</small><b id="c-progress">–</b><span>bobot tugas selesai</span></div>
+      <div class="card"><small>Sprint Aktif</small><b id="c-sprint">–</b><span id="c-sprint-name">—</span></div>
+      <div class="card"><small>Progress Proyek</small><b id="c-progress">–</b><span>bobot issue selesai</span></div>
       <div class="card"><small>KPI Tim</small><b id="c-kpi">–</b><span>rata-rata skor KPI</span></div>
-      <div class="card"><small>Tugas Selesai</small><b id="c-done">–</b><span>seluruh fase roadmap</span></div>
+      <div class="card"><small>Tugas Selesai</small><b id="c-done">–</b><span>dari 40 issue roadmap</span></div>
       <div class="card"><small>Tugas Aktif</small><b id="c-wip">–</b><span>sedang dikerjakan</span></div>
     </div>
     <div class="grid2">
-      <div class="box"><h3>Progress per Fase (Roadmap Blueprint)</h3><div id="phasebars"></div></div>
+      <div class="box"><h3>Progress per Sprint (6 Minggu hingga 22 Des 2026)</h3><div id="phasebars"></div></div>
       <div class="box"><h3>Status Tugas</h3><canvas id="chartStatus" height="220"></canvas></div>
     </div>
     <div class="grid2">
@@ -63,9 +64,10 @@
   <section id="tab-tugas" class="panel hidden">
     <div class="toolbar">
       <select id="f-phase">
-        <option value="">Semua Fase</option><option value="1">Fase 1 – Fondasi & Direktori</option>
-        <option value="2">Fase 2 – Portal Mitra & Paket</option><option value="3">Fase 3 – Transportasi & Akomodasi</option>
-        <option value="4">Fase 4 – Cerdas, Uji & Peluncuran</option>
+        <option value="">Semua Sprint</option><option value="1">Sprint 1 – Fondasi Monorepo &amp; PostGIS</option>
+        <option value="2">Sprint 2 – Core Directory &amp; Crowdsourcing</option><option value="3">Sprint 3 – Mitra KYC &amp; E-Ticketing</option>
+        <option value="4">Sprint 4 – Tour Package &amp; Escrow</option><option value="5">Sprint 5 – Transport, Homestay &amp; Redlock</option>
+        <option value="6">Sprint 6 – AI, Load Test &amp; Handover</option>
       </select>
       <select id="f-status">
         <option value="">Semua Status</option><option value="todo">Belum</option>
@@ -89,7 +91,7 @@
   <menu><button id="dlg-cancel" class="ghost">Batal</button><button id="dlg-ok" class="primary">Simpan</button></menu>
 </dialog>
 
-<footer>Sumber data: <code>ps (5).xls</code> (27 anggota tim), <code>team.xlsx</code> (pembagian 5 squad &amp; lead), &amp; blueprint NusantaraGo (rencana kerja 4 fase). Skor KPI = Penyelesaian 40% + Tepat Waktu 30% + Kualitas 30%. Data tersimpan di <code>kpi-app/data/db.json</code>.</footer>
+<footer>Sumber data: <code>ps (5).xls</code> (27 anggota), <code>team.xlsx</code> (5 squad &amp; lead), &amp; <code>docs/roadmap_..._deadline_22_desember_2026.md</code> (6 sprint mingguan, 40 issue). Skor KPI = Penyelesaian 40% + Tepat Waktu 30% + Kualitas 30%. Data tersimpan di <code>kpi-app/data/db.json</code>.</footer>
 
 <script src="app.js"></script>
 </body>
