@@ -112,28 +112,40 @@ function dashboardSummary() {
     tugasReview: tasks.filter((t) => t.status === "review").length,
     progressTotal: totalW ? round((tasks.filter((t) => t.status === "done").reduce((s, t) => s + t.weight, 0) / totalW) * 100) : 0,
     perPhase: byPhase,
-    perRole: rollupRole(kpis),
+    perKelompok: rollupKelompok(kpis),
     leaderboard: [...kpis].sort((a, b) => b.total - a.total).slice(0, 8),
   };
 }
 
-function rollupRole(kpis) {
-  const map = {};
-  for (const m of db.members) (map[m.role] ||= []).push(kpis.find((k) => k.memberId === m.id));
-  return Object.entries(map).map(([role, arr]) => ({
-    role,
-    count: arr.length,
-    kpiRata: round(arr.reduce((s, k) => s + k.total, 0) / arr.length),
-  }));
+function rollupKelompok(kpis) {
+  return db.kelompoks.map((k) => {
+    const arr = db.members
+      .filter((m) => m.kelompokId === k.id)
+      .map((m) => kpis.find((x) => x.memberId === m.id))
+      .filter(Boolean);
+    return {
+      id: k.id,
+      name: k.name,
+      lead: k.lead,
+      count: arr.length,
+      kpiRata: arr.length ? round(arr.reduce((s, x) => s + x.total, 0) / arr.length) : 0,
+    };
+  });
 }
 
 function kpiAll() {
+  const kel = Object.fromEntries(db.kelompoks.map((k) => [k.id, k]));
   return [...db.members]
-    .map((m) => ({ ...m, roleName: ROLE_NAMES[m.role] || m.role, kpi: computeKpi(m.id) }))
-    .sort((a, b) => b.kpi.total - a.kpi.total);
+    .map((m) => ({
+      ...m,
+      kelompokName: kel[m.kelompokId] ? kel[m.kelompokId].name : "-",
+      isLead: !!m.isLead,
+      kpi: computeKpi(m.id),
+    }))
+    .sort((a, b) =>
+      a.kelompokName.localeCompare(b.kelompokName) || Number(b.isLead) - Number(a.isLead) ||
+      b.kpi.total - a.kpi.total);
 }
-
-const ROLE_NAMES = { uiux: "UI/UX Designer", backend: "Backend Developer", frontend: "Frontend Developer", mobile: "Mobile Developer (Flutter)", qa: "QA & Testing", data: "Data & DevOps" };
 
 // ---------- REST API ----------
 const app = express();
@@ -143,24 +155,25 @@ app.use(express.static(path.join(__dirname, "public")));
 const api = express.Router();
 
 api.get("/state", (req, res) =>
-  res.json({ ...db, phaseDefs: PHASES, roleNames: ROLE_NAMES, weights: WEIGHTS })
+  res.json({ ...db, phaseDefs: PHASES, weights: WEIGHTS })
 );
 api.get("/dashboard", (req, res) => res.json(dashboardSummary()));
 api.get("/kpi", (req, res) => res.json(kpiAll()));
 
-// ---_anggota---
+// ---anggota---
 api.post("/members", (req, res) => {
-  const { name, role, campusId } = req.body;
-  if (!name || !role) return res.status(400).json({ error: "nama & peran wajib" });
+  const { name, kelompokId, campusId } = req.body;
+  if (!name || !kelompokId) return res.status(400).json({ error: "nama & kelompok wajib" });
+  if (!db.kelompoks.find((k) => k.id === kelompokId)) return res.status(400).json({ error: "kelompok tidak ditemukan" });
   const id = "m" + Date.now().toString(36);
-  db.members.push({ id, name, role, campusId: campusId || "-", studentId: "-" });
+  db.members.push({ id, name, kelompokId, isLead: !!req.body.isLead, campusId: campusId || "-" });
   save();
   res.json({ ok: true, id });
 });
 api.put("/members/:id", (req, res) => {
   const m = db.members.find((x) => x.id === req.params.id);
   if (!m) return res.status(404).json({ error: "tidak ada" });
-  for (const k of ["name", "role", "campusId"]) if (req.body[k] !== undefined) m[k] = req.body[k];
+  for (const k of ["name", "kelompokId", "isLead", "campusId"]) if (req.body[k] !== undefined) m[k] = req.body[k];
   save();
   res.json({ ok: true });
 });
@@ -173,13 +186,22 @@ api.delete("/members/:id", (req, res) => {
 
 // ---tugas---
 api.post("/tasks", (req, res) => {
-  const { title, phase, roles = [], weight = 5, dueDate = null } = req.body;
+  const { title, phase, weight = 5, dueDate = null } = req.body;
   if (!title || !phase) return res.status(400).json({ error: "judul & fase wajib" });
   const phaseN = Number(phase);
   const count = db.tasks.filter((t) => t.phase === phaseN).length;
   const code = `F${phaseN}-${String(count + 1).padStart(2, "0")}`;
   const id = "t" + Date.now().toString(36);
-  db.tasks.push({ id, code, phase: phaseN, title, roles, weight: Number(weight) || 5, dueDate, assignees: [], status: "todo", reviewScore: null, completedAt: null });
+  // otomatis diberi kelompok berikutnya (round-robin) + 2 anggotanya
+  const kelN = db.tasks.length % db.kelompoks.length;
+  const kel = db.kelompoks[kelN];
+  const roster = db.members.filter((m) => m.kelompokId === kel.id);
+  const pjs = [];
+  if (roster.length) {
+    pjs.push(roster[db.tasks.filter((t) => t.kelompokId === kel.id).length % roster.length].id);
+    if (roster.length > 1) pjs.push(roster[(db.tasks.filter((t) => t.kelompokId === kel.id).length + 1) % roster.length].id);
+  }
+  db.tasks.push({ id, code, phase: phaseN, title, weight: Number(weight) || 5, dueDate, kelompokId: kel.id, assignees: pjs, status: "todo", reviewScore: null, completedAt: null });
   save();
   res.json({ ok: true, id });
 });
@@ -187,7 +209,7 @@ api.put("/tasks/:id", (req, res) => {
   const t = db.tasks.find((x) => x.id === req.params.id);
   if (!t) return res.status(404).json({ error: "tidak ada" });
   if (req.body.assignees !== undefined) t.assignees = req.body.assignees;
-  if (req.body.roles !== undefined) t.roles = req.body.roles;
+  if (req.body.kelompokId !== undefined && db.kelompoks.find((k) => k.id === req.body.kelompokId)) t.kelompokId = req.body.kelompokId;
   if (req.body.status !== undefined) {
     t.status = req.body.status;
     t.completedAt = req.body.status === "done" ? new Date().toISOString().slice(0, 10) : null;

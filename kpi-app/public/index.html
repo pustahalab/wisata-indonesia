@@ -42,7 +42,7 @@
       <div class="box"><h3>Status Tugas</h3><canvas id="chartStatus" height="220"></canvas></div>
     </div>
     <div class="grid2">
-      <div class="box"><h3>KPI Rata-rata per Disiplin</h3><canvas id="chartRole" height="220"></canvas></div>
+      <div class="box"><h3>KPI Rata-rata per Squad</h3><canvas id="chartRole" height="220"></canvas></div>
       <div class="box"><h3>Peringkat KPI (Top 8)</h3><div id="toplist" class="toplist"></div></div>
     </div>
   </section>
@@ -50,7 +50,7 @@
   <!-- TIM -->
   <section id="tab-tim" class="panel hidden">
     <div class="toolbar">
-      <select id="f-role"><option value="">Semua Disiplin</option></select>
+      <select id="f-role"><option value="">Semua Squad</option></select>
       <select id="f-grade"><option value="">Semua Predikat</option><option>A</option><option>B</option><option>C</option><option>D</option></select>
       <input id="f-q" placeholder="Cari nama / ID…" />
       <button id="btn-add-member" class="ghost">+ Anggota</button>
@@ -89,7 +89,7 @@
   <menu><button id="dlg-cancel" class="ghost">Batal</button><button id="dlg-ok" class="primary">Simpan</button></menu>
 </dialog>
 
-<footer>Sumber data: <code>ps (5).xls</code> (27 anggota tim, Information System) &amp; <code>blueprint_pengembangan_aplikasi_wisata_nusantarago.md</code> (rencana kerja 4 fase). Skor KPI = Penyelesaian 40% + Tepat Waktu 30% + Kualitas 30% (kehadiran tidak dihitung). Data tersimpan di <code>kpi-app/data/db.json</code>.</footer>
+<footer>Sumber data: <code>ps (5).xls</code> (27 anggota tim), <code>team.xlsx</code> (pembagian 5 squad &amp; lead), &amp; blueprint NusantaraGo (rencana kerja 4 fase). Skor KPI = Penyelesaian 40% + Tepat Waktu 30% + Kualitas 30%. Data tersimpan di <code>kpi-app/data/db.json</code>.</footer>
 
 <script src="app.js"></script>
 </body>

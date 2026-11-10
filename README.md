@@ -6,12 +6,12 @@ Repositori resmi untuk pengembangan ekosistem **NusantaraGo**, aplikasi direktor
 
 ## 👥 Struktur Tim & Tata Kelola Scrum
 
-Proyek ini dikembangkan menggunakan kerangka kerja **Agile Scrum (Scrum of Scrums / LeSS)** yang melibatkan **27 mahasiswa Sistem Informasi** di bawah arahan langsung **Product Owner**. Pembagian tim dan kepemimpinan telah disesuaikan resmi mengacu pada berkas `team.xlsx` (*Sheet: Sistem Pendukung Keputusan*).
+Proyek ini dikembangkan menggunakan kerangka kerja **Agile Scrum (Scrum of Scrums / LeSS)** yang melibatkan **27 mahasiswa Sistem Informasi** di bawah arahan langsung **Product Owner**. Pembagian tim dan kepemimpinan mengacu resmi pada berkas `team.xlsx` (*Sheet: Sistem Pendukung Keputusan*).
 
 * **Product Owner:** Denny J.C. Sihombing
 * **Scrum Master:** Agentic Scrum Master
 * **Tanggal Mulai Kick-Off (Sprint 1):** 10 November 2026
-* **Durasi Sprint:** 2 Minggu per Sprint (Total 8 Sprint / 16 Minggu)
+* **Tenggat Rilis Penuh (Hard Deadline):** **22 Desember 2026** (Total 6 Minggu / 6 Weekly Sprints)
 
 ---
 
@@ -27,7 +27,7 @@ Proyek ini dikembangkan menggunakan kerangka kerja **Agile Scrum (Scrum of Scrum
 
 ---
 
-## 📁 Struktur Monorepo
+## 📁 Struktur Monorepo & Dokumentasi
 
 ```
 wisata-indonesia/
@@ -44,30 +44,24 @@ wisata-indonesia/
 ├── kpi-app/                     # Dashboard Pemantauan KPI 27 Mahasiswa
 ├── services/
 │   └── api-core/                # REST API Backend (NestJS / PostGIS / Redis)
-├── docs/                        # Dokumentasi Arsitektur & Panduan API
+├── docs/                        # Dokumentasi Resmi & Spesifikasi Teknis
+│   ├── roadmap_pengembangan_nusantarago_deadline_22_desember_2026.md
+│   └── dokumen_arsitektur_dan_spesifikasi_teknis_nusantarago.md
 ├── blueprint_pengembangan_aplikasi_wisata_nusantarago.md
 └── team.xlsx                    # Pembagian Kelompok Resmi
 ```
 
 ---
 
-## 🔄 Alur Kerja GitHub (GitHub Flow)
+## 📅 Roadmap Akselerasi 6 Sprint Mingguan (Selesai 22 Desember 2026)
 
-1. **Ambil Issue:** Pilih tiket PBI di GitHub Projects yang telah disetujui Product Owner (Denny J.C. Sihombing).
-2. **Buat Branch:** Gunakan format `feat/squad<no>-<nama-fitur>` atau `fix/squad<no>-<nama-bug>` dari branch `staging`.
-3. **Commit Sesuai Standar:** Gunakan konvensi Conventional Commits (e.g. `feat:`, `fix:`, `refactor:`, `test:`).
-4. **Buka Pull Request:** Buat PR ke `staging` dengan mengisi checklist pada [pull_request_template.md](.github/pull_request_template.md).
-5. **Review & Merge:** PR memerlukan minimal 2 persetujuan (wajib Squad Lead terkait) dan lolos pemeriksaan CI GitHub Actions.
+* **[Sprint 1](https://github.com/pustahalab/wisata-indonesia/milestone/1) (10–17 Nov 2026):** Setup Monorepo, Database PostGIS, JWT Auth & Wireframe UI.
+* **[Sprint 2](https://github.com/pustahalab/wisata-indonesia/milestone/2) (17–24 Nov 2026):** Core Directory, Radius Search ST_DWithin, Geotagging & Anti-Duplikasi Haversine.
+* **[Sprint 3](https://github.com/pustahalab/wisata-indonesia/milestone/3) (24 Nov–01 Des 2026):** Onboarding Mitra KYC & Infrastruktur E-Ticketing QR Scanner.
+* **[Sprint 4](https://github.com/pustahalab/wisata-indonesia/milestone/4) (01–08 Des 2026):** Tour Package Builder Engine & Integrasi Payment Gateway (Escrow Ledger).
+* **[Sprint 5](https://github.com/pustahalab/wisata-indonesia/milestone/5) (08–15 Des 2026):** Transportasi Multi-Moda, Extranet Homestay & Inventory Locking (Redis Redlock).
+* **[Sprint 6](https://github.com/pustahalab/wisata-indonesia/milestone/6) (15–22 Des 2026):** AI Smart Itinerary Gemini API, Tombol SOS BMKG/SAR, Load Testing K6, UAT & Handover Resmi ke PO (**22 Desember 2026**).
 
----
-
-## 📅 Roadmap Sprint (8 Sprint / 16 Minggu)
-
-* **Sprint 1 (10 Nov 2026 - 24 Nov 2026):** Setup Monorepo, Database PostGIS, JWT Auth, dan Wireframe UI.
-* **Sprint 2 (24 Nov 2026 - 08 Des 2026):** Core Directory, Radius Search, Geotagging & Algoritma Anti-Duplikasi.
-* **Sprint 3 (08 Des 2026 - 22 Des 2026):** Onboarding Mitra KYC & Infrastruktur E-Ticketing QR Code.
-* **Sprint 4 (22 Des 2026 - 05 Jan 2027):** Tour Package Builder & Integrasi Payment Gateway (Escrow).
-* **Sprint 5 (05 Jan 2027 - 19 Jan 2027):** Marketplace Transportasi Lokal & Extranet Homestay.
-* **Sprint 6 (19 Jan 2027 - 02 Feb 2027):** Custom Trip Bundling & Pencegahan Overbooking (Redis Redlock).
-* **Sprint 7 (02 Feb 2027 - 16 Feb 2027):** AI Smart Itinerary, Peta Offline & SOS Darurat BMKG.
-* **Sprint 8 (16 Feb 2027 - 02 Mar 2027):** Load Testing, Security Hardening, UAT & Release Demo ke PO.
+Tinjau tiket kerja:  
+📋 **[Daftar 40 GitHub Issues](https://github.com/pustahalab/wisata-indonesia/issues)**  
+🎯 **[Daftar 6 GitHub Milestones](https://github.com/pustahalab/wisata-indonesia/milestones)**
