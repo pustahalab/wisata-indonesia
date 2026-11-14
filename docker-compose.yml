@@ -1,0 +1,37 @@
+# Postgres + Redis untuk pengembangan lokal. Jalankan: docker compose up -d
+# Hanya untuk lokal; kredensial di bawah bukan untuk produksi.
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    platform: linux/amd64   # agar jalan di Mac Apple Silicon (M1/M2/M3)
+    container_name: nusantarago-postgres
+    environment:
+      POSTGRES_USER: nusantarago
+      POSTGRES_PASSWORD: nusantarago_dev
+      POSTGRES_DB: nusantarago
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nusantarago -d nusantarago"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: nusantarago-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:
+  redisdata:

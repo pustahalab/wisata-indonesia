@@ -6,36 +6,138 @@ on:
   pull_request:
     branches: [ main, staging ]
 
+# Batalkan run lama di branch yang sama kalau ada push baru
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
-  validate:
+  structure:
+    name: Verify structure
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js Environment
+      - name: Verify Monorepo Structure
+        run: |
+          for d in apps/mobile apps/web-portal apps/admin-partner services/api-core; do
+            test -d "$d" || { echo "::error::Folder $d tidak ditemukan"; exit 1; }
+          done
+          echo "Structure verification passed!"
+
+  api-core:
+    name: API Core
+    runs-on: ubuntu-latest
+    needs: structure
+
+    services:
+      postgres:
+        image: postgis/postgis:16-3.4
+        env:
+          POSTGRES_USER: nusantarago
+          POSTGRES_PASSWORD: nusantarago_ci
+          POSTGRES_DB: nusantarago_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U nusantarago -d nusantarago_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    # Nilai khusus CI. Jangan pakai secret produksi di sini.
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgresql://nusantarago:nusantarago_ci@localhost:5432/nusantarago_test
+      REDIS_URL: redis://localhost:6379
+      JWT_SECRET: ci-only-secret-not-for-production
+      JWT_EXPIRES_IN: 15m
+
+    defaults:
+      run:
+        working-directory: services/api-core
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Detect Node project
+        id: detect
+        working-directory: .
+        run: |
+          if [ -f services/api-core/package.json ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::services/api-core/package.json belum ada, langkah Node dilewati."
+          fi
+          if [ -f services/api-core/package-lock.json ]; then
+            echo "has_lock=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_lock=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Node.js
+        if: steps.detect.outputs.exists == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: ${{ steps.detect.outputs.has_lock == 'true' && 'npm' || '' }}
+          cache-dependency-path: services/api-core/package-lock.json
 
-      - name: Verify Project Structure
+      - name: Install dependencies
+        if: steps.detect.outputs.exists == 'true'
         run: |
-          echo "Verifying NusantaraGo Monorepo Structure..."
-          test -d apps/mobile
-          test -d apps/web-portal
-          test -d apps/admin-partner
-          test -d services/api-core
-          echo "Structure verification passed!"
-
-      - name: Notify Slack (Optional via Webhook)
-        if: always() && env.SLACK_WEBHOOK != ''
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: |
-          STATUS="${{ job.status }}"
-          COLOR="danger"
-          if [ "$STATUS" = "success" ]; then
-            COLOR="good"
+          if [ "${{ steps.detect.outputs.has_lock }}" = "true" ]; then
+            npm ci
+          else
+            npm install
           fi
-          PAYLOAD="{\"attachments\":[{\"color\":\"$COLOR\",\"title\":\"NusantaraGo CI Build: $STATUS\",\"text\":\"Branch: ${{ github.ref_name }}\nCommit: ${{ github.sha }}\nActor: ${{ github.actor }}\",\"footer\":\"NusantaraGo CI Pipeline\"}]}"
-          curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$SLACK_WEBHOOK"
+
+      - name: Lint
+        if: steps.detect.outputs.exists == 'true'
+        run: npm run lint --if-present
+
+      - name: Test
+        if: steps.detect.outputs.exists == 'true'
+        run: npm test --if-present -- --passWithNoTests
+
+      - name: Build
+        if: steps.detect.outputs.exists == 'true'
+        run: npm run build --if-present
+
+  notify:
+    name: Notify Slack
+    runs-on: ubuntu-latest
+    needs: [structure, api-core]
+    if: ${{ always() }}
+    env:
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+      STATUS: ${{ contains(needs.*.result, 'failure') && 'failure' || (contains(needs.*.result, 'cancelled') && 'cancelled' || 'success') }}
+      BRANCH: ${{ github.ref_name }}
+      SHA: ${{ github.sha }}
+      ACTOR: ${{ github.actor }}
+    steps:
+      - name: Send Slack message
+        if: ${{ env.SLACK_WEBHOOK != '' }}
+        run: |
+          COLOR="danger"
+          if [ "$STATUS" = "success" ]; then COLOR="good"; fi
+          PAYLOAD=$(jq -n \
+            --arg color "$COLOR" --arg status "$STATUS" \
+            --arg branch "$BRANCH" --arg sha "$SHA" --arg actor "$ACTOR" \
+            '{attachments:[{color:$color,title:("NusantaraGo CI Build: "+$status),text:("Branch: "+$branch+"\nCommit: "+$sha+"\nActor: "+$actor),footer:"NusantaraGo CI Pipeline"}]}')
+          curl -sS -X POST -H 'Content-type: application/json' --data "$PAYLOAD" "$SLACK_WEBHOOK"
