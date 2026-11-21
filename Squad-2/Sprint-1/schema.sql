@@ -26,6 +26,7 @@ CREATE TABLE partners (
 CREATE TABLE destination_tickets (
     id CHAR(36) PRIMARY KEY,
     destination_id CHAR(36) NOT NULL,
+    partner_id CHAR(36) NOT NULL,
     ticket_name VARCHAR(100) NOT NULL,
     visitor_type ENUM(
         'domestic',
@@ -38,6 +39,9 @@ CREATE TABLE destination_tickets (
     price DECIMAL(12,2) NOT NULL,
     daily_quota INT NOT NULL DEFAULT 100,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    CONSTRAINT fk_tickets_partner
+        FOREIGN KEY (partner_id)
+        REFERENCES partners(id),
     CONSTRAINT fk_tickets_destination
         FOREIGN KEY (destination_id)
         REFERENCES destinations(id)

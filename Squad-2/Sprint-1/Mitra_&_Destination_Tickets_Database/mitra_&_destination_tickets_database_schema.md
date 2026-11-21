@@ -25,6 +25,8 @@
 | price | NUMERIC(12,2) | NOT NULL | - | Harga tiket |
 | daily_quota | INTEGER | 100; NOT NULL | - | Jumlah kuota tiket |
 | is_active | BOOLEAN | TRUE | - | Status tiket aktif |
+| partner_id | UUID | `partners.id` | Foreign Key `partners(id)` | Mitra pemilik atau pengelola tiket |
+
 **Penjelasan Skema Database**
 
 1. **Tabel Partners**
@@ -58,11 +60,13 @@
 
 2. **Tabel Destination Tickets**
 
-   Tabel destination\_tickets digunakan untuk menyimpan informasi jenis tiket yang tersedia pada setiap destinasi wisata di platform NusantaraGo. Informasi yang disimpan meliputi identitas tiket, destinasi wisata terkait, nama tiket, kategori pengunjung, jenis hari berlakunya tiket, harga, kuota harian, serta status aktif tiket.
+   Tabel destination\_tickets digunakan untuk menyimpan informasi jenis tiket yang tersedia pada setiap destinasi wisata di platform NusantaraGo. Informasi yang disimpan meliputi identitas tiket, destinasi wisata terkait, mitra pengelola tiket, nama tiket, kategori pengunjung, jenis hari berlakunya tiket, harga, kuota harian, serta status aktif tiket.
 
    Atribut id digunakan sebagai Primary Key yang berfungsi untuk memberikan identitas unik pada setiap jenis tiket. ID dibuat secara otomatis menggunakan UUID dengan fungsi gen\_random\_uuid().
 
    Atribut destination\_id digunakan sebagai Foreign Key yang menghubungkan setiap jenis tiket dengan destinasi wisata pada tabel destinations. Dengan atribut ini, setiap tiket dapat diidentifikasi berdasarkan destinasi wisata tempat tiket tersebut berlaku.
+
+   Atribut partner\_id digunakan sebagai Foreign Key yang menghubungkan setiap jenis tiket dengan mitra pada tabel partners. Dengan atribut ini, setiap tiket memiliki satu mitra pengelola.
 
    Atribut ticket\_name digunakan untuk menyimpan nama atau jenis tiket yang ditawarkan kepada wisatawan. Nama tiket dapat digunakan untuk membedakan jenis tiket yang tersedia pada suatu destinasi.
 
@@ -85,6 +89,8 @@
 Tabel users dan partners memiliki relasi one-to-many (1:N) berdasarkan struktur tabel yang digunakan. Artinya, satu akun pengguna dapat memiliki lebih dari satu profil mitra, sedangkan setiap profil mitra hanya terhubung dengan satu akun pengguna. Relasi ini dibentuk melalui atribut user\_id pada tabel partners yang mereferensikan Primary Key id pada tabel users.
 
 Tabel destinations dan destination\_tickets memiliki relasi one-to-many (1:N). Artinya, satu destinasi wisata dapat memiliki lebih dari satu jenis tiket, sedangkan setiap jenis tiket hanya berlaku untuk satu destinasi wisata. Relasi ini dibentuk melalui atribut destination\_id pada tabel destination\_tickets yang mereferensikan Primary Key id pada tabel destinations.
+
+Tabel partners dan destination\_tickets memiliki relasi one-to-many (1:M). Artinya, satu mitra dapat mengelola lebih dari satu jenis tiket, sedangkan setiap jenis tiket hanya dikelola oleh satu mitra. Relasi ini dibentuk melalui atribut partner\_id pada tabel destination\_tickets yang mereferensikan Primary Key id pada tabel partners.
 
 ## Database Migration Code (MySQL)
 
@@ -121,6 +127,7 @@ CREATE TABLE partners (
 CREATE TABLE destination_tickets (
     id CHAR(36) PRIMARY KEY,
     destination_id CHAR(36) NOT NULL,
+    partner_id CHAR(36) NOT NULL,
     ticket_name VARCHAR(100) NOT NULL,
     visitor_type ENUM(
         'domestic',
@@ -133,6 +140,9 @@ CREATE TABLE destination_tickets (
     price DECIMAL(12,2) NOT NULL,
     daily_quota INT NOT NULL DEFAULT 100,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    CONSTRAINT fk_tickets_partner
+        FOREIGN KEY (partner_id)
+        REFERENCES partners(id),
     CONSTRAINT fk_tickets_destination
         FOREIGN KEY (destination_id)
         REFERENCES destinations(id)
