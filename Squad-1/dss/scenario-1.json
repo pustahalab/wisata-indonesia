@@ -1,0 +1,6 @@
+{
+  "skenario1_entri_terpercaya": {
+    "facts": ["data_lengkap","koordinat_dalam_id","exif_ada","geotag_dekat","lokasi_unik","kontributor_terpercaya"],
+    "expected": "aksi_publikasi"
+  }
+}

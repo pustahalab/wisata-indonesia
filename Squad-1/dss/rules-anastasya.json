@@ -1,0 +1,9 @@
+[
+  { "id": "R8",  "if": ["sup_data_layak", "sup_geotag_janggal"], "then": "aksi_kurator" },
+  { "id": "R9",  "if": ["sup_data_layak", "sup_geotag_belum"], "then": "aksi_kurator" },
+  { "id": "R10", "if": ["sup_data_layak", "entri_mirip"], "then": "aksi_kurator" },
+  { "id": "R11", "if": ["sup_data_layak", "kontributor_bermasalah"], "then": "aksi_kurator" },
+  { "id": "R12", "if": ["data_kurang"], "then": "aksi_tolak" },
+  { "id": "R13", "if": ["koordinat_luar_id"], "then": "aksi_tolak" },
+  { "id": "R14", "if": ["entri_mirip", "sup_geotag_belum"], "then": "aksi_tolak" }
+]

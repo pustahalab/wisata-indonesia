@@ -1,0 +1,32 @@
+{
+  "facts": [
+    { "group": "FAKTA ENTRI (HASIL SUBMIT)", "items": [
+      { "id": "data_lengkap", "label": "Data lengkap (nama, kategori, alamat, deskripsi, ≥1 foto)" },
+      { "id": "data_kurang", "label": "Data tidak lengkap" },
+      { "id": "koordinat_dalam_id", "label": "Koordinat pin di dalam wilayah Indonesia" },
+      { "id": "koordinat_luar_id", "label": "Koordinat pin di luar wilayah Indonesia" },
+      { "id": "exif_ada", "label": "Foto memiliki GPS EXIF" },
+      { "id": "exif_tidak_ada", "label": "Foto tanpa GPS EXIF" },
+      { "id": "geotag_dekat", "label": "Titik EXIF dekat pin (≤ 100 m)" },
+      { "id": "geotag_jauh", "label": "Titik EXIF jauh dari pin (> 100 m)" }
+    ]},
+    { "group": "FAKTA EKOSISTEM NUSANTARAGO", "items": [
+      { "id": "lokasi_unik", "label": "Tidak ada entri terdaftar ≤ 500 m" },
+      { "id": "entri_mirip", "label": "Ada entri terdaftar ≤ 500 m bernama mirip" },
+      { "id": "kontributor_terpercaya", "label": "Kontributor terpercaya (rating ≥ 4.0, ≥ 3 pengajuan disetujui)" },
+      { "id": "kontributor_baru", "label": "Kontributor baru" },
+      { "id": "kontributor_bermasalah", "label": "Kontributor rating rendah (< 3.0)" }
+    ]}
+  ],
+  "conclusions": {
+    "sup_geotag_valid": { "label": "Geotag valid", "goal": false },
+    "sup_geotag_janggal": { "label": "Geotag janggal (titik foto jauh dari pin)", "goal": false },
+    "sup_geotag_belum": { "label": "Geotag belum terverifikasi", "goal": false },
+    "sup_data_layak": { "label": "Data layak diproses", "goal": false },
+    "sup_entri_kuat": { "label": "Entri kuat (data layak + geotag valid)", "goal": false },
+    "aksi_publikasi": { "label": "PUBLIKASI OTOMATIS", "goal": true },
+    "aksi_kurator": { "label": "VERIFIKASI KURATOR", "goal": true },
+    "aksi_tolak": { "label": "TOLAK", "goal": true }
+  },
+  "priority_note": "Urutan kunci di 'conclusions' menentukan prioritas: tujuan TERAKHIR yang menyala menang (TOLAK > KURATOR > PUBLIKASI)."
+}

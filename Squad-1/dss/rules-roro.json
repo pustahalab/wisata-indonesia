@@ -1,0 +1,9 @@
+[
+  { "id": "R1", "if": ["exif_ada", "geotag_dekat"], "then": "sup_geotag_valid" },
+  { "id": "R2", "if": ["exif_ada", "geotag_jauh"], "then": "sup_geotag_janggal" },
+  { "id": "R3", "if": ["exif_tidak_ada"], "then": "sup_geotag_belum" },
+  { "id": "R4", "if": ["data_lengkap", "koordinat_dalam_id"], "then": "sup_data_layak" },
+  { "id": "R5", "if": ["sup_data_layak", "sup_geotag_valid"], "then": "sup_entri_kuat" },
+  { "id": "R6", "if": ["sup_entri_kuat", "lokasi_unik", "kontributor_terpercaya"], "then": "aksi_publikasi" },
+  { "id": "R7", "if": ["sup_entri_kuat", "lokasi_unik", "kontributor_baru"], "then": "aksi_kurator" }
+]

@@ -1,0 +1,10 @@
+{
+  "skenario2_perlu_dicek_kurator": {
+    "facts": ["data_lengkap","koordinat_dalam_id","exif_ada","geotag_jauh","entri_mirip","kontributor_baru"],
+    "expected": "aksi_kurator"
+  },
+  "skenario3_ditolak_konflik_prioritas": {
+    "facts": ["data_lengkap","koordinat_dalam_id","exif_tidak_ada","entri_mirip","kontributor_baru"],
+    "expected": "aksi_tolak"
+  }
+}
