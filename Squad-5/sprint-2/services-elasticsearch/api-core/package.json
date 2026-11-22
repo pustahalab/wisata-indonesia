@@ -1,0 +1,16 @@
+{
+  "name": "api-core-sprint2",
+  "version": "1.0.0",
+  "description": "Elasticsearch full-text search service for NusantaraGo (Squad 5 Sprint 2)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed": "node scripts/seed-elasticsearch.js"
+  },
+  "dependencies": {
+    "@elastic/elasticsearch": "^8.11.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1"
+  }
+}

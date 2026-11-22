@@ -1,0 +1,79 @@
+{
+  "knowledgeBase": "nusantarago-squad5-search-triage",
+  "version": "1.0.0",
+  "domain": "infrastructure-search-performance",
+  "issue": "#10 Elasticsearch & Worker Kompresi WebP (BullMQ)",
+  "scope": "Elasticsearch full-text search triage",
+  "facts": [
+    { "name": "volume_query", "type": "integer", "unit": "requests_per_second", "description": "Jumlah pencarian per detik" },
+    { "name": "elasticsearch_tersedia", "type": "boolean", "description": "Apakah klaster Elasticsearch aktif dan responsif" },
+    { "name": "query_mengandung_typo", "type": "boolean", "description": "Apakah query pencarian diduga mengandung ketik salah" },
+    { "name": "category_ditentukan", "type": "boolean", "description": "Apakah pengguna menentukan filter kategori destinasi" },
+    { "name": "province_id_ditentukan", "type": "boolean", "description": "Apakah pengguna menentukan filter ID provinsi" }
+  ],
+  "rules": [
+    {
+      "id": "R_SEARCH_ES",
+      "conditions": [
+        { "fact": "volume_query", "operator": ">", "value": 1000 },
+        { "fact": "elasticsearch_tersedia", "operator": "==", "value": true }
+      ],
+      "conclusion": { "fact": "pencarian_dipindah_ke_elasticsearch", "value": true },
+      "priority": "tinggi"
+    },
+    {
+      "id": "R_SEARCH_SQL",
+      "conditions": [
+        {
+          "operator": "OR",
+          "operands": [
+            { "fact": "volume_query", "operator": "<=", "value": 1000 },
+            { "fact": "elasticsearch_tersedia", "operator": "==", "value": false }
+          ]
+        }
+      ],
+      "conclusion": { "fact": "pencarian_tetap_gunakan_postgresql", "value": true },
+      "priority": "tinggi"
+    },
+    {
+      "id": "R_SEARCH_FUZZY",
+      "conditions": [
+        { "fact": "query_mengandung_typo", "operator": "==", "value": true },
+        { "fact": "elasticsearch_tersedia", "operator": "==", "value": true }
+      ],
+      "conclusion": { "fact": "aktifkan_fuzziness_auto", "value": true },
+      "priority": "menengah"
+    },
+    {
+      "id": "R_SEARCH_FILTER",
+      "conditions": [
+        {
+          "operator": "OR",
+          "operands": [
+            { "fact": "category_ditentukan", "operator": "==", "value": true },
+            { "fact": "province_id_ditentukan", "operator": "==", "value": true }
+          ]
+        }
+      ],
+      "conclusion": { "fact": "terapkan_filter_eksak", "value": true },
+      "priority": "menengah"
+    },
+    {
+      "id": "R_SEARCH_RANK",
+      "conditions": [
+        { "fact": "pencarian_dipindah_ke_elasticsearch", "operator": "==", "value": true }
+      ],
+      "conclusion": { "fact": "urutkan_berdasarkan_rating_avg", "value": true },
+      "priority": "rendah"
+    },
+    {
+      "id": "R_FALLBACK_CHAIN",
+      "conditions": [
+        { "fact": "pencarian_tetap_gunakan_postgresql", "operator": "==", "value": true },
+        { "fact": "volume_query", "operator": ">", "value": 100 }
+      ],
+      "conclusion": { "fact": "aktifkan_paginasi_batasi_hasil", "value": true },
+      "priority": "menengah"
+    }
+  ]
+}
