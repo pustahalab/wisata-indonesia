@@ -46,12 +46,30 @@ async function generateTicket(req, res) {
 // 2. Endpoint Validasi Scanner Gerbang Masuk
 async function validateGateScan(req, res) {
   // TODO (George):
-  // 1. Ambil qrToken dan gateDestinationId dari req.body
-  // 2. Decode qrToken dari Base64 ke JSON
-  // 3. Panggil verifyHMACSignature(payload, signature) untuk cek keaslian
-  // 4. Cek apakah tiket ditemukan di ticketsDb
-  // 5. Cek apakah tiket statusnya sudah 'USED' (cegah scan berulang)
-  // 6. Bila semua valid: status diubah menjadi 'USED', waktu scan dicatat, dan kembalikan akses 'ACCESS_GRANTED'
+
+  // pastikan data dari alat pemindai lengkap
+  if (!qrToken || !gateDestinationId) {
+    return res.status(400).json({
+      success: false,
+      message: "qrToken dan gateDestinationId wajib disertakan scanner",
+    });
+  }
+  // 1. Decode qrToken dari Base64 ke JSON
+  let decoded;
+  try {
+    const jsonStr = Buffer.from(qrToken, "base64").toString("utf8");
+    decoded = JSON.parse(jsonStr);
+  } catch {
+    return res.status(400).json({
+      success: false,
+      validationStatus: "INVALID_QR_FORMAT",
+      message: "Format QR Code rusak atau tidak valid",
+    });
+  }
+  // 2. Panggil verifyHMACSignature(payload, signature) untuk cek keaslian
+  // 3. Cek apakah tiket ditemukan di ticketsDb
+  // 4. Cek apakah tiket statusnya sudah 'USED' (cegah scan berulang)
+  // 5. Bila semua valid: status diubah menjadi 'USED', waktu scan dicatat, dan kembalikan akses 'ACCESS_GRANTED'
   return res.json({
     message: "TODO: Implementasi validateGateScan oleh George",
   });
