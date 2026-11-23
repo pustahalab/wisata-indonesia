@@ -3,17 +3,44 @@
  * Deskripsi: Menangani request HTTP untuk pembuatan e-tiket dan validasi scan gerbang
  */
 
+const { generateTicketQRCode } = require("../utils/qr.util");
 const { verifyHMACSignature } = require("../utils/hmac.util");
 const ticketsDb = require("../data/tickets.mock");
 
 // 1. Endpoint Penerbitan E-Tiket
 async function generateTicket(req, res) {
-  // TODO (George):
-  // 1. Ambil ticketId dari req.body
-  // 2. Cari tiket di ticketsDb
-  // 3. Panggil generateTicketQRCode() dari qr.util.js
-  // 4. Kirim response JSON ke user
-  return res.json({ message: "TODO: Implementasi generateTicket oleh George" });
+  //validasi input
+  const { ticketId } = req.body;
+  if (!ticketId) {
+    return res.status(400).json({ error: "ticketId diperlukan" });
+  }
+  // 1. Cari tiket di database (ticketsDb)
+  const ticket = ticketsDb.find((t) => t.ticketId === ticketId);
+  if (!ticket) {
+    return res.status(404).json({ error: "Tiket tidak ditemukan" });
+  }
+  try {
+    // 2. Panggil generateTicketQRCode() dari qr.util.js
+    const qrResult = await generateTicketQRCode({
+      ticketId: ticket.ticketId,
+      bookingId: ticket.bookingId,
+      destinationId: ticket.destinationId,
+      visitDate: ticket.visitDate,
+    });
+
+    // 3. Kirim hasil QR Code ke user
+    return res.json({
+      success: true,
+      message: "QR Code berhasil dibuat",
+      data: {
+        ticket,
+        qrToken: qrResult.qrToken,
+        qrImage: qrResult.qrImage,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
 }
 
 // 2. Endpoint Validasi Scanner Gerbang Masuk
