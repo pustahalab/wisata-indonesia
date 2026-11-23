@@ -1,0 +1,188 @@
+{
+  "meta": {
+    "squad": "Squad 2 - Mitra Pengelola (KYC), Legalitas & E-Ticketing",
+    "issue": "#7 Algoritma Anti-Duplikasi Lokasi (Haversine 500m) & Antrean Kurasi Admin",
+    "repo": "pustahalab/wisata-indonesia",
+    "milestone": "Sprint 2",
+    "kb_version": "3.0.0",
+    "status": "DRAF, aturan bertanda USULAN belum dikonfirmasi",
+    "inference": "forward-chaining",
+    "assumption": "closed-world: fakta yang tidak terbentuk dianggap tidak terpenuhi",
+    "evaluation_order": "urut ID naik, diulang sampai tidak ada aturan baru menyala. R15 membaca dokumen_lengkap dengan operator ne sehingga harus dievaluasi setelah R8",
+    "operators": ["eq", "ne", "lte", "gt"],
+    "distance_convention": "jarak_terdekat_m dibulatkan 1 desimal. Isi 999999 jika belum ada destinasi lain",
+    "decision_unit": "R1 sampai R8 bekerja pada akun mitra. R9 sampai R15 bekerja pada pengajuan destinasi"
+  },
+  "sources": {
+    "S1": "Pertemuan 11 DSS.SIP117, dennyjcs.com/dss/pertemuan-11.html (dibaca 23 Nov 2026)",
+    "S2": "Brief Proyek Capstone SIP117, dennyjcs.com/dss/project.html (dibaca 23 Nov 2026)",
+    "S3": "GitHub Issue #7, pustahalab/wisata-indonesia, kriteria penerimaan Skenario 1 (dibaca 23 Nov 2026)",
+    "S4": "PP No. 28 Tahun 2025 tentang Penyelenggaraan Perizinan Berusaha Berbasis Risiko, berlaku 5 Juni 2025 (definisi Pelaku Usaha dan NIB via cuplikan pencarian, teks lengkap belum dibaca)",
+    "S5": "Dokumentasi PostGIS, ST_Distance dan ST_DWithin tipe geography (belum dibuka ulang)",
+    "C1": "Konfirmasi teman satu squad: syarat dokumen berbeda menurut kategori mitra (laporan pengguna, belum tertulis di SOP)",
+    "C2": "Konfirmasi teman satu squad: duplikat terkonfirmasi hanya menolak pengajuan destinasi, bukan akun mitra (laporan pengguna, belum tertulis di SOP)"
+  },
+  "facts_input": {
+    "kategori_mitra": "perorangan | usaha_pariwisata | pokdarwis | bumdes",
+    "ktp_diunggah": "boolean",
+    "ktp_terbaca": "boolean",
+    "nib_diunggah": "boolean",
+    "nib_status_aktif": "boolean",
+    "sk_diunggah": "boolean",
+    "sk_berlaku": "boolean",
+    "jarak_terdekat_m": "number, hasil Haversine ke destinasi terdekat (meter)",
+    "status_antrean_kurasi": "belum_ditinjau | bukan_duplikat | duplikat_terkonfirmasi | perlu_bukti (diisi admin kurator)"
+  },
+  "needs_confirmation": {
+    "K1": "Apakah empat kategori final dan apa saja yang masuk usaha pariwisata",
+    "K2": "KTP siapa yang diminta untuk tiap lembaga",
+    "K3": "Apakah Pokdarwis wajib NIB",
+    "K4": "Apakah BUMDes wajib NIB dan SK apa yang dimaksud",
+    "K5": "Nama SK untuk tiap kategori dan apakah punya masa berlaku",
+    "K6": "Apakah perorangan perlu dokumen legalitas tambahan",
+    "K7": "Bagaimana jika destinasi terdekat milik mitra yang sama",
+    "K8": "Apakah dokumen disimpan sekali per akun mitra",
+    "K9": "Apakah akun mitra bisa ditolak atau ditangguhkan dan oleh aturan apa"
+  },
+  "rules": [
+    {
+      "id": "R1", "name": "Syarat dokumen perorangan", "type": "antara", "status": "USULAN",
+      "all": [{"fact": "kategori_mitra", "op": "eq", "value": "perorangan"}],
+      "then": {"ktp_wajib": true, "nib_wajib": true, "sk_wajib": false},
+      "sources": ["C1", "S4"], "confirm": ["K6"],
+      "explain": "Perorangan: KTP dan NIB wajib, SK tidak wajib"
+    },
+    {
+      "id": "R2", "name": "Syarat dokumen usaha pariwisata", "type": "antara", "status": "USULAN",
+      "all": [{"fact": "kategori_mitra", "op": "eq", "value": "usaha_pariwisata"}],
+      "then": {"ktp_wajib": true, "nib_wajib": true, "sk_wajib": true},
+      "sources": ["C1", "S4"], "confirm": ["K1", "K2", "K5"],
+      "explain": "Usaha pariwisata: KTP pengurus, NIB, dan SK wajib"
+    },
+    {
+      "id": "R3", "name": "Syarat dokumen Pokdarwis", "type": "antara", "status": "USULAN",
+      "all": [{"fact": "kategori_mitra", "op": "eq", "value": "pokdarwis"}],
+      "then": {"ktp_wajib": true, "nib_wajib": false, "sk_wajib": true},
+      "sources": ["C1"], "confirm": ["K2", "K3", "K5"],
+      "explain": "Pokdarwis: KTP ketua dan SK wajib, NIB tidak wajib"
+    },
+    {
+      "id": "R4", "name": "Syarat dokumen BUMDes", "type": "antara", "status": "USULAN",
+      "all": [{"fact": "kategori_mitra", "op": "eq", "value": "bumdes"}],
+      "then": {"ktp_wajib": true, "nib_wajib": true, "sk_wajib": true},
+      "sources": ["C1"], "confirm": ["K2", "K4", "K5"],
+      "explain": "BUMDes: KTP pengurus, NIB, dan SK wajib"
+    },
+    {
+      "id": "R5", "name": "KTP valid", "type": "antara",
+      "all": [
+        {"fact": "ktp_diunggah", "op": "eq", "value": true},
+        {"fact": "ktp_terbaca", "op": "eq", "value": true}
+      ],
+      "then": {"ktp_valid": true},
+      "sources": ["S1", "S2"], "confirm": ["K2"],
+      "explain": "KTP terunggah dan terbaca jelas"
+    },
+    {
+      "id": "R6", "name": "NIB valid", "type": "antara",
+      "all": [
+        {"fact": "nib_diunggah", "op": "eq", "value": true},
+        {"fact": "nib_status_aktif", "op": "eq", "value": true}
+      ],
+      "then": {"nib_valid": true},
+      "sources": ["S1", "S4"],
+      "explain": "NIB terunggah dan berstatus aktif"
+    },
+    {
+      "id": "R7", "name": "SK valid", "type": "antara",
+      "all": [
+        {"fact": "sk_diunggah", "op": "eq", "value": true},
+        {"fact": "sk_berlaku", "op": "eq", "value": true}
+      ],
+      "then": {"sk_valid": true},
+      "sources": ["S1", "S2"], "confirm": ["K5"],
+      "explain": "SK terunggah dan masih berlaku"
+    },
+    {
+      "id": "R8", "name": "Dokumen lengkap", "type": "antara",
+      "all": [
+        {"any": [{"fact": "ktp_wajib", "op": "eq", "value": false}, {"fact": "ktp_valid", "op": "eq", "value": true}]},
+        {"any": [{"fact": "nib_wajib", "op": "eq", "value": false}, {"fact": "nib_valid", "op": "eq", "value": true}]},
+        {"any": [{"fact": "sk_wajib", "op": "eq", "value": false}, {"fact": "sk_valid", "op": "eq", "value": true}]}
+      ],
+      "then": {"dokumen_lengkap": true},
+      "sources": ["S1", "S2"],
+      "explain": "Setiap dokumen yang diwajibkan sudah valid"
+    },
+    {
+      "id": "R9", "name": "Potensi duplikat lokasi", "type": "antara",
+      "all": [{"fact": "jarak_terdekat_m", "op": "lte", "value": 500}],
+      "then": {"status_lokasi": "POTENTIAL_DUPLICATE"},
+      "sources": ["S3", "S5"],
+      "explain": "Jarak ke destinasi terdekat 500 m atau kurang, hanya ditandai untuk ditinjau admin kurator"
+    },
+    {
+      "id": "R10", "name": "Masuk antrean kurasi", "type": "akhir",
+      "all": [
+        {"fact": "status_lokasi", "op": "eq", "value": "POTENTIAL_DUPLICATE"},
+        {"fact": "status_antrean_kurasi", "op": "eq", "value": "belum_ditinjau"}
+      ],
+      "then": {"rekomendasi": "MENUNGGU_KURASI", "cakupan": "pengajuan_destinasi"},
+      "sources": ["S1", "S3"],
+      "explain": "Belum ada keputusan, pengajuan menunggu tinjauan admin kurator"
+    },
+    {
+      "id": "R11", "name": "Tolak pengajuan destinasi duplikat", "type": "akhir",
+      "all": [
+        {"fact": "status_lokasi", "op": "eq", "value": "POTENTIAL_DUPLICATE"},
+        {"fact": "status_antrean_kurasi", "op": "eq", "value": "duplikat_terkonfirmasi"}
+      ],
+      "then": {"rekomendasi": "TOLAK", "cakupan": "pengajuan_destinasi", "akun_mitra_terdampak": false},
+      "sources": ["S1", "S3", "C2"], "confirm": ["K9"],
+      "explain": "Admin kurator mengonfirmasi duplikat. Hanya pengajuan destinasi ini yang ditolak, akun mitra tidak terdampak"
+    },
+    {
+      "id": "R12", "name": "Revisi bukti lokasi", "type": "akhir",
+      "all": [
+        {"fact": "status_lokasi", "op": "eq", "value": "POTENTIAL_DUPLICATE"},
+        {"fact": "status_antrean_kurasi", "op": "eq", "value": "perlu_bukti"}
+      ],
+      "then": {"rekomendasi": "REVISI", "cakupan": "pengajuan_destinasi"},
+      "sources": ["S1", "S3"],
+      "explain": "Admin kurator meminta mitra melengkapi bukti lokasi pengajuan destinasi ini"
+    },
+    {
+      "id": "R13", "name": "Lokasi lolos", "type": "antara",
+      "any": [
+        {"fact": "jarak_terdekat_m", "op": "gt", "value": 500},
+        {"all": [
+          {"fact": "status_lokasi", "op": "eq", "value": "POTENTIAL_DUPLICATE"},
+          {"fact": "status_antrean_kurasi", "op": "eq", "value": "bukan_duplikat"}
+        ]}
+      ],
+      "then": {"lokasi_lolos": true},
+      "sources": ["S1", "S3"], "confirm": ["K7"],
+      "explain": "Lokasi lebih dari 500 m dari destinasi lain, atau admin menilai destinasi berbeda walaupun dalam 500 m"
+    },
+    {
+      "id": "R14", "name": "Setujui", "type": "akhir",
+      "all": [
+        {"fact": "lokasi_lolos", "op": "eq", "value": true},
+        {"fact": "dokumen_lengkap", "op": "eq", "value": true}
+      ],
+      "then": {"rekomendasi": "SETUJUI", "cakupan": "pengajuan_destinasi"},
+      "sources": ["S1", "S2"],
+      "explain": "Lokasi lolos dan dokumen wajib lengkap"
+    },
+    {
+      "id": "R15", "name": "Revisi dokumen", "type": "akhir",
+      "all": [
+        {"fact": "lokasi_lolos", "op": "eq", "value": true},
+        {"fact": "dokumen_lengkap", "op": "ne", "value": true}
+      ],
+      "then": {"rekomendasi": "REVISI", "cakupan": "dokumen_mitra"},
+      "sources": ["S1", "S2"], "confirm": ["K8"],
+      "explain": "Lokasi lolos tetapi ada dokumen wajib yang belum valid"
+    }
+  ]
+}
