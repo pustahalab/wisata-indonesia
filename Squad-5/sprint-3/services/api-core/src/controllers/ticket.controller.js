@@ -66,6 +66,7 @@ async function validateGateScan(req, res) {
       message: "Format QR Code rusak atau tidak valid",
     });
   }
+
   // 2. Panggil verifyHMACSignature(payload, signature) untuk cek keaslian
   // 3. Cek apakah tiket ditemukan di ticketsDb
   // 4. Cek apakah tiket statusnya sudah 'USED' (cegah scan berulang)
