@@ -1,0 +1,17 @@
+LULUS | P1 | perorangan | jarak=2633.9 m | status_lokasi=None | aturan=R1,R5,R6,R8,R13,R14 | hasil=SETUJUI | cakupan=pengajuan_destinasi
+LULUS | P2 | usaha_pariwisata | jarak=4570.8 m | status_lokasi=None | aturan=R2,R5,R6,R13,R15 | hasil=REVISI | cakupan=dokumen_mitra
+LULUS | P3a | usaha_pariwisata | jarak=124.1 m | status_lokasi=POTENTIAL_DUPLICATE | aturan=R2,R5,R6,R7,R8,R9,R10 | hasil=MENUNGGU_KURASI | cakupan=pengajuan_destinasi
+LULUS | P3b | usaha_pariwisata | jarak=124.1 m | status_lokasi=POTENTIAL_DUPLICATE | aturan=R2,R5,R6,R7,R8,R9,R11 | hasil=TOLAK | cakupan=pengajuan_destinasi
+LULUS | P4 | pokdarwis | jarak=1645.6 m | status_lokasi=None | aturan=R3,R5,R7,R8,R13,R14 | hasil=SETUJUI | cakupan=pengajuan_destinasi
+LULUS | P5 | pokdarwis | jarak=1645.6 m | status_lokasi=None | aturan=R3,R5,R6,R13,R15 | hasil=REVISI | cakupan=dokumen_mitra
+LULUS | P6 | bumdes | jarak=299.0 m | status_lokasi=POTENTIAL_DUPLICATE | aturan=R4,R5,R6,R7,R8,R9,R13,R14 | hasil=SETUJUI | cakupan=pengajuan_destinasi
+LULUS | P7 | bumdes | jarak=2415.8 m | status_lokasi=None | aturan=R4,R5,R7,R13,R15 | hasil=REVISI | cakupan=dokumen_mitra
+LULUS | P8 | perorangan | jarak=3695.2 m | status_lokasi=None | aturan=R1,R5,R6,R8,R13,R14 | hasil=SETUJUI | cakupan=pengajuan_destinasi
+LULUS | T1 | perorangan | jarak=500.0 m | status_lokasi=POTENTIAL_DUPLICATE | aturan=R1,R5,R6,R7,R8,R9,R10 | hasil=MENUNGGU_KURASI | cakupan=pengajuan_destinasi
+LULUS | T2 | perorangan | jarak=500.1 m | status_lokasi=None | aturan=R1,R5,R6,R7,R8,R13,R14 | hasil=SETUJUI | cakupan=pengajuan_destinasi
+LULUS | T3 | perorangan | jarak=323.4 m | status_lokasi=POTENTIAL_DUPLICATE | aturan=R1,R5,R6,R7,R8,R9,R12 | hasil=REVISI | cakupan=pengajuan_destinasi
+LULUS | T4 | usaha_pariwisata | jarak=299.0 m | status_lokasi=POTENTIAL_DUPLICATE | aturan=R2,R6,R7,R9,R13,R15 | hasil=REVISI | cakupan=dokumen_mitra
+LULUS | A1 | usaha_pariwisata | jarak=124.1 m | status_lokasi=POTENTIAL_DUPLICATE | aturan=R2,R5,R6,R7,R8,R9,R11 | hasil=TOLAK | cakupan=pengajuan_destinasi
+LULUS | A2 | usaha_pariwisata | jarak=2633.9 m | status_lokasi=None | aturan=R2,R5,R6,R7,R8,R13,R14 | hasil=SETUJUI | cakupan=pengajuan_destinasi
+Cakupan aturan: ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7', 'R8', 'R9', 'R10', 'R11', 'R12', 'R13', 'R14', 'R15']  tidak teruji: []
+SEMUA LULUS
