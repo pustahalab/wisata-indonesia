@@ -1,0 +1,445 @@
+{
+  "knowledge_base": {
+    "nama": "Knowledge Base Konten Detail Destinasi",
+    "versi": "2.1.0",
+    "metode_inferensi": "Forward Chaining",
+    "sumber_data_cuaca": "API Publik BMKG (https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4={kode_wilayah_tingkat_iv}) melalui bmkgAdapter.js (Node.js)"
+  },
+  "asumsi_kebijakan": {
+    "batas_usia_bmkg_jam": {
+      "nilai": 12,
+      "satuan": "jam",
+      "keterangan": "API prakiraan cuaca publik BMKG diperbarui 2 kali sehari (~12 jam sekali). Data dengan usia lebih dari 12 jam dianggap kedaluwarsa (TIDAK_VALID)."
+    },
+    "ambang_hujan_waspada_mm": {
+      "nilai": 50,
+      "satuan": "mm/hari",
+      "keterangan": "Kebijakan ambang internal: prakiraan curah hujan >= 50 mm/hari hingga < 100 mm/hari memicu level WASPADA."
+    },
+    "ambang_hujan_ekstrem_mm": {
+      "nilai": 100,
+      "satuan": "mm/hari",
+      "keterangan": "Kebijakan ambang internal: prakiraan curah hujan >= 100 mm/hari memicu level EKSTREM."
+    },
+    "zona_waktu": "WIB",
+    "operasional_lintas_hari": false,
+    "endpoint_bmkg": "https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4={kode_wilayah_tingkat_iv}"
+  },
+  "operator": {
+    "eq": "Sama dengan nilai target (==)",
+    "in": "Nilai fakta termasuk dalam salah satu elemen daftar target",
+    "is_null": "Nilai fakta kosong (null)",
+    "not_null": "Nilai fakta terisi (tidak null)",
+    "lt": "Lebih kecil dari nilai target atau fakta referensi (<)",
+    "lte": "Lebih kecil atau sama dengan nilai target atau fakta referensi (<=)",
+    "gt": "Lebih besar dari nilai target atau fakta referensi (>)",
+    "gte": "Lebih besar atau sama dengan nilai target atau fakta referensi (>=)"
+  },
+  "facts": {
+    "input": [
+      {
+        "kode": "F01",
+        "nama": "NAMA_DESTINASI",
+        "tipe_data": "string",
+        "nilai_yang_mungkin": ["teks bebas"],
+        "penjelasan": "Identitas nama destinasi wisata. Tidak dipakai dalam kondisi aturan, hanya untuk tampilan hasil."
+      },
+      {
+        "kode": "F02",
+        "nama": "FASILITAS_TOILET",
+        "tipe_data": "enum",
+        "nilai_yang_mungkin": ["TERSEDIA", "TIDAK_TERSEDIA", "BELUM_DIISI"],
+        "penjelasan": "Status ketersediaan data fasilitas toilet di destinasi."
+      },
+      {
+        "kode": "F03",
+        "nama": "FASILITAS_PARKIR",
+        "tipe_data": "enum",
+        "nilai_yang_mungkin": ["TERSEDIA", "TIDAK_TERSEDIA", "BELUM_DIISI"],
+        "penjelasan": "Status ketersediaan data fasilitas area parkir di destinasi."
+      },
+      {
+        "kode": "F04",
+        "nama": "FASILITAS_IBADAH",
+        "tipe_data": "enum",
+        "nilai_yang_mungkin": ["TERSEDIA", "TIDAK_TERSEDIA", "BELUM_DIISI"],
+        "penjelasan": "Status ketersediaan data fasilitas tempat ibadah di destinasi."
+      },
+      {
+        "kode": "F05",
+        "nama": "FASILITAS_MAKAN",
+        "tipe_data": "enum",
+        "nilai_yang_mungkin": ["TERSEDIA", "TIDAK_TERSEDIA", "BELUM_DIISI"],
+        "penjelasan": "Status ketersediaan data fasilitas tempat makan di destinasi."
+      },
+      {
+        "kode": "F06",
+        "nama": "JAM_BUKA",
+        "tipe_data": "string (HH:MM) atau null",
+        "nilai_yang_mungkin": ["format 24 jam HH:MM (contoh 08:00)", "null"],
+        "penjelasan": "Jam buka operasional destinasi dalam zona waktu WIB."
+      },
+      {
+        "kode": "F07",
+        "nama": "JAM_TUTUP",
+        "tipe_data": "string (HH:MM) atau null",
+        "nilai_yang_mungkin": ["format 24 jam HH:MM (contoh 17:00)", "null"],
+        "penjelasan": "Jam tutup operasional destinasi dalam zona waktu WIB."
+      },
+      {
+        "kode": "F08",
+        "nama": "HARI_LIBUR",
+        "tipe_data": "boolean",
+        "nilai_yang_mungkin": [true, false],
+        "penjelasan": "Bernilai true jika hari pemeriksaan merupakan hari tutup mingguan atau hari libur khusus destinasi."
+      },
+      {
+        "kode": "F09",
+        "nama": "JAM_SEKARANG",
+        "tipe_data": "string (HH:MM)",
+        "nilai_yang_mungkin": ["format 24 jam HH:MM (contoh 10:30)"],
+        "penjelasan": "Waktu saat konten dan status operasional destinasi diperiksa (WIB)."
+      },
+      {
+        "kode": "F10",
+        "nama": "BMKG_TERSEDIA",
+        "tipe_data": "boolean",
+        "nilai_yang_mungkin": [true, false],
+        "penjelasan": "Bernilai true jika request ke API publik BMKG (adm4) berhasil mengembalikan data cuaca."
+      },
+      {
+        "kode": "F11",
+        "nama": "BMKG_USIA_JAM",
+        "tipe_data": "number atau null",
+        "nilai_yang_mungkin": ["angka >= 0 (selisih waktu sekarang dengan analysis_date)", "null"],
+        "penjelasan": "Usia data prakiraan BMKG dalam satuan jam untuk menentukan apakah data masih segar atau sudah kedaluwarsa."
+      },
+      {
+        "kode": "F12",
+        "nama": "CURAH_HUJAN_MM",
+        "tipe_data": "number atau null",
+        "nilai_yang_mungkin": ["angka >= 0 (field tp dari API BMKG, mm)", "null"],
+        "penjelasan": "Prakiraan intensitas curah hujan dari field tp API BMKG sebagai dasar penentuan level cuaca."
+      },
+      {
+        "kode": "F13",
+        "nama": "PERINGATAN_DINI",
+        "tipe_data": "enum atau null",
+        "nilai_yang_mungkin": ["TIDAK_ADA", "WASPADA", "SIAGA", "AWAS", "null"],
+        "penjelasan": "Tingkat peringatan dini cuaca dari BMKG (diisi dari layanan peringatan dini atau default TIDAK_ADA oleh adapter)."
+      }
+    ],
+    "derived": [
+      {
+        "kode": "D01",
+        "nama": "STATUS_FASILITAS",
+        "tipe_data": "enum",
+        "nilai_yang_mungkin": ["LENGKAP", "TIDAK_LENGKAP"],
+        "penjelasan": "Hasil pemeriksaan kelengkapan seluruh fasilitas inti (dihasilkan oleh R01 atau R02)."
+      },
+      {
+        "kode": "D02",
+        "nama": "STATUS_DATA_JAM",
+        "tipe_data": "enum",
+        "nilai_yang_mungkin": ["KOSONG", "TIDAK_VALID", "VALID"],
+        "penjelasan": "Hasil validasi kelengkapan dan urutan jam operasional (dihasilkan oleh R03, R04, atau R05)."
+      },
+      {
+        "kode": "D03",
+        "nama": "STATUS_OPERASIONAL",
+        "tipe_data": "enum",
+        "nilai_yang_mungkin": ["BUKA", "TUTUP", "TIDAK_DIKETAHUI"],
+        "penjelasan": "Status operasional destinasi saat pemeriksaan (dihasilkan oleh R06, R07, atau R08). Terpisah dari keputusan kelayakan konten."
+      },
+      {
+        "kode": "D04",
+        "nama": "STATUS_DATA_BMKG",
+        "tipe_data": "enum",
+        "nilai_yang_mungkin": ["VALID", "TIDAK_VALID"],
+        "penjelasan": "Hasil validasi ketersediaan dan kesegaran data cuaca BMKG (dihasilkan oleh R09 atau R10)."
+      },
+      {
+        "kode": "D05",
+        "nama": "LEVEL_CUACA",
+        "tipe_data": "enum",
+        "nilai_yang_mungkin": ["NORMAL", "WASPADA", "EKSTREM", "TIDAK_DIKETAHUI"],
+        "penjelasan": "Klasifikasi tingkat kondisi cuaca berdasarkan data BMKG (dihasilkan oleh R09, R11, R12, atau R13)."
+      },
+      {
+        "kode": "D06",
+        "nama": "TAMPIL_PERINGATAN",
+        "tipe_data": "enum",
+        "nilai_yang_mungkin": ["TIDAK", "WASPADA", "EKSTREM", "INFO_TIDAK_TERSEDIA"],
+        "penjelasan": "Jenis banner informasi atau peringatan cuaca yang ditampilkan pada halaman detail destinasi (dihasilkan oleh R09, R11, R12, atau R13)."
+      },
+      {
+        "kode": "D07",
+        "nama": "KEPUTUSAN_KONTEN",
+        "tipe_data": "enum",
+        "nilai_yang_mungkin": ["SIAP_TAYANG", "PERLU_UPDATE"],
+        "penjelasan": "Keputusan akhir kelayakan tayang konten detail destinasi (dihasilkan oleh R14 atau R15)."
+      }
+    ]
+  },
+  "rules": [
+    {
+      "id": "R01",
+      "kelompok": "Kelengkapan Fasilitas",
+      "nama": "Fasilitas lengkap",
+      "if": {
+        "all": [
+          { "fact": "FASILITAS_TOILET", "op": "in", "value": ["TERSEDIA", "TIDAK_TERSEDIA"] },
+          { "fact": "FASILITAS_PARKIR", "op": "in", "value": ["TERSEDIA", "TIDAK_TERSEDIA"] },
+          { "fact": "FASILITAS_IBADAH", "op": "in", "value": ["TERSEDIA", "TIDAK_TERSEDIA"] },
+          { "fact": "FASILITAS_MAKAN", "op": "in", "value": ["TERSEDIA", "TIDAK_TERSEDIA"] }
+        ]
+      },
+      "then": [
+        { "fact": "STATUS_FASILITAS", "value": "LENGKAP" }
+      ],
+      "dasar": "Kebijakan kelengkapan konten: setiap fasilitas inti harus sudah diisi statusnya (baik tersedia maupun memang tidak tersedia)."
+    },
+    {
+      "id": "R02",
+      "kelompok": "Kelengkapan Fasilitas",
+      "nama": "Fasilitas belum lengkap",
+      "if": {
+        "any": [
+          { "fact": "FASILITAS_TOILET", "op": "eq", "value": "BELUM_DIISI" },
+          { "fact": "FASILITAS_PARKIR", "op": "eq", "value": "BELUM_DIISI" },
+          { "fact": "FASILITAS_IBADAH", "op": "eq", "value": "BELUM_DIISI" },
+          { "fact": "FASILITAS_MAKAN", "op": "eq", "value": "BELUM_DIISI" }
+        ]
+      },
+      "then": [
+        { "fact": "STATUS_FASILITAS", "value": "TIDAK_LENGKAP" }
+      ],
+      "dasar": "Kebijakan kelengkapan konten: satu fasilitas saja berstatus BELUM_DIISI cukup untuk menandai data fasilitas belum lengkap."
+    },
+    {
+      "id": "R03",
+      "kelompok": "Validasi Jam Operasional",
+      "nama": "Data jam operasional kosong",
+      "if": {
+        "any": [
+          { "fact": "JAM_BUKA", "op": "is_null" },
+          { "fact": "JAM_TUTUP", "op": "is_null" }
+        ]
+      },
+      "then": [
+        { "fact": "STATUS_DATA_JAM", "value": "KOSONG" }
+      ],
+      "dasar": "Validasi data: jam buka dan jam tutup keduanya wajib terisi."
+    },
+    {
+      "id": "R04",
+      "kelompok": "Validasi Jam Operasional",
+      "nama": "Data jam operasional tidak valid",
+      "if": {
+        "all": [
+          { "fact": "JAM_BUKA", "op": "not_null" },
+          { "fact": "JAM_TUTUP", "op": "not_null" },
+          { "fact": "JAM_BUKA", "op": "gte", "ref": "JAM_TUTUP" }
+        ]
+      },
+      "then": [
+        { "fact": "STATUS_DATA_JAM", "value": "TIDAK_VALID" }
+      ],
+      "dasar": "Validasi data: jam buka harus lebih awal dari jam tutup (asumsi operasional tidak melewati tengah malam)."
+    },
+    {
+      "id": "R05",
+      "kelompok": "Validasi Jam Operasional",
+      "nama": "Data jam operasional valid",
+      "if": {
+        "all": [
+          { "fact": "JAM_BUKA", "op": "not_null" },
+          { "fact": "JAM_TUTUP", "op": "not_null" },
+          { "fact": "JAM_BUKA", "op": "lt", "ref": "JAM_TUTUP" }
+        ]
+      },
+      "then": [
+        { "fact": "STATUS_DATA_JAM", "value": "VALID" }
+      ],
+      "dasar": "Validasi data: kedua jam terisi dan urutan waktu buka lebih awal dari waktu tutup."
+    },
+    {
+      "id": "R06",
+      "kelompok": "Status Operasional",
+      "nama": "Destinasi sedang buka",
+      "if": {
+        "all": [
+          { "fact": "STATUS_DATA_JAM", "op": "eq", "value": "VALID" },
+          { "fact": "HARI_LIBUR", "op": "eq", "value": false },
+          { "fact": "JAM_SEKARANG", "op": "gte", "ref": "JAM_BUKA" },
+          { "fact": "JAM_SEKARANG", "op": "lt", "ref": "JAM_TUTUP" }
+        ]
+      },
+      "then": [
+        { "fact": "STATUS_OPERASIONAL", "value": "BUKA" }
+      ],
+      "dasar": "Perbandingan waktu saat ini dengan jam operasional yang valid pada hari non-libur."
+    },
+    {
+      "id": "R07",
+      "kelompok": "Status Operasional",
+      "nama": "Destinasi sedang tutup",
+      "if": {
+        "all": [
+          { "fact": "STATUS_DATA_JAM", "op": "eq", "value": "VALID" },
+          {
+            "any": [
+              { "fact": "HARI_LIBUR", "op": "eq", "value": true },
+              { "fact": "JAM_SEKARANG", "op": "lt", "ref": "JAM_BUKA" },
+              { "fact": "JAM_SEKARANG", "op": "gte", "ref": "JAM_TUTUP" }
+            ]
+          }
+        ]
+      },
+      "then": [
+        { "fact": "STATUS_OPERASIONAL", "value": "TUTUP" }
+      ],
+      "dasar": "Destinasi libur atau waktu pemeriksaan berada di luar jam operasional. Status tutup tidak memengaruhi keputusan kelayakan konten."
+    },
+    {
+      "id": "R08",
+      "kelompok": "Status Operasional",
+      "nama": "Status operasional tidak diketahui",
+      "if": {
+        "all": [
+          { "fact": "STATUS_DATA_JAM", "op": "in", "value": ["KOSONG", "TIDAK_VALID"] }
+        ]
+      },
+      "then": [
+        { "fact": "STATUS_OPERASIONAL", "value": "TIDAK_DIKETAHUI" }
+      ],
+      "dasar": "Jika data jam bermasalah (kosong atau tidak valid), sistem tidak boleh menebak status buka atau tutup."
+    },
+    {
+      "id": "R09",
+      "kelompok": "Validasi Data BMKG",
+      "nama": "Data BMKG tidak valid atau kedaluwarsa",
+      "if": {
+        "any": [
+          { "fact": "BMKG_TERSEDIA", "op": "eq", "value": false },
+          { "fact": "BMKG_USIA_JAM", "op": "gt", "value": 12 }
+        ]
+      },
+      "then": [
+        { "fact": "STATUS_DATA_BMKG", "value": "TIDAK_VALID" },
+        { "fact": "LEVEL_CUACA", "value": "TIDAK_DIKETAHUI" },
+        { "fact": "TAMPIL_PERINGATAN", "value": "INFO_TIDAK_TERSEDIA" }
+      ],
+      "dasar": "Data tidak tersedia atau berusia lebih dari 12 jam (mengikuti siklus pembaruan API BMKG 2 kali sehari). Data kedaluwarsa tidak boleh dianggap cuaca normal."
+    },
+    {
+      "id": "R10",
+      "kelompok": "Validasi Data BMKG",
+      "nama": "Data BMKG valid",
+      "if": {
+        "all": [
+          { "fact": "BMKG_TERSEDIA", "op": "eq", "value": true },
+          { "fact": "BMKG_USIA_JAM", "op": "not_null" },
+          { "fact": "BMKG_USIA_JAM", "op": "lte", "value": 12 }
+        ]
+      },
+      "then": [
+        { "fact": "STATUS_DATA_BMKG", "value": "VALID" }
+      ],
+      "dasar": "Data BMKG tersedia dari API dan masih segar (usia <= 12 jam)."
+    },
+    {
+      "id": "R11",
+      "kelompok": "Penentuan Peringatan Cuaca",
+      "nama": "Cuaca normal",
+      "if": {
+        "all": [
+          { "fact": "STATUS_DATA_BMKG", "op": "eq", "value": "VALID" },
+          { "fact": "PERINGATAN_DINI", "op": "eq", "value": "TIDAK_ADA" },
+          { "fact": "CURAH_HUJAN_MM", "op": "lt", "value": 50 }
+        ]
+      },
+      "then": [
+        { "fact": "LEVEL_CUACA", "value": "NORMAL" },
+        { "fact": "TAMPIL_PERINGATAN", "value": "TIDAK" }
+      ],
+      "dasar": "Data BMKG valid, tidak ada peringatan dini, dan curah hujan di bawah ambang kebijakan 50 mm/hari."
+    },
+    {
+      "id": "R12",
+      "kelompok": "Penentuan Peringatan Cuaca",
+      "nama": "Peringatan cuaca waspada",
+      "if": {
+        "all": [
+          { "fact": "STATUS_DATA_BMKG", "op": "eq", "value": "VALID" },
+          { "fact": "PERINGATAN_DINI", "op": "in", "value": ["TIDAK_ADA", "WASPADA"] },
+          { "fact": "CURAH_HUJAN_MM", "op": "lt", "value": 100 },
+          {
+            "any": [
+              { "fact": "PERINGATAN_DINI", "op": "eq", "value": "WASPADA" },
+              { "fact": "CURAH_HUJAN_MM", "op": "gte", "value": 50 }
+            ]
+          }
+        ]
+      },
+      "then": [
+        { "fact": "LEVEL_CUACA", "value": "WASPADA" },
+        { "fact": "TAMPIL_PERINGATAN", "value": "WASPADA" }
+      ],
+      "dasar": "Data BMKG valid dengan peringatan dini WASPADA atau curah hujan 50 sampai < 100 mm/hari."
+    },
+    {
+      "id": "R13",
+      "kelompok": "Penentuan Peringatan Cuaca",
+      "nama": "Peringatan cuaca ekstrem",
+      "if": {
+        "all": [
+          { "fact": "STATUS_DATA_BMKG", "op": "eq", "value": "VALID" },
+          {
+            "any": [
+              { "fact": "PERINGATAN_DINI", "op": "in", "value": ["SIAGA", "AWAS"] },
+              { "fact": "CURAH_HUJAN_MM", "op": "gte", "value": 100 }
+            ]
+          }
+        ]
+      },
+      "then": [
+        { "fact": "LEVEL_CUACA", "value": "EKSTREM" },
+        { "fact": "TAMPIL_PERINGATAN", "value": "EKSTREM" }
+      ],
+      "dasar": "Data BMKG valid dengan peringatan dini SIAGA/AWAS atau curah hujan >= 100 mm/hari. Konten tetap dapat tayang dengan banner peringatan."
+    },
+    {
+      "id": "R14",
+      "kelompok": "Keputusan Konten",
+      "nama": "Konten siap tayang",
+      "if": {
+        "all": [
+          { "fact": "STATUS_FASILITAS", "op": "eq", "value": "LENGKAP" },
+          { "fact": "STATUS_DATA_JAM", "op": "eq", "value": "VALID" },
+          { "fact": "STATUS_DATA_BMKG", "op": "eq", "value": "VALID" }
+        ]
+      },
+      "then": [
+        { "fact": "KEPUTUSAN_KONTEN", "value": "SIAP_TAYANG" }
+      ],
+      "dasar": "Ketiga komponen utama konten (fasilitas, jam operasional, data BMKG) sudah lengkap dan valid."
+    },
+    {
+      "id": "R15",
+      "kelompok": "Keputusan Konten",
+      "nama": "Konten perlu update",
+      "if": {
+        "any": [
+          { "fact": "STATUS_FASILITAS", "op": "eq", "value": "TIDAK_LENGKAP" },
+          { "fact": "STATUS_DATA_JAM", "op": "in", "value": ["KOSONG", "TIDAK_VALID"] },
+          { "fact": "STATUS_DATA_BMKG", "op": "eq", "value": "TIDAK_VALID" }
+        ]
+      },
+      "then": [
+        { "fact": "KEPUTUSAN_KONTEN", "value": "PERLU_UPDATE" }
+      ],
+      "dasar": "Salah satu atau lebih komponen utama konten belum lengkap atau tidak valid sehingga perlu diperbarui sebelum tayang."
+    }
+  ]
+}

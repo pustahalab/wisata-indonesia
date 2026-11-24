@@ -1,0 +1,26 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h2 {
+    margin-bottom: 10px;
+}
+
+#map {
+    width: 100%;
+    height: 550px;
+}
+
+/* ---- Distance Matrix ---- */
+#dm-form { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-bottom: 10px; }
+#dm-form label { display: flex; flex-direction: column; font-size: 13px; }
+#dm-form input { width: 260px; padding: 6px; }
+#dm-form button { padding: 8px 14px; }
+#dm-steps { list-style: none; padding: 0; margin: 0 0 10px; font-size: 14px; }
+#dm-steps li::before { content: "\25CB  "; color: #888; }
+#dm-steps li[data-state="ok"]::before { content: "\2714  "; color: #1a7f37; }
+#dm-steps li[data-state="fail"]::before { content: "\2718  "; color: #c62828; }
+#dm-result { margin: 8px 0; font-weight: bold; }
+#status { color: #c62828; margin: 8px 0; white-space: pre-line; }
+#status:empty { display: none; }
