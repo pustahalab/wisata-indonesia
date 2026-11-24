@@ -1,17 +1,1290 @@
-LULUS | P1 | perorangan | jarak=2633.9 m | status_lokasi=None | aturan=R1,R5,R6,R8,R13,R14 | hasil=SETUJUI | cakupan=pengajuan_destinasi
-LULUS | P2 | usaha_pariwisata | jarak=4570.8 m | status_lokasi=None | aturan=R2,R5,R6,R13,R15 | hasil=REVISI | cakupan=dokumen_mitra
-LULUS | P3a | usaha_pariwisata | jarak=124.1 m | status_lokasi=POTENTIAL_DUPLICATE | aturan=R2,R5,R6,R7,R8,R9,R10 | hasil=MENUNGGU_KURASI | cakupan=pengajuan_destinasi
-LULUS | P3b | usaha_pariwisata | jarak=124.1 m | status_lokasi=POTENTIAL_DUPLICATE | aturan=R2,R5,R6,R7,R8,R9,R11 | hasil=TOLAK | cakupan=pengajuan_destinasi
-LULUS | P4 | pokdarwis | jarak=1645.6 m | status_lokasi=None | aturan=R3,R5,R7,R8,R13,R14 | hasil=SETUJUI | cakupan=pengajuan_destinasi
-LULUS | P5 | pokdarwis | jarak=1645.6 m | status_lokasi=None | aturan=R3,R5,R6,R13,R15 | hasil=REVISI | cakupan=dokumen_mitra
-LULUS | P6 | bumdes | jarak=299.0 m | status_lokasi=POTENTIAL_DUPLICATE | aturan=R4,R5,R6,R7,R8,R9,R13,R14 | hasil=SETUJUI | cakupan=pengajuan_destinasi
-LULUS | P7 | bumdes | jarak=2415.8 m | status_lokasi=None | aturan=R4,R5,R7,R13,R15 | hasil=REVISI | cakupan=dokumen_mitra
-LULUS | P8 | perorangan | jarak=3695.2 m | status_lokasi=None | aturan=R1,R5,R6,R8,R13,R14 | hasil=SETUJUI | cakupan=pengajuan_destinasi
-LULUS | T1 | perorangan | jarak=500.0 m | status_lokasi=POTENTIAL_DUPLICATE | aturan=R1,R5,R6,R7,R8,R9,R10 | hasil=MENUNGGU_KURASI | cakupan=pengajuan_destinasi
-LULUS | T2 | perorangan | jarak=500.1 m | status_lokasi=None | aturan=R1,R5,R6,R7,R8,R13,R14 | hasil=SETUJUI | cakupan=pengajuan_destinasi
-LULUS | T3 | perorangan | jarak=323.4 m | status_lokasi=POTENTIAL_DUPLICATE | aturan=R1,R5,R6,R7,R8,R9,R12 | hasil=REVISI | cakupan=pengajuan_destinasi
-LULUS | T4 | usaha_pariwisata | jarak=299.0 m | status_lokasi=POTENTIAL_DUPLICATE | aturan=R2,R6,R7,R9,R13,R15 | hasil=REVISI | cakupan=dokumen_mitra
-LULUS | A1 | usaha_pariwisata | jarak=124.1 m | status_lokasi=POTENTIAL_DUPLICATE | aturan=R2,R5,R6,R7,R8,R9,R11 | hasil=TOLAK | cakupan=pengajuan_destinasi
-LULUS | A2 | usaha_pariwisata | jarak=2633.9 m | status_lokasi=None | aturan=R2,R5,R6,R7,R8,R13,R14 | hasil=SETUJUI | cakupan=pengajuan_destinasi
-Cakupan aturan: ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7', 'R8', 'R9', 'R10', 'R11', 'R12', 'R13', 'R14', 'R15']  tidak teruji: []
+HASIL UJI KB SQUAD 2 SPRINT 2 ISSUE #7 (KB versi 5.0.0)
+Dibuat oleh engine_test.py dari eksekusi nyata atas 03-rules.json
+
+1. STRUKTUR KB
+   15 aturan, ID berurutan, sumber dan operator valid, partner_type dan is_verified sesuai Sprint 1
+   urutan evaluasi benar (penghasil fakta selalu sebelum pembaca), rantai terpanjang 3 aturan berurutan
+   penerapan NIB dan SK bernilai ya atau tidak: R5 hanya memakai eq, R12 memakai ne pada dokumen_lengkap setelah R5 dan R6
+   pemisahan status: hanya R13, R14, R15 membaca status verifikasi mitra, tidak ada aturan yang menulisnya, tidak ada aturan yang membaca atau menulis destinations.status, semua aturan akhir membawa akun_mitra_terdampak = tidak
+   03-rules.json dapat dibaca sebagai JSON valid
+   Haversine cocok dengan pendekatan ekuirektangular independen (selisih < 0,5 m) dan batas 500,0 m dan 500,1 m benar
+   pembanding jarak (KT3): approved dan pending dihitung, rejected tidak dihitung, tanpa pembanding = 999999, yang terdekat dipilih
+   keluaran dipisah: rekomendasi (SETUJUI, REVISI, TOLAK) diisi R9, R10, R12, R13, R15. status_tindak_lanjut (MENUNGGU_KURASI, MENUNGGU_VERIFIKASI_MITRA) diisi R8, R14. Tidak ada aturan yang memberi nilai status tindak lanjut pada field rekomendasi
+   ketentuan operasional teruji: KT1 syarat dokumen per tipe, KT2 penerapan NIB dan SK, KT4 empat partner_type diproses, KT5 verified = SETUJUI, pending = MENUNGGU_VERIFIKASI_MITRA, rejected = TOLAK
+
+2. KASUS UJI (30 kasus)
+   LULUS | P1 | attraction | jarak=2633.9 m | status_lokasi=None | status_mitra=verified | aturan=R1,R3,R5,R11,R13 | rekomendasi=SETUJUI | status_tindak_lanjut=- | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | P2 | attraction | jarak=4570.8 m | status_lokasi=None | status_mitra=verified | aturan=R1,R11,R12 | rekomendasi=REVISI | status_tindak_lanjut=- | cakupan=dokumen_mitra | partners.is_verified_diubah=tidak
+   LULUS | P3a | attraction | jarak=124.1 m | status_lokasi=POTENTIAL_DUPLICATE | status_mitra=verified | aturan=R1,R3,R5,R7,R8 | rekomendasi=- | status_tindak_lanjut=MENUNGGU_KURASI | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | P3b | attraction | jarak=124.1 m | status_lokasi=POTENTIAL_DUPLICATE | status_mitra=verified | aturan=R1,R3,R5,R7,R9 | rekomendasi=TOLAK | status_tindak_lanjut=- | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | P4 | attraction | jarak=1645.6 m | status_lokasi=None | status_mitra=verified | aturan=R1,R2,R3,R4,R5,R11,R13 | rekomendasi=SETUJUI | status_tindak_lanjut=- | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | P5 | attraction | jarak=1645.6 m | status_lokasi=None | status_mitra=verified | aturan=R1,R3,R11,R12 | rekomendasi=REVISI | status_tindak_lanjut=- | cakupan=dokumen_mitra | partners.is_verified_diubah=tidak
+   LULUS | P6 | attraction | jarak=299.0 m | status_lokasi=POTENTIAL_DUPLICATE | status_mitra=verified | aturan=R1,R2,R3,R5,R7,R11,R13 | rekomendasi=SETUJUI | status_tindak_lanjut=- | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | P7 | attraction | jarak=2415.8 m | status_lokasi=None | status_mitra=verified | aturan=R1,R3,R11,R12 | rekomendasi=REVISI | status_tindak_lanjut=- | cakupan=dokumen_mitra | partners.is_verified_diubah=tidak
+   LULUS | P8 | attraction | jarak=3695.2 m | status_lokasi=None | status_mitra=verified | aturan=R1,R3,R5,R11,R13 | rekomendasi=SETUJUI | status_tindak_lanjut=- | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | P9 | tour_agent | jarak=2633.9 m | status_lokasi=None | status_mitra=verified | aturan=R1,R2,R3,R6,R11,R13 | rekomendasi=SETUJUI | status_tindak_lanjut=- | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | P10 | accommodation | jarak=299.0 m | status_lokasi=POTENTIAL_DUPLICATE | status_mitra=verified | aturan=R1,R2,R3,R6,R7,R11,R13 | rekomendasi=SETUJUI | status_tindak_lanjut=- | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | P11 | transport | jarak=124.1 m | status_lokasi=POTENTIAL_DUPLICATE | status_mitra=verified | aturan=R1,R2,R3,R6,R7,R9 | rekomendasi=TOLAK | status_tindak_lanjut=- | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | P12 | tour_agent | jarak=2633.9 m | status_lokasi=None | status_mitra=verified | aturan=R1,R3,R11,R12 | rekomendasi=REVISI | status_tindak_lanjut=- | cakupan=dokumen_mitra | partners.is_verified_diubah=tidak
+   LULUS | P13 | transport | jarak=2633.9 m | status_lokasi=None | status_mitra=verified | aturan=R1,R2,R11,R12 | rekomendasi=REVISI | status_tindak_lanjut=- | cakupan=dokumen_mitra | partners.is_verified_diubah=tidak
+   LULUS | T1 | attraction | jarak=500.0 m | status_lokasi=POTENTIAL_DUPLICATE | status_mitra=verified | aturan=R1,R3,R5,R7,R8 | rekomendasi=- | status_tindak_lanjut=MENUNGGU_KURASI | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | T2 | attraction | jarak=500.1 m | status_lokasi=None | status_mitra=verified | aturan=R1,R3,R5,R11,R13 | rekomendasi=SETUJUI | status_tindak_lanjut=- | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | T3 | attraction | jarak=323.4 m | status_lokasi=POTENTIAL_DUPLICATE | status_mitra=verified | aturan=R1,R3,R5,R7,R10 | rekomendasi=REVISI | status_tindak_lanjut=- | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | T4 | attraction | jarak=299.0 m | status_lokasi=POTENTIAL_DUPLICATE | status_mitra=verified | aturan=R3,R7,R11,R12 | rekomendasi=REVISI | status_tindak_lanjut=- | cakupan=dokumen_mitra | partners.is_verified_diubah=tidak
+   LULUS | T5 | attraction | jarak=999999 m | status_lokasi=None | status_mitra=verified | aturan=R1,R3,R5,R11,R13 | rekomendasi=SETUJUI | status_tindak_lanjut=- | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | A1 | attraction | jarak=124.1 m | status_lokasi=POTENTIAL_DUPLICATE | status_mitra=verified | aturan=R1,R3,R5,R7,R9 | rekomendasi=TOLAK | status_tindak_lanjut=- | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | A2 | attraction | jarak=2633.9 m | status_lokasi=None | status_mitra=verified | aturan=R1,R3,R5,R11,R13 | rekomendasi=SETUJUI | status_tindak_lanjut=- | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | A3 | attraction | jarak=200.0 m | status_lokasi=POTENTIAL_DUPLICATE | status_mitra=verified | aturan=R1,R3,R5,R7,R8 | rekomendasi=- | status_tindak_lanjut=MENUNGGU_KURASI | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | A4 | attraction | jarak=2633.9 m | status_lokasi=None | status_mitra=verified | aturan=R1,R3,R5,R11,R13 | rekomendasi=SETUJUI | status_tindak_lanjut=- | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | V1 | attraction | jarak=2633.9 m | status_lokasi=None | status_mitra=pending | aturan=R1,R3,R5,R11,R14 | rekomendasi=- | status_tindak_lanjut=MENUNGGU_VERIFIKASI_MITRA | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | V2 | attraction | jarak=2633.9 m | status_lokasi=None | status_mitra=rejected | aturan=R1,R3,R5,R11,R15 | rekomendasi=TOLAK | status_tindak_lanjut=- | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | V3 | attraction | jarak=2633.9 m | status_lokasi=None | status_mitra=pending | aturan=R1,R11,R12 | rekomendasi=REVISI | status_tindak_lanjut=- | cakupan=dokumen_mitra | partners.is_verified_diubah=tidak
+   LULUS | V4 | attraction | jarak=124.1 m | status_lokasi=POTENTIAL_DUPLICATE | status_mitra=pending | aturan=R1,R3,R5,R7,R8 | rekomendasi=- | status_tindak_lanjut=MENUNGGU_KURASI | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | V5 | attraction | jarak=299.0 m | status_lokasi=POTENTIAL_DUPLICATE | status_mitra=pending | aturan=R1,R3,R5,R7,R11,R14 | rekomendasi=- | status_tindak_lanjut=MENUNGGU_VERIFIKASI_MITRA | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | V6 | tour_agent | jarak=2633.9 m | status_lokasi=None | status_mitra=rejected | aturan=R1,R2,R3,R6,R11,R15 | rekomendasi=TOLAK | status_tindak_lanjut=- | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   LULUS | V7 | attraction | jarak=124.1 m | status_lokasi=POTENTIAL_DUPLICATE | status_mitra=rejected | aturan=R1,R3,R5,R7,R9 | rekomendasi=TOLAK | status_tindak_lanjut=- | cakupan=pengajuan_destinasi | partners.is_verified_diubah=tidak
+   Cakupan aturan: R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, R12, R13, R14, R15  (semua 15 aturan teruji)
+
+3. MASUKAN TIDAK VALID DAN FAKTA HILANG
+   ditolak dengan ValueError: partner_type tidak dikenal
+   ditolak dengan ValueError: jarak_terdekat_m hilang
+   ditolak dengan ValueError: jarak_terdekat_m berupa teks
+   ditolak dengan ValueError: jarak_terdekat_m negatif
+   ditolak dengan ValueError: status_antrean_kurasi tidak dikenal
+   ditolak dengan ValueError: status_verifikasi_mitra hilang
+   ditolak dengan ValueError: status_verifikasi_mitra tidak dikenal
+   ditolak dengan ValueError: nib_diperlukan hilang untuk Attraction
+   ditolak dengan ValueError: sk_pokdarwis_diperlukan hilang untuk Attraction
+   ditolak dengan ValueError: nib_diperlukan berupa boolean
+   ditolak dengan ValueError: sk_pokdarwis_diperlukan bernilai di luar ya atau tidak
+   penerapan NIB dan SK tidak wajib dan tidak memengaruhi hasil untuk tour_agent, accommodation, dan transport
+   checklist KTP dan izin yang hilang dibaca sebagai belum diunggah: REVISI, tidak pernah SETUJUI
+
+4. UJI MENYELURUH
+   11907 kombinasi (4 partner_type, 81 kombinasi status dokumen, 3 status verifikasi mitra, 4 kombinasi penerapan NIB dan SK khusus Attraction, 7 keadaan lokasi dan antrean) cocok dengan pembanding independen
+   Sebaran hasil (rekomendasi / status_tindak_lanjut / cakupan): - / MENUNGGU_KURASI / pengajuan_destinasi = 3402; - / MENUNGGU_VERIFIKASI_MITRA / pengajuan_destinasi = 75; REVISI / - / dokumen_mitra = 4878; REVISI / - / pengajuan_destinasi = 1701; SETUJUI / - / pengajuan_destinasi = 75; TOLAK / - / pengajuan_destinasi = 1776
+   Properti terjaga: potensi duplikat tidak pernah langsung ditolak; TOLAK hanya setelah duplikat_terkonfirmasi atau jika mitra berstatus rejected; SETUJUI hanya untuk mitra verified dengan lokasi lolos dan dokumen lengkap; mitra pending ditahan lewat MENUNGGU_VERIFIKASI_MITRA; status verifikasi mitra dan masukan tidak pernah diubah engine; setiap keluaran membawa partners.is_verified tidak diubah
+
+5. KONSISTENSI FILE
+   01-tabel-aturan.md: versi KB, ID, jenis, dan sumber sama dengan 03-rules.json
+   01-tabel-aturan.md: 9 ketentuan operasional sama persis dengan JSON
+   01-tabel-aturan.md: catatan database setiap aturan akhir sama persis dengan db_hint di JSON
+   01-tabel-aturan.md: sembilan sumber (S1 sampai S9) sama dengan JSON
+   02-rantai-aturan.md: menyebut semua ID aturan
+   04-skenario-pengujian.md: menyebut semua ID aturan
+   04-skenario-pengujian.md: tabel ringkasan 30 skenario cocok dengan hasil eksekusi engine
+   berkas 01, 02, 03, dan 04 hanya memakai kosakata status milik KB (tidak ada label status sementara atau peringatan sisa)
+   berkas 01, 02, 03, dan 04: status tindak lanjut tidak pernah ditulis sebagai rekomendasi dan persetujuan destinasi tidak mengubah partners.is_verified
+   berkas 01, 02, dan 04 menyebut status_tindak_lanjut, MENUNGGU_VERIFIKASI_MITRA, partners.is_verified, dan destinations.status
+
+6. PENJELASAN PER KASUS
+
+--- P1: Attraction lokasi jauh, KTP dan izin pengelolaan valid, NIB dan SK Pokdarwis tidak berlaku, mitra verified ---
+Rekomendasi KB  : SETUJUI
+Status tindak   : tidak ada
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : tidak ada (jarak lebih dari 500 m)
+Aturan menyala  : R1, R3, R5, R11, R13
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 2633.9
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R5] dokumen_lengkap = ya
+  4. [R11] lokasi_lolos = ya
+  5. [R13] rekomendasi = SETUJUI
+  6. [R13] cakupan = pengajuan_destinasi
+  7. [R13] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = tidak [OK] ATAU (nib_diperlukan = tidak [X] DAN nib_valid = belum ada [X])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 2633.9, syarat > 500 [OK] ATAU (status_lokasi = belum ada [X] DAN status_antrean_kurasi = belum ada [X]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R13] Setujui pengajuan destinasi (CF 1.0, sumber S1, S2, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = ya [OK] DAN status_verifikasi_mitra = verified [OK])
+      MAKA  rekomendasi = SETUJUI; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos, dokumen lengkap, dan mitra berstatus verified. Ini rekomendasi kurasi destinasi, bukan verifikasi akun mitra
+Catatan database: Admin dapat menyetujui pengajuan destinasi ini saja (destinations.status = approved). partners.is_verified hanya dibaca sebagai syarat dan tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- P2: Attraction lokasi jauh, izin pengelolaan tidak diunggah ---
+Rekomendasi KB  : REVISI
+Status tindak   : tidak ada
+Cakupan         : dokumen_mitra (CF 1.0 biner)
+Status lokasi   : tidak ada (jarak lebih dari 500 m)
+Aturan menyala  : R1, R11, R12
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = tidak; izin_operasional_lolos_periksa = tidak; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 4570.8
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R11] lokasi_lolos = ya
+  3. [R12] rekomendasi = REVISI
+  4. [R12] cakupan = dokumen_mitra
+  5. [R12] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 4570.8, syarat > 500 [OK] ATAU (status_lokasi = belum ada [X] DAN status_antrean_kurasi = belum ada [X]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R12] Revisi dokumen mitra (CF 1.0, sumber S1, S2, S4, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = belum ada, syarat bukan ya [OK])
+      MAKA  rekomendasi = REVISI; cakupan = dokumen_mitra; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos tetapi ada dokumen wajib yang belum valid. Dokumen dikembalikan ke mitra untuk dilengkapi
+Catatan database: destinations.status tetap pending selama dokumen dilengkapi. partners.is_verified tidak diubah KB, nilainya ditentukan reviewer KYC secara terpisah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- P3a: Attraction sangat dekat (124,1 m), status antrean belum diisi sehingga default belum_ditinjau ---
+Rekomendasi KB  : tidak ada (pengajuan ditahan lewat status tindak lanjut)
+Status tindak   : MENUNGGU_KURASI (antrean atau penahanan, bukan rekomendasi)
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : POTENTIAL_DUPLICATE
+Aturan menyala  : R1, R3, R5, R7, R8
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 124.1
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R5] dokumen_lengkap = ya
+  4. [R7] status_lokasi = POTENTIAL_DUPLICATE
+  5. [R7 default] status_antrean_kurasi = belum_ditinjau
+  6. [R8] status_tindak_lanjut = MENUNGGU_KURASI
+  7. [R8] cakupan = pengajuan_destinasi
+  8. [R8] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = tidak [OK] ATAU (nib_diperlukan = tidak [X] DAN nib_valid = belum ada [X])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R7] Potensi duplikat lokasi (CF 1.0, sumber S3, S5)
+      JIKA  jarak_terdekat_m = 124.1, syarat <= 500 [OK]
+      MAKA  status_lokasi = POTENTIAL_DUPLICATE
+      ALASAN Jarak ke destinasi terdekat 500 m atau kurang. Hanya ditandai POTENTIAL_DUPLICATE dan masuk antrean admin, belum duplikat terkonfirmasi
+  [R8] Masuk antrean kurasi admin (CF 1.0, sumber S1, S3)
+      JIKA  (status_lokasi = POTENTIAL_DUPLICATE [OK] DAN status_antrean_kurasi = belum_ditinjau [OK])
+      MAKA  status_tindak_lanjut = MENUNGGU_KURASI; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Potensi duplikat menunggu tinjauan admin. KB belum memberi rekomendasi dan pengajuan masuk antrean kurasi (status_tindak_lanjut)
+Catatan database: Pengajuan destinasi tetap pending (destinations.status). Status antrean kurasi dicatat pada data kurasi, terpisah dari tabel Sprint 1. partners.is_verified tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- P3b: Titik yang sama dengan P3a, admin mengonfirmasi duplikat ---
+Rekomendasi KB  : TOLAK
+Status tindak   : tidak ada
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : POTENTIAL_DUPLICATE
+Aturan menyala  : R1, R3, R5, R7, R9
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 124.1; status_antrean_kurasi = duplikat_terkonfirmasi
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R5] dokumen_lengkap = ya
+  4. [R7] status_lokasi = POTENTIAL_DUPLICATE
+  5. [R9] rekomendasi = TOLAK
+  6. [R9] cakupan = pengajuan_destinasi
+  7. [R9] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = tidak [OK] ATAU (nib_diperlukan = tidak [X] DAN nib_valid = belum ada [X])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R7] Potensi duplikat lokasi (CF 1.0, sumber S3, S5)
+      JIKA  jarak_terdekat_m = 124.1, syarat <= 500 [OK]
+      MAKA  status_lokasi = POTENTIAL_DUPLICATE
+      ALASAN Jarak ke destinasi terdekat 500 m atau kurang. Hanya ditandai POTENTIAL_DUPLICATE dan masuk antrean admin, belum duplikat terkonfirmasi
+  [R9] Tolak pengajuan destinasi duplikat (CF 1.0, sumber S1, S3, S5, S8)
+      JIKA  (status_lokasi = POTENTIAL_DUPLICATE [OK] DAN status_antrean_kurasi = duplikat_terkonfirmasi [OK])
+      MAKA  rekomendasi = TOLAK; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Admin mengonfirmasi destinasi sama dengan yang sudah ada. Hanya pengajuan destinasi ini yang ditolak, akun mitra tidak terdampak
+Catatan database: Admin dapat menolak pengajuan destinasi ini saja (destinations.status = rejected). partners.is_verified tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- P4: Attraction lokasi jauh, NIB dan SK Pokdarwis berlaku dan keduanya valid ---
+Rekomendasi KB  : SETUJUI
+Status tindak   : tidak ada
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : tidak ada (jarak lebih dari 500 m)
+Aturan menyala  : R1, R2, R3, R4, R5, R11, R13
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = ya; nib_lolos_periksa = ya; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = ya; sk_pokdarwis_lolos_periksa = ya; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = ya; sk_pokdarwis_diperlukan = ya; jarak_terdekat_m = 1645.6
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R2] nib_valid = ya
+  3. [R3] izin_operasional_valid = ya
+  4. [R4] sk_pokdarwis_valid = ya
+  5. [R5] dokumen_lengkap = ya
+  6. [R11] lokasi_lolos = ya
+  7. [R13] rekomendasi = SETUJUI
+  8. [R13] cakupan = pengajuan_destinasi
+  9. [R13] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R2] NIB valid (CF 1.0, sumber S4)
+      JIKA  (nib_diunggah = ya [OK] DAN nib_lolos_periksa = ya [OK])
+      MAKA  nib_valid = ya
+      ALASAN NIB sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R4] SK Pokdarwis valid (CF 1.0, sumber S4)
+      JIKA  (sk_pokdarwis_diunggah = ya [OK] DAN sk_pokdarwis_lolos_periksa = ya [OK])
+      MAKA  sk_pokdarwis_valid = ya
+      ALASAN SK Pokdarwis sudah diunggah dan lolos pemeriksaan reviewer
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = ya [X] ATAU (nib_diperlukan = ya [OK] DAN nib_valid = ya [OK])) DAN (sk_pokdarwis_diperlukan = ya [X] ATAU (sk_pokdarwis_diperlukan = ya [OK] DAN sk_pokdarwis_valid = ya [OK])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 1645.6, syarat > 500 [OK] ATAU (status_lokasi = belum ada [X] DAN status_antrean_kurasi = belum ada [X]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R13] Setujui pengajuan destinasi (CF 1.0, sumber S1, S2, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = ya [OK] DAN status_verifikasi_mitra = verified [OK])
+      MAKA  rekomendasi = SETUJUI; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos, dokumen lengkap, dan mitra berstatus verified. Ini rekomendasi kurasi destinasi, bukan verifikasi akun mitra
+Catatan database: Admin dapat menyetujui pengajuan destinasi ini saja (destinations.status = approved). partners.is_verified hanya dibaca sebagai syarat dan tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- P5: Attraction dikelola Pokdarwis (SK berlaku), SK Pokdarwis tidak diunggah ---
+Rekomendasi KB  : REVISI
+Status tindak   : tidak ada
+Cakupan         : dokumen_mitra (CF 1.0 biner)
+Status lokasi   : tidak ada (jarak lebih dari 500 m)
+Aturan menyala  : R1, R3, R11, R12
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = ya; jarak_terdekat_m = 1645.6
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R11] lokasi_lolos = ya
+  4. [R12] rekomendasi = REVISI
+  5. [R12] cakupan = dokumen_mitra
+  6. [R12] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 1645.6, syarat > 500 [OK] ATAU (status_lokasi = belum ada [X] DAN status_antrean_kurasi = belum ada [X]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R12] Revisi dokumen mitra (CF 1.0, sumber S1, S2, S4, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = belum ada, syarat bukan ya [OK])
+      MAKA  rekomendasi = REVISI; cakupan = dokumen_mitra; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos tetapi ada dokumen wajib yang belum valid. Dokumen dikembalikan ke mitra untuk dilengkapi
+Catatan database: destinations.status tetap pending selama dokumen dilengkapi. partners.is_verified tidak diubah KB, nilainya ditentukan reviewer KYC secara terpisah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- P6: Attraction dalam 500 m, admin menyatakan destinasi berbeda (bukan_duplikat), dokumen lengkap ---
+Rekomendasi KB  : SETUJUI
+Status tindak   : tidak ada
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : POTENTIAL_DUPLICATE
+Aturan menyala  : R1, R2, R3, R5, R7, R11, R13
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = ya; nib_lolos_periksa = ya; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = ya; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 299.0; status_antrean_kurasi = bukan_duplikat
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R2] nib_valid = ya
+  3. [R3] izin_operasional_valid = ya
+  4. [R5] dokumen_lengkap = ya
+  5. [R7] status_lokasi = POTENTIAL_DUPLICATE
+  6. [R11] lokasi_lolos = ya
+  7. [R13] rekomendasi = SETUJUI
+  8. [R13] cakupan = pengajuan_destinasi
+  9. [R13] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R2] NIB valid (CF 1.0, sumber S4)
+      JIKA  (nib_diunggah = ya [OK] DAN nib_lolos_periksa = ya [OK])
+      MAKA  nib_valid = ya
+      ALASAN NIB sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = ya [X] ATAU (nib_diperlukan = ya [OK] DAN nib_valid = ya [OK])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R7] Potensi duplikat lokasi (CF 1.0, sumber S3, S5)
+      JIKA  jarak_terdekat_m = 299.0, syarat <= 500 [OK]
+      MAKA  status_lokasi = POTENTIAL_DUPLICATE
+      ALASAN Jarak ke destinasi terdekat 500 m atau kurang. Hanya ditandai POTENTIAL_DUPLICATE dan masuk antrean admin, belum duplikat terkonfirmasi
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 299.0, syarat > 500 [X] ATAU (status_lokasi = POTENTIAL_DUPLICATE [OK] DAN status_antrean_kurasi = bukan_duplikat [OK]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R13] Setujui pengajuan destinasi (CF 1.0, sumber S1, S2, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = ya [OK] DAN status_verifikasi_mitra = verified [OK])
+      MAKA  rekomendasi = SETUJUI; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos, dokumen lengkap, dan mitra berstatus verified. Ini rekomendasi kurasi destinasi, bukan verifikasi akun mitra
+Catatan database: Admin dapat menyetujui pengajuan destinasi ini saja (destinations.status = approved). partners.is_verified hanya dibaca sebagai syarat dan tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- P7: Attraction dengan NIB berlaku tetapi NIB tidak lolos pemeriksaan ---
+Rekomendasi KB  : REVISI
+Status tindak   : tidak ada
+Cakupan         : dokumen_mitra (CF 1.0 biner)
+Status lokasi   : tidak ada (jarak lebih dari 500 m)
+Aturan menyala  : R1, R3, R11, R12
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = ya; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = ya; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 2415.8
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R11] lokasi_lolos = ya
+  4. [R12] rekomendasi = REVISI
+  5. [R12] cakupan = dokumen_mitra
+  6. [R12] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 2415.8, syarat > 500 [OK] ATAU (status_lokasi = belum ada [X] DAN status_antrean_kurasi = belum ada [X]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R12] Revisi dokumen mitra (CF 1.0, sumber S1, S2, S4, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = belum ada, syarat bukan ya [OK])
+      MAKA  rekomendasi = REVISI; cakupan = dokumen_mitra; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos tetapi ada dokumen wajib yang belum valid. Dokumen dikembalikan ke mitra untuk dilengkapi
+Catatan database: destinations.status tetap pending selama dokumen dilengkapi. partners.is_verified tidak diubah KB, nilainya ditentukan reviewer KYC secara terpisah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- P8: Attraction dengan NIB tidak berlaku, NIB terunggah tetapi tidak lolos, diabaikan ---
+Rekomendasi KB  : SETUJUI
+Status tindak   : tidak ada
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : tidak ada (jarak lebih dari 500 m)
+Aturan menyala  : R1, R3, R5, R11, R13
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = ya; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 3695.2
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R5] dokumen_lengkap = ya
+  4. [R11] lokasi_lolos = ya
+  5. [R13] rekomendasi = SETUJUI
+  6. [R13] cakupan = pengajuan_destinasi
+  7. [R13] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = tidak [OK] ATAU (nib_diperlukan = tidak [X] DAN nib_valid = belum ada [X])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 3695.2, syarat > 500 [OK] ATAU (status_lokasi = belum ada [X] DAN status_antrean_kurasi = belum ada [X]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R13] Setujui pengajuan destinasi (CF 1.0, sumber S1, S2, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = ya [OK] DAN status_verifikasi_mitra = verified [OK])
+      MAKA  rekomendasi = SETUJUI; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos, dokumen lengkap, dan mitra berstatus verified. Ini rekomendasi kurasi destinasi, bukan verifikasi akun mitra
+Catatan database: Admin dapat menyetujui pengajuan destinasi ini saja (destinations.status = approved). partners.is_verified hanya dibaca sebagai syarat dan tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- P9: tour_agent lokasi jauh, KTP, NIB, dan izin usaha perjalanan wisata valid, mitra verified ---
+Rekomendasi KB  : SETUJUI
+Status tindak   : tidak ada
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : tidak ada (jarak lebih dari 500 m)
+Aturan menyala  : R1, R2, R3, R6, R11, R13
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = ya; nib_lolos_periksa = ya; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = tour_agent; status_verifikasi_mitra = verified; jarak_terdekat_m = 2633.9
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R2] nib_valid = ya
+  3. [R3] izin_operasional_valid = ya
+  4. [R6] dokumen_lengkap = ya
+  5. [R11] lokasi_lolos = ya
+  6. [R13] rekomendasi = SETUJUI
+  7. [R13] cakupan = pengajuan_destinasi
+  8. [R13] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R2] NIB valid (CF 1.0, sumber S4)
+      JIKA  (nib_diunggah = ya [OK] DAN nib_lolos_periksa = ya [OK])
+      MAKA  nib_valid = ya
+      ALASAN NIB sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R6] Dokumen tour_agent, accommodation, dan transport lengkap (CF 1.0, sumber S7, S9)
+      JIKA  (partner_type = tour_agent, syarat salah satu dari tour_agent / accommodation / transport [OK] DAN ktp_valid = ya [OK] DAN nib_valid = ya [OK] DAN izin_operasional_valid = ya [OK])
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP, NIB, dan izin usaha sesuai kategori mitra semuanya valid
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 2633.9, syarat > 500 [OK] ATAU (status_lokasi = belum ada [X] DAN status_antrean_kurasi = belum ada [X]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R13] Setujui pengajuan destinasi (CF 1.0, sumber S1, S2, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = ya [OK] DAN status_verifikasi_mitra = verified [OK])
+      MAKA  rekomendasi = SETUJUI; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos, dokumen lengkap, dan mitra berstatus verified. Ini rekomendasi kurasi destinasi, bukan verifikasi akun mitra
+Catatan database: Admin dapat menyetujui pengajuan destinasi ini saja (destinations.status = approved). partners.is_verified hanya dibaca sebagai syarat dan tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- P10: accommodation dalam 500 m, admin menyatakan berbeda, KTP, NIB, dan izin usaha akomodasi valid ---
+Rekomendasi KB  : SETUJUI
+Status tindak   : tidak ada
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : POTENTIAL_DUPLICATE
+Aturan menyala  : R1, R2, R3, R6, R7, R11, R13
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = ya; nib_lolos_periksa = ya; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = accommodation; status_verifikasi_mitra = verified; jarak_terdekat_m = 299.0; status_antrean_kurasi = bukan_duplikat
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R2] nib_valid = ya
+  3. [R3] izin_operasional_valid = ya
+  4. [R6] dokumen_lengkap = ya
+  5. [R7] status_lokasi = POTENTIAL_DUPLICATE
+  6. [R11] lokasi_lolos = ya
+  7. [R13] rekomendasi = SETUJUI
+  8. [R13] cakupan = pengajuan_destinasi
+  9. [R13] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R2] NIB valid (CF 1.0, sumber S4)
+      JIKA  (nib_diunggah = ya [OK] DAN nib_lolos_periksa = ya [OK])
+      MAKA  nib_valid = ya
+      ALASAN NIB sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R6] Dokumen tour_agent, accommodation, dan transport lengkap (CF 1.0, sumber S7, S9)
+      JIKA  (partner_type = accommodation, syarat salah satu dari tour_agent / accommodation / transport [OK] DAN ktp_valid = ya [OK] DAN nib_valid = ya [OK] DAN izin_operasional_valid = ya [OK])
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP, NIB, dan izin usaha sesuai kategori mitra semuanya valid
+  [R7] Potensi duplikat lokasi (CF 1.0, sumber S3, S5)
+      JIKA  jarak_terdekat_m = 299.0, syarat <= 500 [OK]
+      MAKA  status_lokasi = POTENTIAL_DUPLICATE
+      ALASAN Jarak ke destinasi terdekat 500 m atau kurang. Hanya ditandai POTENTIAL_DUPLICATE dan masuk antrean admin, belum duplikat terkonfirmasi
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 299.0, syarat > 500 [X] ATAU (status_lokasi = POTENTIAL_DUPLICATE [OK] DAN status_antrean_kurasi = bukan_duplikat [OK]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R13] Setujui pengajuan destinasi (CF 1.0, sumber S1, S2, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = ya [OK] DAN status_verifikasi_mitra = verified [OK])
+      MAKA  rekomendasi = SETUJUI; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos, dokumen lengkap, dan mitra berstatus verified. Ini rekomendasi kurasi destinasi, bukan verifikasi akun mitra
+Catatan database: Admin dapat menyetujui pengajuan destinasi ini saja (destinations.status = approved). partners.is_verified hanya dibaca sebagai syarat dan tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- P11: transport sangat dekat, admin mengonfirmasi duplikat ---
+Rekomendasi KB  : TOLAK
+Status tindak   : tidak ada
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : POTENTIAL_DUPLICATE
+Aturan menyala  : R1, R2, R3, R6, R7, R9
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = ya; nib_lolos_periksa = ya; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = transport; status_verifikasi_mitra = verified; jarak_terdekat_m = 124.1; status_antrean_kurasi = duplikat_terkonfirmasi
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R2] nib_valid = ya
+  3. [R3] izin_operasional_valid = ya
+  4. [R6] dokumen_lengkap = ya
+  5. [R7] status_lokasi = POTENTIAL_DUPLICATE
+  6. [R9] rekomendasi = TOLAK
+  7. [R9] cakupan = pengajuan_destinasi
+  8. [R9] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R2] NIB valid (CF 1.0, sumber S4)
+      JIKA  (nib_diunggah = ya [OK] DAN nib_lolos_periksa = ya [OK])
+      MAKA  nib_valid = ya
+      ALASAN NIB sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R6] Dokumen tour_agent, accommodation, dan transport lengkap (CF 1.0, sumber S7, S9)
+      JIKA  (partner_type = transport, syarat salah satu dari tour_agent / accommodation / transport [OK] DAN ktp_valid = ya [OK] DAN nib_valid = ya [OK] DAN izin_operasional_valid = ya [OK])
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP, NIB, dan izin usaha sesuai kategori mitra semuanya valid
+  [R7] Potensi duplikat lokasi (CF 1.0, sumber S3, S5)
+      JIKA  jarak_terdekat_m = 124.1, syarat <= 500 [OK]
+      MAKA  status_lokasi = POTENTIAL_DUPLICATE
+      ALASAN Jarak ke destinasi terdekat 500 m atau kurang. Hanya ditandai POTENTIAL_DUPLICATE dan masuk antrean admin, belum duplikat terkonfirmasi
+  [R9] Tolak pengajuan destinasi duplikat (CF 1.0, sumber S1, S3, S5, S8)
+      JIKA  (status_lokasi = POTENTIAL_DUPLICATE [OK] DAN status_antrean_kurasi = duplikat_terkonfirmasi [OK])
+      MAKA  rekomendasi = TOLAK; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Admin mengonfirmasi destinasi sama dengan yang sudah ada. Hanya pengajuan destinasi ini yang ditolak, akun mitra tidak terdampak
+Catatan database: Admin dapat menolak pengajuan destinasi ini saja (destinations.status = rejected). partners.is_verified tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- P12: tour_agent lokasi jauh, NIB terunggah tetapi tidak lolos pemeriksaan ---
+Rekomendasi KB  : REVISI
+Status tindak   : tidak ada
+Cakupan         : dokumen_mitra (CF 1.0 biner)
+Status lokasi   : tidak ada (jarak lebih dari 500 m)
+Aturan menyala  : R1, R3, R11, R12
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = ya; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = tour_agent; status_verifikasi_mitra = verified; jarak_terdekat_m = 2633.9
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R11] lokasi_lolos = ya
+  4. [R12] rekomendasi = REVISI
+  5. [R12] cakupan = dokumen_mitra
+  6. [R12] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 2633.9, syarat > 500 [OK] ATAU (status_lokasi = belum ada [X] DAN status_antrean_kurasi = belum ada [X]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R12] Revisi dokumen mitra (CF 1.0, sumber S1, S2, S4, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = belum ada, syarat bukan ya [OK])
+      MAKA  rekomendasi = REVISI; cakupan = dokumen_mitra; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos tetapi ada dokumen wajib yang belum valid. Dokumen dikembalikan ke mitra untuk dilengkapi
+Catatan database: destinations.status tetap pending selama dokumen dilengkapi. partners.is_verified tidak diubah KB, nilainya ditentukan reviewer KYC secara terpisah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- P13: transport lokasi jauh, izin usaha angkutan wisata tidak diunggah ---
+Rekomendasi KB  : REVISI
+Status tindak   : tidak ada
+Cakupan         : dokumen_mitra (CF 1.0 biner)
+Status lokasi   : tidak ada (jarak lebih dari 500 m)
+Aturan menyala  : R1, R2, R11, R12
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = ya; nib_lolos_periksa = ya; izin_operasional_diunggah = tidak; izin_operasional_lolos_periksa = tidak; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = transport; status_verifikasi_mitra = verified; jarak_terdekat_m = 2633.9
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R2] nib_valid = ya
+  3. [R11] lokasi_lolos = ya
+  4. [R12] rekomendasi = REVISI
+  5. [R12] cakupan = dokumen_mitra
+  6. [R12] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R2] NIB valid (CF 1.0, sumber S4)
+      JIKA  (nib_diunggah = ya [OK] DAN nib_lolos_periksa = ya [OK])
+      MAKA  nib_valid = ya
+      ALASAN NIB sudah diunggah dan lolos pemeriksaan reviewer
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 2633.9, syarat > 500 [OK] ATAU (status_lokasi = belum ada [X] DAN status_antrean_kurasi = belum ada [X]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R12] Revisi dokumen mitra (CF 1.0, sumber S1, S2, S4, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = belum ada, syarat bukan ya [OK])
+      MAKA  rekomendasi = REVISI; cakupan = dokumen_mitra; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos tetapi ada dokumen wajib yang belum valid. Dokumen dikembalikan ke mitra untuk dilengkapi
+Catatan database: destinations.status tetap pending selama dokumen dilengkapi. partners.is_verified tidak diubah KB, nilainya ditentukan reviewer KYC secara terpisah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- T1: Batas tepat 500,0 m, belum ditinjau ---
+Rekomendasi KB  : tidak ada (pengajuan ditahan lewat status tindak lanjut)
+Status tindak   : MENUNGGU_KURASI (antrean atau penahanan, bukan rekomendasi)
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : POTENTIAL_DUPLICATE
+Aturan menyala  : R1, R3, R5, R7, R8
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 500.0; status_antrean_kurasi = belum_ditinjau
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R5] dokumen_lengkap = ya
+  4. [R7] status_lokasi = POTENTIAL_DUPLICATE
+  5. [R8] status_tindak_lanjut = MENUNGGU_KURASI
+  6. [R8] cakupan = pengajuan_destinasi
+  7. [R8] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = tidak [OK] ATAU (nib_diperlukan = tidak [X] DAN nib_valid = belum ada [X])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R7] Potensi duplikat lokasi (CF 1.0, sumber S3, S5)
+      JIKA  jarak_terdekat_m = 500.0, syarat <= 500 [OK]
+      MAKA  status_lokasi = POTENTIAL_DUPLICATE
+      ALASAN Jarak ke destinasi terdekat 500 m atau kurang. Hanya ditandai POTENTIAL_DUPLICATE dan masuk antrean admin, belum duplikat terkonfirmasi
+  [R8] Masuk antrean kurasi admin (CF 1.0, sumber S1, S3)
+      JIKA  (status_lokasi = POTENTIAL_DUPLICATE [OK] DAN status_antrean_kurasi = belum_ditinjau [OK])
+      MAKA  status_tindak_lanjut = MENUNGGU_KURASI; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Potensi duplikat menunggu tinjauan admin. KB belum memberi rekomendasi dan pengajuan masuk antrean kurasi (status_tindak_lanjut)
+Catatan database: Pengajuan destinasi tetap pending (destinations.status). Status antrean kurasi dicatat pada data kurasi, terpisah dari tabel Sprint 1. partners.is_verified tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- T2: Batas 500,1 m ---
+Rekomendasi KB  : SETUJUI
+Status tindak   : tidak ada
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : tidak ada (jarak lebih dari 500 m)
+Aturan menyala  : R1, R3, R5, R11, R13
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 500.1
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R5] dokumen_lengkap = ya
+  4. [R11] lokasi_lolos = ya
+  5. [R13] rekomendasi = SETUJUI
+  6. [R13] cakupan = pengajuan_destinasi
+  7. [R13] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = tidak [OK] ATAU (nib_diperlukan = tidak [X] DAN nib_valid = belum ada [X])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 500.1, syarat > 500 [OK] ATAU (status_lokasi = belum ada [X] DAN status_antrean_kurasi = belum ada [X]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R13] Setujui pengajuan destinasi (CF 1.0, sumber S1, S2, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = ya [OK] DAN status_verifikasi_mitra = verified [OK])
+      MAKA  rekomendasi = SETUJUI; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos, dokumen lengkap, dan mitra berstatus verified. Ini rekomendasi kurasi destinasi, bukan verifikasi akun mitra
+Catatan database: Admin dapat menyetujui pengajuan destinasi ini saja (destinations.status = approved). partners.is_verified hanya dibaca sebagai syarat dan tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- T3: Dalam 500 m, admin meminta bukti lokasi ---
+Rekomendasi KB  : REVISI
+Status tindak   : tidak ada
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : POTENTIAL_DUPLICATE
+Aturan menyala  : R1, R3, R5, R7, R10
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 323.4; status_antrean_kurasi = perlu_bukti
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R5] dokumen_lengkap = ya
+  4. [R7] status_lokasi = POTENTIAL_DUPLICATE
+  5. [R10] rekomendasi = REVISI
+  6. [R10] cakupan = pengajuan_destinasi
+  7. [R10] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = tidak [OK] ATAU (nib_diperlukan = tidak [X] DAN nib_valid = belum ada [X])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R7] Potensi duplikat lokasi (CF 1.0, sumber S3, S5)
+      JIKA  jarak_terdekat_m = 323.4, syarat <= 500 [OK]
+      MAKA  status_lokasi = POTENTIAL_DUPLICATE
+      ALASAN Jarak ke destinasi terdekat 500 m atau kurang. Hanya ditandai POTENTIAL_DUPLICATE dan masuk antrean admin, belum duplikat terkonfirmasi
+  [R10] Revisi bukti lokasi (CF 1.0, sumber S3, S9)
+      JIKA  (status_lokasi = POTENTIAL_DUPLICATE [OK] DAN status_antrean_kurasi = perlu_bukti [OK])
+      MAKA  rekomendasi = REVISI; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Admin meminta bukti lokasi tambahan untuk pengajuan destinasi ini
+Catatan database: Pengajuan dikembalikan ke mitra untuk melengkapi bukti lokasi. destinations.status tetap pending. partners.is_verified tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- T4: Dalam 500 m, admin menyatakan berbeda, tetapi KTP tidak lolos pemeriksaan ---
+Rekomendasi KB  : REVISI
+Status tindak   : tidak ada
+Cakupan         : dokumen_mitra (CF 1.0 biner)
+Status lokasi   : POTENTIAL_DUPLICATE
+Aturan menyala  : R3, R7, R11, R12
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = tidak; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 299.0; status_antrean_kurasi = bukan_duplikat
+Kesimpulan berurutan di working memory:
+  1. [R3] izin_operasional_valid = ya
+  2. [R7] status_lokasi = POTENTIAL_DUPLICATE
+  3. [R11] lokasi_lolos = ya
+  4. [R12] rekomendasi = REVISI
+  5. [R12] cakupan = dokumen_mitra
+  6. [R12] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R7] Potensi duplikat lokasi (CF 1.0, sumber S3, S5)
+      JIKA  jarak_terdekat_m = 299.0, syarat <= 500 [OK]
+      MAKA  status_lokasi = POTENTIAL_DUPLICATE
+      ALASAN Jarak ke destinasi terdekat 500 m atau kurang. Hanya ditandai POTENTIAL_DUPLICATE dan masuk antrean admin, belum duplikat terkonfirmasi
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 299.0, syarat > 500 [X] ATAU (status_lokasi = POTENTIAL_DUPLICATE [OK] DAN status_antrean_kurasi = bukan_duplikat [OK]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R12] Revisi dokumen mitra (CF 1.0, sumber S1, S2, S4, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = belum ada, syarat bukan ya [OK])
+      MAKA  rekomendasi = REVISI; cakupan = dokumen_mitra; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos tetapi ada dokumen wajib yang belum valid. Dokumen dikembalikan ke mitra untuk dilengkapi
+Catatan database: destinations.status tetap pending selama dokumen dilengkapi. partners.is_verified tidak diubah KB, nilainya ditentukan reviewer KYC secara terpisah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- T5: Belum ada destinasi pembanding, jarak_terdekat_m = 999999 ---
+Rekomendasi KB  : SETUJUI
+Status tindak   : tidak ada
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : tidak ada (jarak lebih dari 500 m)
+Aturan menyala  : R1, R3, R5, R11, R13
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 999999
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R5] dokumen_lengkap = ya
+  4. [R11] lokasi_lolos = ya
+  5. [R13] rekomendasi = SETUJUI
+  6. [R13] cakupan = pengajuan_destinasi
+  7. [R13] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = tidak [OK] ATAU (nib_diperlukan = tidak [X] DAN nib_valid = belum ada [X])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 999999, syarat > 500 [OK] ATAU (status_lokasi = belum ada [X] DAN status_antrean_kurasi = belum ada [X]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R13] Setujui pengajuan destinasi (CF 1.0, sumber S1, S2, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = ya [OK] DAN status_verifikasi_mitra = verified [OK])
+      MAKA  rekomendasi = SETUJUI; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos, dokumen lengkap, dan mitra berstatus verified. Ini rekomendasi kurasi destinasi, bukan verifikasi akun mitra
+Catatan database: Admin dapat menyetujui pengajuan destinasi ini saja (destinations.status = approved). partners.is_verified hanya dibaca sebagai syarat dan tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- A1: Mitra yang sama, pengajuan destinasi pertama dikonfirmasi duplikat ---
+Rekomendasi KB  : TOLAK
+Status tindak   : tidak ada
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : POTENTIAL_DUPLICATE
+Aturan menyala  : R1, R3, R5, R7, R9
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 124.1; status_antrean_kurasi = duplikat_terkonfirmasi
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R5] dokumen_lengkap = ya
+  4. [R7] status_lokasi = POTENTIAL_DUPLICATE
+  5. [R9] rekomendasi = TOLAK
+  6. [R9] cakupan = pengajuan_destinasi
+  7. [R9] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = tidak [OK] ATAU (nib_diperlukan = tidak [X] DAN nib_valid = belum ada [X])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R7] Potensi duplikat lokasi (CF 1.0, sumber S3, S5)
+      JIKA  jarak_terdekat_m = 124.1, syarat <= 500 [OK]
+      MAKA  status_lokasi = POTENTIAL_DUPLICATE
+      ALASAN Jarak ke destinasi terdekat 500 m atau kurang. Hanya ditandai POTENTIAL_DUPLICATE dan masuk antrean admin, belum duplikat terkonfirmasi
+  [R9] Tolak pengajuan destinasi duplikat (CF 1.0, sumber S1, S3, S5, S8)
+      JIKA  (status_lokasi = POTENTIAL_DUPLICATE [OK] DAN status_antrean_kurasi = duplikat_terkonfirmasi [OK])
+      MAKA  rekomendasi = TOLAK; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Admin mengonfirmasi destinasi sama dengan yang sudah ada. Hanya pengajuan destinasi ini yang ditolak, akun mitra tidak terdampak
+Catatan database: Admin dapat menolak pengajuan destinasi ini saja (destinations.status = rejected). partners.is_verified tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- A2: Mitra yang sama dengan dokumen yang sama, pengajuan destinasi kedua di lokasi jauh ---
+Rekomendasi KB  : SETUJUI
+Status tindak   : tidak ada
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : tidak ada (jarak lebih dari 500 m)
+Aturan menyala  : R1, R3, R5, R11, R13
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 2633.9
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R5] dokumen_lengkap = ya
+  4. [R11] lokasi_lolos = ya
+  5. [R13] rekomendasi = SETUJUI
+  6. [R13] cakupan = pengajuan_destinasi
+  7. [R13] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = tidak [OK] ATAU (nib_diperlukan = tidak [X] DAN nib_valid = belum ada [X])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 2633.9, syarat > 500 [OK] ATAU (status_lokasi = belum ada [X] DAN status_antrean_kurasi = belum ada [X]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R13] Setujui pengajuan destinasi (CF 1.0, sumber S1, S2, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = ya [OK] DAN status_verifikasi_mitra = verified [OK])
+      MAKA  rekomendasi = SETUJUI; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos, dokumen lengkap, dan mitra berstatus verified. Ini rekomendasi kurasi destinasi, bukan verifikasi akun mitra
+Catatan database: Admin dapat menyetujui pengajuan destinasi ini saja (destinations.status = approved). partners.is_verified hanya dibaca sebagai syarat dan tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- A3: Mitra yang sama mengajukan lokasi 200 m dari pengajuan lain yang masih pending (pending ikut dihitung) ---
+Rekomendasi KB  : tidak ada (pengajuan ditahan lewat status tindak lanjut)
+Status tindak   : MENUNGGU_KURASI (antrean atau penahanan, bukan rekomendasi)
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : POTENTIAL_DUPLICATE
+Aturan menyala  : R1, R3, R5, R7, R8
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 200.0
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R5] dokumen_lengkap = ya
+  4. [R7] status_lokasi = POTENTIAL_DUPLICATE
+  5. [R7 default] status_antrean_kurasi = belum_ditinjau
+  6. [R8] status_tindak_lanjut = MENUNGGU_KURASI
+  7. [R8] cakupan = pengajuan_destinasi
+  8. [R8] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = tidak [OK] ATAU (nib_diperlukan = tidak [X] DAN nib_valid = belum ada [X])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R7] Potensi duplikat lokasi (CF 1.0, sumber S3, S5)
+      JIKA  jarak_terdekat_m = 200.0, syarat <= 500 [OK]
+      MAKA  status_lokasi = POTENTIAL_DUPLICATE
+      ALASAN Jarak ke destinasi terdekat 500 m atau kurang. Hanya ditandai POTENTIAL_DUPLICATE dan masuk antrean admin, belum duplikat terkonfirmasi
+  [R8] Masuk antrean kurasi admin (CF 1.0, sumber S1, S3)
+      JIKA  (status_lokasi = POTENTIAL_DUPLICATE [OK] DAN status_antrean_kurasi = belum_ditinjau [OK])
+      MAKA  status_tindak_lanjut = MENUNGGU_KURASI; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Potensi duplikat menunggu tinjauan admin. KB belum memberi rekomendasi dan pengajuan masuk antrean kurasi (status_tindak_lanjut)
+Catatan database: Pengajuan destinasi tetap pending (destinations.status). Status antrean kurasi dicatat pada data kurasi, terpisah dari tabel Sprint 1. partners.is_verified tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- A4: Pengajuan tepat di titik destinasi yang pernah ditolak (rejected tidak dihitung sebagai pembanding) ---
+Rekomendasi KB  : SETUJUI
+Status tindak   : tidak ada
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : tidak ada (jarak lebih dari 500 m)
+Aturan menyala  : R1, R3, R5, R11, R13
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = verified; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 2633.9
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R5] dokumen_lengkap = ya
+  4. [R11] lokasi_lolos = ya
+  5. [R13] rekomendasi = SETUJUI
+  6. [R13] cakupan = pengajuan_destinasi
+  7. [R13] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = tidak [OK] ATAU (nib_diperlukan = tidak [X] DAN nib_valid = belum ada [X])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 2633.9, syarat > 500 [OK] ATAU (status_lokasi = belum ada [X] DAN status_antrean_kurasi = belum ada [X]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R13] Setujui pengajuan destinasi (CF 1.0, sumber S1, S2, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = ya [OK] DAN status_verifikasi_mitra = verified [OK])
+      MAKA  rekomendasi = SETUJUI; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos, dokumen lengkap, dan mitra berstatus verified. Ini rekomendasi kurasi destinasi, bukan verifikasi akun mitra
+Catatan database: Admin dapat menyetujui pengajuan destinasi ini saja (destinations.status = approved). partners.is_verified hanya dibaca sebagai syarat dan tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- V1: Attraction lokasi jauh, dokumen lengkap, mitra masih pending: pengajuan ditahan ---
+Rekomendasi KB  : tidak ada (pengajuan ditahan lewat status tindak lanjut)
+Status tindak   : MENUNGGU_VERIFIKASI_MITRA (antrean atau penahanan, bukan rekomendasi)
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : tidak ada (jarak lebih dari 500 m)
+Aturan menyala  : R1, R3, R5, R11, R14
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = pending; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 2633.9
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R5] dokumen_lengkap = ya
+  4. [R11] lokasi_lolos = ya
+  5. [R14] status_tindak_lanjut = MENUNGGU_VERIFIKASI_MITRA
+  6. [R14] cakupan = pengajuan_destinasi
+  7. [R14] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = tidak [OK] ATAU (nib_diperlukan = tidak [X] DAN nib_valid = belum ada [X])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 2633.9, syarat > 500 [OK] ATAU (status_lokasi = belum ada [X] DAN status_antrean_kurasi = belum ada [X]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R14] Tahan pengajuan sampai mitra diverifikasi (CF 1.0, sumber S4, S6, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = ya [OK] DAN status_verifikasi_mitra = pending [OK])
+      MAKA  status_tindak_lanjut = MENUNGGU_VERIFIKASI_MITRA; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos dan dokumen lengkap, tetapi mitra masih berstatus pending. Pengajuan ditahan sampai reviewer KYC memutuskan verifikasi mitra. KB belum memberi rekomendasi
+Catatan database: Pengajuan destinasi tetap pending (destinations.status) sampai reviewer KYC memutuskan verifikasi mitra. partners.is_verified hanya dibaca dan tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- V2: Attraction lokasi jauh, dokumen lengkap, mitra rejected ---
+Rekomendasi KB  : TOLAK
+Status tindak   : tidak ada
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : tidak ada (jarak lebih dari 500 m)
+Aturan menyala  : R1, R3, R5, R11, R15
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = rejected; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 2633.9
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R5] dokumen_lengkap = ya
+  4. [R11] lokasi_lolos = ya
+  5. [R15] rekomendasi = TOLAK
+  6. [R15] cakupan = pengajuan_destinasi
+  7. [R15] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = tidak [OK] ATAU (nib_diperlukan = tidak [X] DAN nib_valid = belum ada [X])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 2633.9, syarat > 500 [OK] ATAU (status_lokasi = belum ada [X] DAN status_antrean_kurasi = belum ada [X]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R15] Tolak karena mitra ditolak verifikasi (CF 1.0, sumber S4, S6, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = ya [OK] DAN status_verifikasi_mitra = rejected [OK])
+      MAKA  rekomendasi = TOLAK; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos dan dokumen lengkap, tetapi verifikasi KYC mitra berstatus rejected. Pengajuan destinasi ini tidak dapat disetujui
+Catatan database: Admin dapat menolak pengajuan destinasi ini saja (destinations.status = rejected). partners.is_verified hanya dibaca dan tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- V3: Attraction lokasi jauh, izin pengelolaan tidak diunggah, mitra pending: dokumen didahulukan ---
+Rekomendasi KB  : REVISI
+Status tindak   : tidak ada
+Cakupan         : dokumen_mitra (CF 1.0 biner)
+Status lokasi   : tidak ada (jarak lebih dari 500 m)
+Aturan menyala  : R1, R11, R12
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = tidak; izin_operasional_lolos_periksa = tidak; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = pending; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 2633.9
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R11] lokasi_lolos = ya
+  3. [R12] rekomendasi = REVISI
+  4. [R12] cakupan = dokumen_mitra
+  5. [R12] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 2633.9, syarat > 500 [OK] ATAU (status_lokasi = belum ada [X] DAN status_antrean_kurasi = belum ada [X]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R12] Revisi dokumen mitra (CF 1.0, sumber S1, S2, S4, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = belum ada, syarat bukan ya [OK])
+      MAKA  rekomendasi = REVISI; cakupan = dokumen_mitra; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos tetapi ada dokumen wajib yang belum valid. Dokumen dikembalikan ke mitra untuk dilengkapi
+Catatan database: destinations.status tetap pending selama dokumen dilengkapi. partners.is_verified tidak diubah KB, nilainya ditentukan reviewer KYC secara terpisah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- V4: Attraction dalam 500 m belum ditinjau, mitra pending: antrean kurasi didahulukan ---
+Rekomendasi KB  : tidak ada (pengajuan ditahan lewat status tindak lanjut)
+Status tindak   : MENUNGGU_KURASI (antrean atau penahanan, bukan rekomendasi)
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : POTENTIAL_DUPLICATE
+Aturan menyala  : R1, R3, R5, R7, R8
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = pending; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 124.1
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R5] dokumen_lengkap = ya
+  4. [R7] status_lokasi = POTENTIAL_DUPLICATE
+  5. [R7 default] status_antrean_kurasi = belum_ditinjau
+  6. [R8] status_tindak_lanjut = MENUNGGU_KURASI
+  7. [R8] cakupan = pengajuan_destinasi
+  8. [R8] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = tidak [OK] ATAU (nib_diperlukan = tidak [X] DAN nib_valid = belum ada [X])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R7] Potensi duplikat lokasi (CF 1.0, sumber S3, S5)
+      JIKA  jarak_terdekat_m = 124.1, syarat <= 500 [OK]
+      MAKA  status_lokasi = POTENTIAL_DUPLICATE
+      ALASAN Jarak ke destinasi terdekat 500 m atau kurang. Hanya ditandai POTENTIAL_DUPLICATE dan masuk antrean admin, belum duplikat terkonfirmasi
+  [R8] Masuk antrean kurasi admin (CF 1.0, sumber S1, S3)
+      JIKA  (status_lokasi = POTENTIAL_DUPLICATE [OK] DAN status_antrean_kurasi = belum_ditinjau [OK])
+      MAKA  status_tindak_lanjut = MENUNGGU_KURASI; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Potensi duplikat menunggu tinjauan admin. KB belum memberi rekomendasi dan pengajuan masuk antrean kurasi (status_tindak_lanjut)
+Catatan database: Pengajuan destinasi tetap pending (destinations.status). Status antrean kurasi dicatat pada data kurasi, terpisah dari tabel Sprint 1. partners.is_verified tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- V5: Attraction dalam 500 m, admin menyatakan berbeda, dokumen lengkap, mitra pending ---
+Rekomendasi KB  : tidak ada (pengajuan ditahan lewat status tindak lanjut)
+Status tindak   : MENUNGGU_VERIFIKASI_MITRA (antrean atau penahanan, bukan rekomendasi)
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : POTENTIAL_DUPLICATE
+Aturan menyala  : R1, R3, R5, R7, R11, R14
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = pending; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 299.0; status_antrean_kurasi = bukan_duplikat
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R5] dokumen_lengkap = ya
+  4. [R7] status_lokasi = POTENTIAL_DUPLICATE
+  5. [R11] lokasi_lolos = ya
+  6. [R14] status_tindak_lanjut = MENUNGGU_VERIFIKASI_MITRA
+  7. [R14] cakupan = pengajuan_destinasi
+  8. [R14] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = tidak [OK] ATAU (nib_diperlukan = tidak [X] DAN nib_valid = belum ada [X])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R7] Potensi duplikat lokasi (CF 1.0, sumber S3, S5)
+      JIKA  jarak_terdekat_m = 299.0, syarat <= 500 [OK]
+      MAKA  status_lokasi = POTENTIAL_DUPLICATE
+      ALASAN Jarak ke destinasi terdekat 500 m atau kurang. Hanya ditandai POTENTIAL_DUPLICATE dan masuk antrean admin, belum duplikat terkonfirmasi
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 299.0, syarat > 500 [X] ATAU (status_lokasi = POTENTIAL_DUPLICATE [OK] DAN status_antrean_kurasi = bukan_duplikat [OK]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R14] Tahan pengajuan sampai mitra diverifikasi (CF 1.0, sumber S4, S6, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = ya [OK] DAN status_verifikasi_mitra = pending [OK])
+      MAKA  status_tindak_lanjut = MENUNGGU_VERIFIKASI_MITRA; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos dan dokumen lengkap, tetapi mitra masih berstatus pending. Pengajuan ditahan sampai reviewer KYC memutuskan verifikasi mitra. KB belum memberi rekomendasi
+Catatan database: Pengajuan destinasi tetap pending (destinations.status) sampai reviewer KYC memutuskan verifikasi mitra. partners.is_verified hanya dibaca dan tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- V6: tour_agent lokasi jauh, dokumen lengkap, mitra rejected ---
+Rekomendasi KB  : TOLAK
+Status tindak   : tidak ada
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : tidak ada (jarak lebih dari 500 m)
+Aturan menyala  : R1, R2, R3, R6, R11, R15
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = ya; nib_lolos_periksa = ya; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = tour_agent; status_verifikasi_mitra = rejected; jarak_terdekat_m = 2633.9
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R2] nib_valid = ya
+  3. [R3] izin_operasional_valid = ya
+  4. [R6] dokumen_lengkap = ya
+  5. [R11] lokasi_lolos = ya
+  6. [R15] rekomendasi = TOLAK
+  7. [R15] cakupan = pengajuan_destinasi
+  8. [R15] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R2] NIB valid (CF 1.0, sumber S4)
+      JIKA  (nib_diunggah = ya [OK] DAN nib_lolos_periksa = ya [OK])
+      MAKA  nib_valid = ya
+      ALASAN NIB sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R6] Dokumen tour_agent, accommodation, dan transport lengkap (CF 1.0, sumber S7, S9)
+      JIKA  (partner_type = tour_agent, syarat salah satu dari tour_agent / accommodation / transport [OK] DAN ktp_valid = ya [OK] DAN nib_valid = ya [OK] DAN izin_operasional_valid = ya [OK])
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP, NIB, dan izin usaha sesuai kategori mitra semuanya valid
+  [R11] Lokasi lolos (CF 1.0, sumber S3)
+      JIKA  (jarak_terdekat_m = 2633.9, syarat > 500 [OK] ATAU (status_lokasi = belum ada [X] DAN status_antrean_kurasi = belum ada [X]))
+      MAKA  lokasi_lolos = ya
+      ALASAN Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas
+  [R15] Tolak karena mitra ditolak verifikasi (CF 1.0, sumber S4, S6, S9)
+      JIKA  (lokasi_lolos = ya [OK] DAN dokumen_lengkap = ya [OK] DAN status_verifikasi_mitra = rejected [OK])
+      MAKA  rekomendasi = TOLAK; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Lokasi lolos dan dokumen lengkap, tetapi verifikasi KYC mitra berstatus rejected. Pengajuan destinasi ini tidak dapat disetujui
+Catatan database: Admin dapat menolak pengajuan destinasi ini saja (destinations.status = rejected). partners.is_verified hanya dibaca dan tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
+--- V7: Attraction dalam 500 m, duplikat terkonfirmasi, mitra rejected: alasan duplikat (R9) yang berlaku ---
+Rekomendasi KB  : TOLAK
+Status tindak   : tidak ada
+Cakupan         : pengajuan_destinasi (CF 1.0 biner)
+Status lokasi   : POTENTIAL_DUPLICATE
+Aturan menyala  : R1, R3, R5, R7, R9
+Fakta awal      : ktp_diunggah = ya; ktp_lolos_periksa = ya; nib_diunggah = tidak; nib_lolos_periksa = tidak; izin_operasional_diunggah = ya; izin_operasional_lolos_periksa = ya; sk_pokdarwis_diunggah = tidak; sk_pokdarwis_lolos_periksa = tidak; partner_type = attraction; status_verifikasi_mitra = rejected; nib_diperlukan = tidak; sk_pokdarwis_diperlukan = tidak; jarak_terdekat_m = 124.1; status_antrean_kurasi = duplikat_terkonfirmasi
+Kesimpulan berurutan di working memory:
+  1. [R1] ktp_valid = ya
+  2. [R3] izin_operasional_valid = ya
+  3. [R5] dokumen_lengkap = ya
+  4. [R7] status_lokasi = POTENTIAL_DUPLICATE
+  5. [R9] rekomendasi = TOLAK
+  6. [R9] cakupan = pengajuan_destinasi
+  7. [R9] akun_mitra_terdampak = tidak
+Penjelasan aturan:
+  [R1] KTP penanggung jawab valid (CF 1.0, sumber S4)
+      JIKA  (ktp_diunggah = ya [OK] DAN ktp_lolos_periksa = ya [OK])
+      MAKA  ktp_valid = ya
+      ALASAN KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer
+  [R3] Izin pengelolaan atau izin usaha valid (CF 1.0, sumber S4, S9)
+      JIKA  (izin_operasional_diunggah = ya [OK] DAN izin_operasional_lolos_periksa = ya [OK])
+      MAKA  izin_operasional_valid = ya
+      ALASAN Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport
+  [R5] Dokumen Attraction lengkap (CF 1.0, sumber S1, S2, S4)
+      JIKA  (partner_type = attraction [OK] DAN ktp_valid = ya [OK] DAN izin_operasional_valid = ya [OK] DAN (nib_diperlukan = tidak [OK] ATAU (nib_diperlukan = tidak [X] DAN nib_valid = belum ada [X])) DAN (sk_pokdarwis_diperlukan = tidak [OK] ATAU (sk_pokdarwis_diperlukan = tidak [X] DAN sk_pokdarwis_valid = belum ada [X])))
+      MAKA  dokumen_lengkap = ya
+      ALASAN KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku
+  [R7] Potensi duplikat lokasi (CF 1.0, sumber S3, S5)
+      JIKA  jarak_terdekat_m = 124.1, syarat <= 500 [OK]
+      MAKA  status_lokasi = POTENTIAL_DUPLICATE
+      ALASAN Jarak ke destinasi terdekat 500 m atau kurang. Hanya ditandai POTENTIAL_DUPLICATE dan masuk antrean admin, belum duplikat terkonfirmasi
+  [R9] Tolak pengajuan destinasi duplikat (CF 1.0, sumber S1, S3, S5, S8)
+      JIKA  (status_lokasi = POTENTIAL_DUPLICATE [OK] DAN status_antrean_kurasi = duplikat_terkonfirmasi [OK])
+      MAKA  rekomendasi = TOLAK; cakupan = pengajuan_destinasi; akun_mitra_terdampak = tidak
+      ALASAN Admin mengonfirmasi destinasi sama dengan yang sudah ada. Hanya pengajuan destinasi ini yang ditolak, akun mitra tidak terdampak
+Catatan database: Admin dapat menolak pengajuan destinasi ini saja (destinations.status = rejected). partners.is_verified tidak diubah
+Rekomendasi dan status tindak lanjut bukan status database. Keputusan akhir ada di admin kurator.
+Verifikasi mitra (partners.is_verified), kurasi destinasi (destinations.status), dan antrean kurasi adalah tiga status yang terpisah.
+
 SEMUA LULUS
