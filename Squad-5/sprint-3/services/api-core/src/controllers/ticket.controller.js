@@ -48,6 +48,7 @@ async function validateGateScan(req, res) {
   // TODO (George):
 
   // pastikan data dari alat pemindai lengkap
+  const { qrToken, gateDestinationId, gateScannerId } = req.body;
   if (!qrToken || !gateDestinationId) {
     return res.status(400).json({
       success: false,
@@ -67,12 +68,63 @@ async function validateGateScan(req, res) {
     });
   }
 
+  const { signature, ...payload } = decoded;
+
   // 2. Panggil verifyHMACSignature(payload, signature) untuk cek keaslian
+  const isValidSignature = verifyHMACSignature(payload, signature);
+  if (!isValidSignature) {
+    return res.status(403).json({
+      success: false,
+      validationStatus: "TAMPERED_QR",
+      message: "Akses ditolak. QR telah dimodifikasi",
+    });
+  }
+
   // 3. Cek apakah tiket ditemukan di ticketsDb
+  const ticket = ticketsDb.find((t) => t.ticketId === payload.ticketId);
+  if (!ticket) {
+    return res.status(404).json({
+      success: false,
+      validationStatus: "Not_Found",
+      message: "Tiket tidak terdaftar",
+    });
+  }
   // 4. Cek apakah tiket statusnya sudah 'USED' (cegah scan berulang)
+  if (ticket.status === "USED") {
+    return res.status(409).json({
+      success: false,
+      validationStatus: "Already_Used",
+      message: `Tiket sudah pernah digunakan pada ${ticket.scannedAt} di gerbang ${ticket.scannedByGate}!`,
+      scannedAt: ticket.scannedAt,
+    });
+  }
+
+  //Cek kadaluwarsa
+  const today = new Date().toISOString().slice(0, 10);
+  if (ticket.visitDate < today) {
+    ticket.status = "EXPIRED";
+    return res.status(410).json({
+      success: false,
+      validationStatus: "EXPIRED",
+      message: `Tiket sudah hangus (Berlaku pada ${ticket.visitdate})`,
+    });
+  }
+
   // 5. Bila semua valid: status diubah menjadi 'USED', waktu scan dicatat, dan kembalikan akses 'ACCESS_GRANTED'
+  ticket.status = "USED";
+  ticket.scannedAt = new Date().toISOString();
+  ticket.scannedByGate = gateScannerId || "GATE-UTAMA-01";
+
   return res.json({
-    message: "TODO: Implementasi validateGateScan oleh George",
+    success: true,
+    validationStatus: "ACCESS_GRANTED",
+    message: "Validasi Berhasil! Silakan Masuk.",
+    visitor: {
+      name: ticket.visitorName,
+      pax: ticket.pax,
+      destination: ticket.destinationName,
+    },
+    checkInTime: ticket.scannedAt,
   });
 }
 
