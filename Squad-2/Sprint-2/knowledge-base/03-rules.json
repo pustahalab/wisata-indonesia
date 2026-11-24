@@ -1,28 +1,27 @@
 {
   "meta": {
     "name": "KB Kelayakan Mitra dan Anti-Duplikasi Lokasi",
-    "kb_version": "4.2.0",
+    "kb_version": "5.0.0",
     "project": "NusantaraGo",
     "squad": "Squad 2 - Mitra KYC & E-Ticketing",
     "sprint": 2,
     "issue": "#7 Anti-Duplikasi Haversine 500 m & Antrean Kurasi Admin",
     "milestone": "P11 M1 Sistem Berbasis Pengetahuan & Mesin Inferensi",
-    "description": "Basis pengetahuan IF-THEN untuk kurasi admin. Keluaran KB punya dua field terpisah: rekomendasi (SETUJUI, REVISI, TOLAK) dan status_tindak_lanjut (MENUNGGU_KURASI, dipakai saat tinjau manual admin diperlukan). MENUNGGU_KURASI bukan rekomendasi. Keduanya bukan status database. Keputusan akhir ada di admin. KB tidak mengubah partners.is_verified (verifikasi KYC mitra) maupun destinations.status (kurasi destinasi). Keduanya keputusan terpisah.",
+    "description": "Basis pengetahuan IF-THEN untuk kurasi pengajuan destinasi oleh admin. Keluaran KB punya dua field terpisah: rekomendasi (SETUJUI, REVISI, TOLAK) dan status_tindak_lanjut (MENUNGGU_KURASI, MENUNGGU_VERIFIKASI_MITRA). Status tindak lanjut adalah status antrean atau penahanan, bukan rekomendasi. Keduanya bukan status database dan keputusan akhir ada di admin. KB hanya membaca partners.is_verified sebagai syarat dan tidak mengubahnya, serta tidak mengubah destinations.status. Verifikasi mitra, kurasi destinasi, dan antrean kurasi adalah tiga status yang terpisah.",
     "inference": "forward-chaining",
     "certainty_factor": "biner: setiap aturan cf = 1.0 dan tidak ada penggabungan CF",
     "working_memory": "kumpulan fakta masukan dan kesimpulan yang dicatat berurutan oleh engine",
-    "assumption": "closed-world hanya untuk kesimpulan turunan: kesimpulan yang tidak terbentuk dianggap tidak terpenuhi. Fakta masukan nib_diperlukan dan sk_pokdarwis_diperlukan TIDAK mengikuti closed-world: nilai yang tidak ada, NEEDS_CONFIRMATION, boolean, atau nilai lain dianggap belum terkonfirmasi, bukan tidak berlaku",
-    "evaluation_order": "urut ID naik, diulang sampai tidak ada aturan baru menyala. R13 membaca dokumen_lengkap dan syarat_dokumen_status dengan operator ne sehingga harus setelah R5 dan R6. engine_test.py memeriksa bahwa penghasil setiap fakta selalu ber-ID lebih kecil daripada pembacanya",
+    "closed_world": "kesimpulan turunan yang tidak terbentuk dianggap tidak terpenuhi, dan checklist dokumen yang tidak diisi dibaca sebagai dokumen belum diunggah. partner_type, status_verifikasi_mitra, jarak_terdekat_m, serta penerapan NIB dan SK Pokdarwis untuk Attraction wajib terisi dan divalidasi sebelum inferensi, masukan yang tidak valid ditolak",
+    "evaluation_order": "urut ID naik, diulang sampai tidak ada aturan baru menyala. R12 membaca dokumen_lengkap dengan operator ne sehingga R5 dan R6 harus ber-ID lebih kecil. engine_test.py memeriksa bahwa penghasil setiap fakta selalu ber-ID lebih kecil daripada pembacanya",
     "operators": [
       "eq",
       "ne",
       "lte",
       "gt",
-      "in",
-      "nin"
+      "in"
     ],
-    "distance_convention": "jarak_terdekat_m dibulatkan 1 desimal. Isi 999999 jika belum ada destinasi pembanding (PROPOSED)",
-    "decision_unit": "R1 sampai R6 bekerja pada dokumen akun mitra (KYC). R7 sampai R14 bekerja pada pengajuan destinasi (kurasi). Dokumen_lengkap dari R1 sampai R5 hanya prasyarat bagi R12, bukan status verifikasi mitra"
+    "distance_convention": "jarak_terdekat_m dibulatkan 1 desimal, dihitung ke destinasi approved atau pending (KT3). Isi 999999 jika belum ada destinasi pembanding",
+    "decision_unit": "R1 sampai R6 menilai kelengkapan dokumen mitra. R7 sampai R15 menilai satu pengajuan destinasi. dokumen_lengkap adalah prasyarat SETUJUI (R13) dan bukan status verifikasi mitra"
   },
   "output_structure": {
     "rekomendasi": {
@@ -31,13 +30,14 @@
         "REVISI",
         "TOLAK"
       ],
-      "keterangan": "Saran KB bagi admin. Kosong (null) jika KB belum memberi saran dan menyerahkan ke tinjau manual"
+      "keterangan": "Saran KB bagi admin. Kosong (null) jika KB menahan pengajuan lewat status_tindak_lanjut"
     },
     "status_tindak_lanjut": {
       "nilai": [
-        "MENUNGGU_KURASI"
+        "MENUNGGU_KURASI",
+        "MENUNGGU_VERIFIKASI_MITRA"
       ],
-      "keterangan": "Status antrean atau tinjau manual. Bukan rekomendasi dan bukan keputusan. Kosong (null) jika KB memberi rekomendasi"
+      "keterangan": "Status antrean atau penahanan. Bukan rekomendasi dan bukan keputusan. Kosong (null) jika KB memberi rekomendasi"
     },
     "cakupan": {
       "nilai": [
@@ -51,26 +51,87 @@
       ],
       "keterangan": "false berarti partners.is_verified tidak diubah oleh keluaran KB"
     },
-    "invarian": "Setiap aturan akhir mengisi tepat satu dari rekomendasi atau status_tindak_lanjut. Aturan akhir yang mengisi rekomendasi: R9, R10, R12, R13. Aturan akhir yang mengisi status_tindak_lanjut: R8, R14. Tidak ada aturan yang memberi nilai MENUNGGU_KURASI pada field rekomendasi"
+    "invarian": "Setiap aturan akhir mengisi tepat satu dari rekomendasi atau status_tindak_lanjut. Aturan akhir yang mengisi rekomendasi: R9, R10, R12, R13, R15. Aturan akhir yang mengisi status_tindak_lanjut: R8, R14. Tidak ada aturan yang memberi nilai status_tindak_lanjut pada field rekomendasi"
   },
-  "conditional_assumptions": {
-    "catatan": "Dua keputusan tim belum terjawab (N4 dan N9). KB tidak menetapkan jawaban atas keduanya sebagai aturan bisnis. Skenario yang bergantung pada salah satunya adalah contoh bersyarat, bukan syarat bisnis terkonfirmasi",
-    "N4": {
-      "label": "NEEDS_CONFIRMATION",
-      "asumsi_contoh": "Contoh bersyarat: partner_type tour_agent, accommodation, atau transport mengajukan destinasi. KB hanya menguji logikanya. Belum diputuskan apakah ketiganya boleh mengajukan destinasi",
-      "tampil_jika": "partner_type bukan attraction"
+  "ketentuan_operasional": [
+    {
+      "id": "KT1",
+      "judul": "Syarat dokumen per tipe mitra",
+      "isi": "Attraction: KTP penanggung jawab dan Bukti Hak Pengelolaan atau Izin Objek Wisata selalu wajib. NIB wajib jika ditetapkan berlaku, SK Pokdarwis wajib jika ditetapkan berlaku (dikelola Kelompok Sadar Wisata). tour_agent, accommodation, dan transport: KTP penanggung jawab, NIB, dan izin usaha sesuai kategori (perjalanan wisata, akomodasi, angkutan wisata) selalu wajib"
     },
-    "N9": {
-      "label": "NEEDS_CONFIRMATION",
-      "asumsi_contoh": "Contoh bersyarat: rekomendasi SETUJUI dihitung tanpa membaca partners.is_verified. Ini bukan jawaban bahwa mitra tidak perlu verified. Belum diputuskan apakah mitra harus verified sebelum destinasinya boleh disetujui",
-      "tampil_jika": "rekomendasi = SETUJUI"
+    {
+      "id": "KT2",
+      "judul": "Penerapan NIB dan SK Pokdarwis pada Attraction",
+      "isi": "Mitra menyatakan penerapannya pada formulir dokumen KYC, lalu reviewer menetapkan nilai akhir ya atau tidak pada checklist. Nilai itu wajib terisi sebelum KB dijalankan. Dokumen yang ditetapkan tidak berlaku diabaikan, dokumen yang ditetapkan berlaku wajib valid"
+    },
+    {
+      "id": "KT3",
+      "judul": "Destinasi pembanding jarak",
+      "isi": "Jarak dihitung ke destinasi berstatus approved atau pending, tidak termasuk yang rejected dan tidak termasuk pengajuan itu sendiri. Jika belum ada pembanding, jarak_terdekat_m diisi 999999"
+    },
+    {
+      "id": "KT4",
+      "judul": "Tipe mitra yang boleh mengajukan destinasi",
+      "isi": "Keempat partner_type (attraction, tour_agent, accommodation, transport) boleh mengajukan destinasi. Perbedaannya hanya pada syarat dokumen (KT1)"
+    },
+    {
+      "id": "KT5",
+      "judul": "Verifikasi mitra sebagai syarat persetujuan",
+      "isi": "Pengajuan destinasi hanya direkomendasikan SETUJUI jika partners.is_verified = verified. Jika pending, pengajuan ditahan dengan status_tindak_lanjut MENUNGGU_VERIFIKASI_MITRA. Jika rejected, pengajuan direkomendasikan TOLAK. KB hanya membaca partners.is_verified dan tidak pernah mengubahnya"
+    },
+    {
+      "id": "KT6",
+      "judul": "Arti REVISI",
+      "isi": "REVISI berarti pengajuan atau dokumen dikembalikan ke mitra untuk diperbaiki dan destinations.status tetap pending. Keputusan KYC atas akun mitra tetap VERIFIED atau REJECTED oleh reviewer, dan REVISI tidak mengubahnya"
+    },
+    {
+      "id": "KT7",
+      "judul": "Pencatatan data kurasi",
+      "isi": "Checklist dokumen, penetapan penerapan NIB dan SK, tanda POTENTIAL_DUPLICATE, dan status antrean kurasi dicatat sebagai data kurasi yang terpisah dari tabel partners dan destinations Sprint 1. Kolom tabel Sprint 1 tidak berubah"
+    },
+    {
+      "id": "KT8",
+      "judul": "Sumber status verifikasi mitra",
+      "isi": "KB memakai partners.is_verified sebagai satu-satunya status verifikasi mitra. users.kyc_status tidak dibaca KB"
+    },
+    {
+      "id": "KT9",
+      "judul": "Urutan penilaian",
+      "isi": "KB menilai lokasi lebih dulu (R7 sampai R11), lalu kelengkapan dokumen (R12), lalu verifikasi mitra (R13 sampai R15). Satu pengajuan menghasilkan tepat satu keluaran akhir"
     }
-  },
-  "labels": {
-    "CONFIRMED": "didukung dokumen Sprint 1, P11, Issue #7, atau keputusan tim yang dikonfirmasi",
-    "PROPOSED": "usulan teknis atau desain dari tim Sprint 2, belum dikonfirmasi",
-    "NEEDS_CONFIRMATION": "informasi belum ada dan harus dikonfirmasi",
-    "NOT_DEFINED_IN_SPRINT_1": "tidak ditemukan di dokumen atau SQL Sprint 1"
+  ],
+  "document_requirements": {
+    "attraction": {
+      "selalu_wajib": [
+        "KTP penanggung jawab",
+        "Bukti Hak Pengelolaan atau Izin Objek Wisata"
+      ],
+      "wajib_jika_berlaku": {
+        "NIB": "nib_diperlukan = ya",
+        "SK Pokdarwis": "sk_pokdarwis_diperlukan = ya"
+      }
+    },
+    "tour_agent": {
+      "selalu_wajib": [
+        "KTP penanggung jawab",
+        "NIB",
+        "Izin usaha perjalanan wisata"
+      ]
+    },
+    "accommodation": {
+      "selalu_wajib": [
+        "KTP penanggung jawab",
+        "NIB",
+        "Izin usaha penyediaan akomodasi"
+      ]
+    },
+    "transport": {
+      "selalu_wajib": [
+        "KTP penanggung jawab",
+        "NIB",
+        "Izin usaha angkutan wisata"
+      ]
+    }
   },
   "sources": {
     "S1": "P11 Pertemuan 11 DSS.SIP117 (tabel tugas Squad 2), dennyjcs.com/dss/pertemuan-11.html",
@@ -80,7 +141,8 @@
     "S5": "Sprint 1: mitra-destination_tickets-database/erd/README.md dan erd-nusantarago-mitra-tiket.png (tabel destinations, coordinates POINT, status)",
     "S6": "Sprint 1: schema.sql dan mitra-destination_tickets-schema.md (partners, partner_type, legal_doc_url, is_verified)",
     "S7": "Diskusi tim Squad 2: syarat dokumen berbeda per kategori mitra",
-    "S8": "Diskusi tim Squad 2: duplikat terkonfirmasi hanya menolak pengajuan destinasi, bukan akun mitra"
+    "S8": "Diskusi tim Squad 2: duplikat terkonfirmasi hanya menolak pengajuan destinasi, bukan akun mitra",
+    "S9": "Ketentuan operasional kurasi Sprint 2 (KT1 sampai KT9), disusun Squad 2 untuk melengkapi Issue #7 di atas dasar Sprint 1"
   },
   "sprint1_reference": {
     "partner_type": [
@@ -104,8 +166,8 @@
       "verified",
       "rejected"
     ],
-    "legal_doc_url": "satu kolom TEXT NULL. Tidak memisahkan KTP, NIB, atau SK",
-    "destinations_documented_only": {
+    "legal_doc_url": "satu kolom TEXT NULL untuk lokasi dokumen legalitas. Rincian per dokumen dicatat pada checklist reviewer (KT7)",
+    "destinations_dari_erd": {
       "fields": [
         "submitted_by_user_id",
         "managed_by_partner_id",
@@ -114,162 +176,91 @@
         "address",
         "status (pending, approved, rejected)"
       ],
-      "note": "ada di ERD dan README, tidak ada di schema.sql"
+      "note": "didefinisikan di ERD dan README Sprint 1"
     },
-    "implemented_in_schema_sql": [
+    "tabel_di_schema_sql": [
       "partners",
       "destination_tickets"
     ],
-    "reviewer_decisions_in_wireflow": [
+    "keputusan_reviewer_di_wireflow": [
       "VERIFIED",
       "REJECTED"
-    ],
-    "documentation_inconsistencies": [
-      {
-        "item": "id",
-        "schema_md": "UUID gen_random_uuid()",
-        "schema_sql": "CHAR(36) tanpa default"
-      },
-      {
-        "item": "bank_account_info",
-        "schema_md": "JSONB",
-        "schema_sql": "JSON"
-      },
-      {
-        "item": "created_at",
-        "schema_md": "TIMESTAMPZ",
-        "schema_sql": "TIMESTAMP"
-      },
-      {
-        "item": "price",
-        "schema_md": "NUMERIC(12,2)",
-        "schema_sql": "DECIMAL(12,2)"
-      },
-      {
-        "item": "daily_quota",
-        "schema_md": "INTEGER",
-        "schema_sql": "INT"
-      }
     ]
   },
   "facts_input": {
     "partner_type": {
       "tipe": "teks",
       "nilai": "attraction | tour_agent | accommodation | transport",
-      "asal": "partners.partner_type",
-      "label": "CONFIRMED"
+      "asal": "partners.partner_type"
+    },
+    "status_verifikasi_mitra": {
+      "tipe": "teks",
+      "nilai": "pending | verified | rejected",
+      "asal": "partners.is_verified",
+      "keterangan": "Hanya dibaca KB sebagai syarat persetujuan. Tidak pernah diubah KB"
     },
     "nib_diperlukan": {
       "tipe": "teks",
-      "nilai": "ya | tidak | NEEDS_CONFIRMATION",
-      "nilai_terkonfirmasi": [
+      "nilai": "ya | tidak",
+      "asal": "checklist reviewer, berdasarkan pernyataan mitra pada formulir dokumen KYC",
+      "keterangan": "Wajib terisi untuk Attraction. Tipe lain tidak memakainya",
+      "nilai_valid": [
         "ya",
         "tidak"
-      ],
-      "asal": "NIB (jika berlaku) di wireflow. Siapa yang menentukan berlaku atau tidak belum jelas",
-      "aturan_nilai": "Hanya ya atau tidak yang dianggap keputusan penerapan terkonfirmasi. Nilai tidak ada, NEEDS_CONFIRMATION, boolean (true atau false), atau nilai lain dianggap belum terkonfirmasi. Belum terkonfirmasi tidak pernah dianggap tidak berlaku atau opsional",
-      "label": "NEEDS_CONFIRMATION"
+      ]
     },
     "sk_pokdarwis_diperlukan": {
       "tipe": "teks",
-      "nilai": "ya | tidak | NEEDS_CONFIRMATION",
-      "nilai_terkonfirmasi": [
+      "nilai": "ya | tidak",
+      "asal": "checklist reviewer, berdasarkan pernyataan mitra pada formulir dokumen KYC",
+      "keterangan": "Wajib terisi untuk Attraction (ya jika dikelola Kelompok Sadar Wisata). Tipe lain tidak memakainya",
+      "nilai_valid": [
         "ya",
         "tidak"
-      ],
-      "asal": "SK Pokdarwis (jika berlaku) di wireflow, yaitu jika dikelola Kelompok Sadar Wisata. Siapa yang menentukan belum jelas",
-      "aturan_nilai": "Hanya ya atau tidak yang dianggap keputusan penerapan terkonfirmasi. Nilai tidak ada, NEEDS_CONFIRMATION, boolean (true atau false), atau nilai lain dianggap belum terkonfirmasi. Belum terkonfirmasi tidak pernah dianggap tidak berlaku atau opsional",
-      "label": "NEEDS_CONFIRMATION"
+      ]
     },
     "ktp_diunggah": {
       "tipe": "boolean",
-      "asal": "checklist reviewer",
-      "label": "PROPOSED"
+      "asal": "checklist reviewer"
     },
     "ktp_lolos_periksa": {
       "tipe": "boolean",
-      "asal": "checklist reviewer",
-      "label": "PROPOSED"
+      "asal": "checklist reviewer"
     },
     "nib_diunggah": {
       "tipe": "boolean",
-      "asal": "checklist reviewer",
-      "label": "PROPOSED"
+      "asal": "checklist reviewer"
     },
     "nib_lolos_periksa": {
       "tipe": "boolean",
-      "asal": "checklist reviewer",
-      "label": "PROPOSED"
+      "asal": "checklist reviewer"
     },
-    "izin_pengelolaan_diunggah": {
+    "izin_operasional_diunggah": {
       "tipe": "boolean",
       "asal": "checklist reviewer",
-      "label": "PROPOSED"
+      "keterangan": "Attraction: Bukti Hak Pengelolaan atau Izin Objek Wisata. tour_agent, accommodation, transport: izin usaha sesuai kategori"
     },
-    "izin_pengelolaan_lolos_periksa": {
+    "izin_operasional_lolos_periksa": {
       "tipe": "boolean",
-      "asal": "checklist reviewer",
-      "label": "PROPOSED"
+      "asal": "checklist reviewer"
     },
     "sk_pokdarwis_diunggah": {
       "tipe": "boolean",
-      "asal": "checklist reviewer",
-      "label": "PROPOSED"
+      "asal": "checklist reviewer"
     },
     "sk_pokdarwis_lolos_periksa": {
       "tipe": "boolean",
-      "asal": "checklist reviewer",
-      "label": "PROPOSED"
+      "asal": "checklist reviewer"
     },
     "jarak_terdekat_m": {
       "tipe": "angka",
-      "asal": "Haversine dari destinations.coordinates (didokumentasikan di ERD, belum ada di SQL)",
-      "label": "CONFIRMED"
+      "asal": "Haversine dari destinations.coordinates ke destinasi pembanding (KT3)"
     },
     "status_antrean_kurasi": {
       "tipe": "teks",
       "nilai": "belum_ditinjau | bukan_duplikat | duplikat_terkonfirmasi | perlu_bukti",
-      "asal": "diisi admin kurator. Tidak ada field di Sprint 1",
-      "label": "NOT_DEFINED_IN_SPRINT_1"
-    }
-  },
-  "document_facts_note": "Sprint 1 hanya punya legal_doc_url (satu TEXT). Wireflow menampilkan dokumen satu per satu di halaman reviewer. Fakta checklist per dokumen diisi reviewer saat memeriksa dan belum punya penyimpanan di Sprint 1. KB tidak mengasumsikan legal_doc_url sudah terpisah per dokumen. Keputusan penerapan NIB dan SK Pokdarwis (nib_diperlukan, sk_pokdarwis_diperlukan) juga belum punya penyimpanan di Sprint 1 dan harus dicatat eksplisit sebagai ya atau tidak sebelum KB menyimpulkan dokumen lengkap.",
-  "needs_confirmation": {
-    "N1": {
-      "label": "NEEDS_CONFIRMATION",
-      "item": "Dokumen wajib untuk tour_agent, accommodation, dan transport"
-    },
-    "N2": {
-      "label": "NEEDS_CONFIRMATION",
-      "item": "Siapa yang menentukan dan kapan keputusan berlaku atau tidaknya NIB dan SK Pokdarwis dicatat (deklarasi mitra atau reviewer). Sampai terjawab, nilai yang belum diputuskan harus NEEDS_CONFIRMATION dan KB tidak menyimpulkan dokumen lengkap"
-    },
-    "N3": {
-      "label": "NEEDS_CONFIRMATION",
-      "item": "Destinasi pembanding jarak: hanya approved atau termasuk pending"
-    },
-    "N4": {
-      "label": "NEEDS_CONFIRMATION",
-      "item": "Apakah semua partner_type boleh mengajukan destinasi. KB tidak menetapkan jawaban, skenario tour_agent, accommodation, dan transport adalah contoh bersyarat"
-    },
-    "N5": {
-      "label": "NOT_DEFINED_IN_SPRINT_1",
-      "item": "Status REVISI. Reviewer di wireflow hanya punya VERIFIED dan REJECTED"
-    },
-    "N6": {
-      "label": "NOT_DEFINED_IN_SPRINT_1",
-      "item": "Penyimpanan checklist dokumen, keputusan penerapan NIB dan SK, flag POTENTIAL_DUPLICATE, dan status antrean kurasi"
-    },
-    "N7": {
-      "label": "NOT_DEFINED_IN_SPRINT_1",
-      "item": "Tabel destinations di schema.sql dan alur pengajuan destinasi di wireflow"
-    },
-    "N8": {
-      "label": "NOT_DEFINED_IN_SPRINT_1",
-      "item": "Hubungan users.kyc_status dengan partners.is_verified"
-    },
-    "N9": {
-      "label": "NEEDS_CONFIRMATION",
-      "item": "Urutan antara verifikasi KYC mitra (partners.is_verified) dan kurasi destinasi: apakah mitra harus verified sebelum destinasinya boleh disetujui, atau admin memutuskan keduanya terpisah. KB tidak menetapkan jawaban: KB hanya memakai dokumen_lengkap sebagai prasyarat, tidak membaca dan tidak mengubah partners.is_verified. Skenario SETUJUI adalah contoh bersyarat"
+      "asal": "diisi admin kurator",
+      "keterangan": "Dibaca hanya jika lokasi ditandai POTENTIAL_DUPLICATE. Jika kosong, R7 mengisinya dengan belum_ditinjau"
     }
   },
   "rules": [
@@ -296,7 +287,6 @@
       "sources": [
         "S4"
       ],
-      "status": "CONFIRMED",
       "explain": "KTP penanggung jawab sudah diunggah dan lolos pemeriksaan reviewer"
     },
     {
@@ -322,34 +312,33 @@
       "sources": [
         "S4"
       ],
-      "status": "CONFIRMED",
       "explain": "NIB sudah diunggah dan lolos pemeriksaan reviewer"
     },
     {
       "id": "R3",
-      "name": "Bukti hak pengelolaan atau izin objek wisata valid",
+      "name": "Izin pengelolaan atau izin usaha valid",
       "type": "antara",
       "all": [
         {
-          "fact": "izin_pengelolaan_diunggah",
+          "fact": "izin_operasional_diunggah",
           "op": "eq",
           "value": true
         },
         {
-          "fact": "izin_pengelolaan_lolos_periksa",
+          "fact": "izin_operasional_lolos_periksa",
           "op": "eq",
           "value": true
         }
       ],
       "then": {
-        "izin_pengelolaan_valid": true
+        "izin_operasional_valid": true
       },
       "cf": 1.0,
       "sources": [
-        "S4"
+        "S4",
+        "S9"
       ],
-      "status": "CONFIRMED",
-      "explain": "Bukti hak pengelolaan atau izin objek wisata sudah diunggah dan lolos pemeriksaan reviewer"
+      "explain": "Izin sesuai kategori mitra sudah diunggah dan lolos pemeriksaan reviewer: bukti hak pengelolaan atau izin objek wisata untuk Attraction, izin usaha untuk tour_agent, accommodation, dan transport"
     },
     {
       "id": "R4",
@@ -374,7 +363,6 @@
       "sources": [
         "S4"
       ],
-      "status": "CONFIRMED",
       "explain": "SK Pokdarwis sudah diunggah dan lolos pemeriksaan reviewer"
     },
     {
@@ -393,7 +381,7 @@
           "value": true
         },
         {
-          "fact": "izin_pengelolaan_valid",
+          "fact": "izin_operasional_valid",
           "op": "eq",
           "value": true
         },
@@ -453,14 +441,13 @@
         "S2",
         "S4"
       ],
-      "status": "CONFIRMED",
-      "explain": "KTP dan bukti pengelolaan valid. NIB dan SK Pokdarwis masing-masing sudah diputuskan eksplisit: tidak berlaku, atau berlaku dan valid"
+      "explain": "KTP dan izin pengelolaan valid. NIB dan SK Pokdarwis wajib valid jika ditetapkan berlaku, dan diabaikan jika ditetapkan tidak berlaku"
     },
     {
       "id": "R6",
-      "name": "Syarat dokumen belum dapat ditentukan",
+      "name": "Dokumen tour_agent, accommodation, dan transport lengkap",
       "type": "antara",
-      "any": [
+      "all": [
         {
           "fact": "partner_type",
           "op": "in",
@@ -471,48 +458,30 @@
           ]
         },
         {
-          "all": [
-            {
-              "fact": "partner_type",
-              "op": "eq",
-              "value": "attraction"
-            },
-            {
-              "any": [
-                {
-                  "fact": "nib_diperlukan",
-                  "op": "nin",
-                  "value": [
-                    "ya",
-                    "tidak"
-                  ]
-                },
-                {
-                  "fact": "sk_pokdarwis_diperlukan",
-                  "op": "nin",
-                  "value": [
-                    "ya",
-                    "tidak"
-                  ]
-                }
-              ]
-            }
-          ]
+          "fact": "ktp_valid",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "fact": "nib_valid",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "fact": "izin_operasional_valid",
+          "op": "eq",
+          "value": true
         }
       ],
       "then": {
-        "syarat_dokumen_status": "NEEDS_CONFIRMATION"
+        "dokumen_lengkap": true
       },
       "cf": 1.0,
       "sources": [
-        "S4",
-        "S6"
+        "S7",
+        "S9"
       ],
-      "status": "NEEDS_CONFIRMATION",
-      "explain": "Syarat dokumen belum dapat ditentukan. Untuk tour_agent, accommodation, dan transport, wireflow Sprint 1 hanya menggambarkan dokumen Attraction. Untuk Attraction, NIB dan SK Pokdarwis bertanda (jika berlaku) di wireflow, dan selama penerapannya belum diputuskan eksplisit (ya atau tidak) KB tidak menganggapnya wajib maupun tidak wajib. Apakah tipe mitra ini boleh mengajukan destinasi belum diputuskan (N4)",
-      "bergantung_pada": [
-        "N4"
-      ]
+      "explain": "KTP, NIB, dan izin usaha sesuai kategori mitra semuanya valid"
     },
     {
       "id": "R7",
@@ -536,7 +505,6 @@
         "S3",
         "S5"
       ],
-      "status": "CONFIRMED",
       "explain": "Jarak ke destinasi terdekat 500 m atau kurang. Hanya ditandai POTENTIAL_DUPLICATE dan masuk antrean admin, belum duplikat terkonfirmasi"
     },
     {
@@ -565,9 +533,8 @@
         "S1",
         "S3"
       ],
-      "status": "CONFIRMED",
-      "explain": "Potensi duplikat belum ditinjau admin. KB belum memberi rekomendasi, pengajuan masuk antrean (status_tindak_lanjut)",
-      "db_hint": "Pengajuan destinasi tetap pending (destinations.status, hanya di ERD). Flag POTENTIAL_DUPLICATE dan status antrean tidak punya field di Sprint 1 (NOT_DEFINED_IN_SPRINT_1). partners.is_verified tidak diubah"
+      "explain": "Potensi duplikat menunggu tinjauan admin. KB belum memberi rekomendasi dan pengajuan masuk antrean kurasi (status_tindak_lanjut)",
+      "db_hint": "Pengajuan destinasi tetap pending (destinations.status). Status antrean kurasi dicatat pada data kurasi, terpisah dari tabel Sprint 1. partners.is_verified tidak diubah"
     },
     {
       "id": "R9",
@@ -597,9 +564,8 @@
         "S5",
         "S8"
       ],
-      "status": "CONFIRMED",
       "explain": "Admin mengonfirmasi destinasi sama dengan yang sudah ada. Hanya pengajuan destinasi ini yang ditolak, akun mitra tidak terdampak",
-      "db_hint": "Admin dapat menolak pengajuan destinasi ini saja (destinations.status = rejected, hanya di ERD). partners.is_verified tidak diubah"
+      "db_hint": "Admin dapat menolak pengajuan destinasi ini saja (destinations.status = rejected). partners.is_verified tidak diubah"
     },
     {
       "id": "R10",
@@ -624,11 +590,11 @@
       },
       "cf": 1.0,
       "sources": [
-        "S3"
+        "S3",
+        "S9"
       ],
-      "status": "PROPOSED",
       "explain": "Admin meminta bukti lokasi tambahan untuk pengajuan destinasi ini",
-      "db_hint": "Pengajuan dikembalikan ke mitra. REVISI tidak ada di Sprint 1 (NOT_DEFINED_IN_SPRINT_1). destinations.status tetap pending (PROPOSED). partners.is_verified tidak diubah"
+      "db_hint": "Pengajuan dikembalikan ke mitra untuk melengkapi bukti lokasi. destinations.status tetap pending. partners.is_verified tidak diubah"
     },
     {
       "id": "R11",
@@ -662,12 +628,11 @@
       "sources": [
         "S3"
       ],
-      "status": "CONFIRMED",
       "explain": "Jarak lebih dari 500 m, atau admin menyatakan destinasi berbeda dan tanda duplikat dilepas"
     },
     {
       "id": "R12",
-      "name": "Setujui",
+      "name": "Revisi dokumen mitra",
       "type": "akhir",
       "all": [
         {
@@ -677,51 +642,8 @@
         },
         {
           "fact": "dokumen_lengkap",
-          "op": "eq",
-          "value": true
-        }
-      ],
-      "then": {
-        "rekomendasi": "SETUJUI",
-        "cakupan": "pengajuan_destinasi",
-        "akun_mitra_terdampak": false
-      },
-      "cf": 1.0,
-      "sources": [
-        "S1",
-        "S2"
-      ],
-      "status": "CONFIRMED",
-      "explain": "Lokasi lolos dan dokumen Attraction lengkap. Ini rekomendasi kurasi destinasi, bukan verifikasi akun mitra",
-      "db_hint": "Admin dapat menyetujui pengajuan destinasi ini saja (destinations.status = approved, hanya di ERD). partners.is_verified tidak diubah: verifikasi KYC mitra (pending, verified, rejected) adalah keputusan reviewer yang terpisah. Belum diputuskan apakah mitra harus verified lebih dulu (N9), KB tidak membaca partners.is_verified",
-      "bergantung_pada": [
-        "N9"
-      ]
-    },
-    {
-      "id": "R13",
-      "name": "Revisi dokumen Attraction",
-      "type": "akhir",
-      "all": [
-        {
-          "fact": "lokasi_lolos",
-          "op": "eq",
-          "value": true
-        },
-        {
-          "fact": "partner_type",
-          "op": "eq",
-          "value": "attraction"
-        },
-        {
-          "fact": "dokumen_lengkap",
           "op": "ne",
           "value": true
-        },
-        {
-          "fact": "syarat_dokumen_status",
-          "op": "ne",
-          "value": "NEEDS_CONFIRMATION"
         }
       ],
       "then": {
@@ -733,15 +655,15 @@
       "sources": [
         "S1",
         "S2",
-        "S4"
+        "S4",
+        "S9"
       ],
-      "status": "PROPOSED",
-      "explain": "Lokasi lolos, penerapan NIB dan SK sudah diputuskan eksplisit, tetapi ada dokumen Attraction yang belum valid",
-      "db_hint": "Dokumen dikembalikan ke mitra. Reviewer di wireflow hanya punya VERIFIED dan REJECTED (NOT_DEFINED_IN_SPRINT_1). partners.is_verified tidak diubah KB, nilainya ditentukan reviewer KYC secara terpisah (PROPOSED)"
+      "explain": "Lokasi lolos tetapi ada dokumen wajib yang belum valid. Dokumen dikembalikan ke mitra untuk dilengkapi",
+      "db_hint": "destinations.status tetap pending selama dokumen dilengkapi. partners.is_verified tidak diubah KB, nilainya ditentukan reviewer KYC secara terpisah"
     },
     {
-      "id": "R14",
-      "name": "Tinjau manual karena syarat dokumen atau penerapan NIB dan SK belum terkonfirmasi",
+      "id": "R13",
+      "name": "Setujui pengajuan destinasi",
       "type": "akhir",
       "all": [
         {
@@ -750,27 +672,99 @@
           "value": true
         },
         {
-          "fact": "syarat_dokumen_status",
+          "fact": "dokumen_lengkap",
           "op": "eq",
-          "value": "NEEDS_CONFIRMATION"
+          "value": true
+        },
+        {
+          "fact": "status_verifikasi_mitra",
+          "op": "eq",
+          "value": "verified"
         }
       ],
       "then": {
-        "status_tindak_lanjut": "MENUNGGU_KURASI",
-        "cakupan": "dokumen_mitra",
+        "rekomendasi": "SETUJUI",
+        "cakupan": "pengajuan_destinasi",
+        "akun_mitra_terdampak": false
+      },
+      "cf": 1.0,
+      "sources": [
+        "S1",
+        "S2",
+        "S9"
+      ],
+      "explain": "Lokasi lolos, dokumen lengkap, dan mitra berstatus verified. Ini rekomendasi kurasi destinasi, bukan verifikasi akun mitra",
+      "db_hint": "Admin dapat menyetujui pengajuan destinasi ini saja (destinations.status = approved). partners.is_verified hanya dibaca sebagai syarat dan tidak diubah"
+    },
+    {
+      "id": "R14",
+      "name": "Tahan pengajuan sampai mitra diverifikasi",
+      "type": "akhir",
+      "all": [
+        {
+          "fact": "lokasi_lolos",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "fact": "dokumen_lengkap",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "fact": "status_verifikasi_mitra",
+          "op": "eq",
+          "value": "pending"
+        }
+      ],
+      "then": {
+        "status_tindak_lanjut": "MENUNGGU_VERIFIKASI_MITRA",
+        "cakupan": "pengajuan_destinasi",
         "akun_mitra_terdampak": false
       },
       "cf": 1.0,
       "sources": [
         "S4",
-        "S6"
+        "S6",
+        "S9"
       ],
-      "status": "PROPOSED",
-      "explain": "Lokasi lolos tetapi syarat dokumen tipe mitra ini, atau berlaku tidaknya NIB dan SK Pokdarwis, belum terkonfirmasi. KB tidak memberi rekomendasi (tidak menyetujui, tidak merevisi, tidak menolak), status_tindak_lanjut = MENUNGGU_KURASI dan admin memeriksa manual",
-      "db_hint": "Tidak ada persetujuan atau penolakan otomatis karena syarat dokumen atau penerapan NIB dan SK belum terkonfirmasi. partners.is_verified tidak diubah",
-      "bergantung_pada": [
-        "N4"
-      ]
+      "explain": "Lokasi lolos dan dokumen lengkap, tetapi mitra masih berstatus pending. Pengajuan ditahan sampai reviewer KYC memutuskan verifikasi mitra. KB belum memberi rekomendasi",
+      "db_hint": "Pengajuan destinasi tetap pending (destinations.status) sampai reviewer KYC memutuskan verifikasi mitra. partners.is_verified hanya dibaca dan tidak diubah"
+    },
+    {
+      "id": "R15",
+      "name": "Tolak karena mitra ditolak verifikasi",
+      "type": "akhir",
+      "all": [
+        {
+          "fact": "lokasi_lolos",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "fact": "dokumen_lengkap",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "fact": "status_verifikasi_mitra",
+          "op": "eq",
+          "value": "rejected"
+        }
+      ],
+      "then": {
+        "rekomendasi": "TOLAK",
+        "cakupan": "pengajuan_destinasi",
+        "akun_mitra_terdampak": false
+      },
+      "cf": 1.0,
+      "sources": [
+        "S4",
+        "S6",
+        "S9"
+      ],
+      "explain": "Lokasi lolos dan dokumen lengkap, tetapi verifikasi KYC mitra berstatus rejected. Pengajuan destinasi ini tidak dapat disetujui",
+      "db_hint": "Admin dapat menolak pengajuan destinasi ini saja (destinations.status = rejected). partners.is_verified hanya dibaca dan tidak diubah"
     }
   ],
   "separation": {
@@ -781,8 +775,8 @@
         "verified",
         "rejected"
       ],
-      "ada_di": "schema.sql dan schema.md Sprint 1",
-      "diputuskan_oleh": "petugas pemeriksa KYC (reviewer), VERIFIED atau REJECTED di halaman reviewer wireflow",
+      "diputuskan_oleh": "reviewer KYC (VERIFIED atau REJECTED di halaman reviewer wireflow)",
+      "dibaca_kb": true,
       "diubah_oleh_kb": false
     },
     "destination_curation": {
@@ -792,10 +786,23 @@
         "approved",
         "rejected"
       ],
-      "ada_di": "hanya ERD dan README Sprint 1, belum ada di schema.sql",
       "diputuskan_oleh": "admin kurator",
+      "dibaca_kb": false,
       "diubah_oleh_kb": false
     },
-    "aturan": "Persetujuan atau penolakan destinasi tidak otomatis memverifikasi atau menolak akun mitra, dan sebaliknya. Setiap keluaran akhir (rekomendasi atau status_tindak_lanjut) membawa akun_mitra_terdampak = tidak, artinya partners.is_verified tidak diubah oleh rekomendasi itu"
+    "antrean_kurasi": {
+      "field": "status_antrean_kurasi",
+      "values": [
+        "belum_ditinjau",
+        "bukan_duplikat",
+        "duplikat_terkonfirmasi",
+        "perlu_bukti"
+      ],
+      "diputuskan_oleh": "admin kurator",
+      "dibaca_kb": true,
+      "diubah_oleh_kb": false,
+      "catatan": "Satu-satunya nilai yang ditulis KB adalah default belum_ditinjau oleh R7 pada working memory, bukan pada data kurasi"
+    },
+    "aturan": "Persetujuan atau penolakan destinasi tidak otomatis memverifikasi atau menolak akun mitra, dan keputusan reviewer atas mitra tidak mengubah destinations.status. Setiap keluaran akhir membawa akun_mitra_terdampak = tidak, artinya partners.is_verified tidak diubah oleh KB"
   }
 }
