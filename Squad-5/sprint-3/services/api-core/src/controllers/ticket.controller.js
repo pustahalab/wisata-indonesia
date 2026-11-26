@@ -80,7 +80,7 @@ async function validateGateScan(req, res) {
     });
   }
 
-  // 3. Cek apakah tiket ditemukan di ticketsDb
+  // 4. Cek apakah tiket ditemukan di ticketsDb
   const ticket = ticketsDb.find((t) => t.ticketId === payload.ticketId);
   if (!ticket) {
     return res.status(404).json({
@@ -89,7 +89,17 @@ async function validateGateScan(req, res) {
       message: "Tiket tidak terdaftar",
     });
   }
-  // 4. Cek apakah tiket statusnya sudah 'USED' (cegah scan berulang)
+
+  // 5. Cek apakah lokasi gerbang sesuai dengan tiket
+  if (ticket.destinationId !== gateDestinationId) {
+    return res.status(400).json({
+      success: false,
+      validationStatus: "WRONG_DESTINATION",
+      message: `Tiket ini untuk ${ticket.destinationName}, bukan untuk lokasi gerbang ini!`,
+    });
+  }
+
+  // 6. Cek apakah tiket statusnya sudah 'USED' (cegah scan berulang)
   if (ticket.status === "USED") {
     return res.status(409).json({
       success: false,
@@ -106,7 +116,7 @@ async function validateGateScan(req, res) {
     return res.status(410).json({
       success: false,
       validationStatus: "EXPIRED",
-      message: `Tiket sudah hangus (Berlaku pada ${ticket.visitdate})`,
+      message: `Tiket sudah hangus (Berlaku pada ${ticket.visitDate})`,
     });
   }
 

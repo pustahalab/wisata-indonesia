@@ -12,7 +12,7 @@ const ticketsMock = [
     destinationName: "Danau Kelimutu",
     visitorName: "Georg Da Lopez",
     pax: 2,
-    visitDate: "2026-11-24", // Tanggal kunjungan yang aktif
+    visitDate: "2026-12-01", // Tanggal kunjungan aktif di masa depan
     status: "ACTIVE", // 'ACTIVE' (belum dipakai)
     scannedAt: null,
     scannedByGate: null,
@@ -26,7 +26,7 @@ const ticketsMock = [
     destinationName: "Puncak Bromo",
     visitorName: "Ralafe Leano",
     pax: 2,
-    visitDate: "2026-11-24", // Tanggal kunjungan yang valid
+    visitDate: "2026-12-01", // Tanggal kunjungan yang valid
     status: "ACTIVE", // 'ACTIVE' (belum dipakai) atau 'USED' (sudah discan)
     scannedAt: null,
     scannedByGate: null,
@@ -40,7 +40,7 @@ const ticketsMock = [
     destinationName: "Danau Toba",
     visitorName: "Zekhiel Math",
     pax: 3,
-    visitDate: "2026-11-24", // Tanggal kunjungan yang valid
+    visitDate: "2026-12-01", // Tanggal kunjungan yang valid
     status: "USED", // 'USED' - sudah digunakan
     scannedAt: "2026-11-24",
     scannedByGate: "Gate-Timur-02",
