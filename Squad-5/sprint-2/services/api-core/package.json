@@ -1,0 +1,19 @@
+{
+  "name": "api-core",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "worker": "node src/workers/image.worker.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bullmq": "^6.7.8",
+    "dotenv": "^18.0.10",
+    "ioredis": "^6.0.0",
+    "sharp": "^0.35.5"
+  }
+}
