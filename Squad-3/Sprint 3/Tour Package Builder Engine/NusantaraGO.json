@@ -1,0 +1,29 @@
+{
+  "days": [
+    {
+      "day": 1,
+      "title": "Kedatangan & Wisata Alam",
+      "activities": [
+        {
+          "order": 1,
+          "start_time": "08:00",
+          "end_time": "10:30",
+          "destination_id": 104,
+          "name": "Kawah Putih",
+          "type": "destination",
+          "notes": "Bawa jaket tebal",
+          "variable_cost_per_pax": 85000
+        },
+        {
+          "order": 2,
+          "start_time": "12:00",
+          "end_time": "13:30",
+          "destination_id": 210,
+          "name": "Makan Siang Resto Sunda",
+          "type": "meal",
+          "variable_cost_per_pax": 65000
+        }
+      ]
+    }
+  ]
+}
